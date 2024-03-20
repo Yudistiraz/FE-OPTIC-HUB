@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "@/lib/MuiTheme";
 import AuthContext from "@/components/providers/SessionProvider";
 import { getServerSession } from "next-auth";
+import TanstackProvider from "@/components/providers/TanstackProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,7 +27,9 @@ export default async function RootLayout({
       </head>
       <body className={`!tw-bg-white ${inter.className}`}>
         <AuthContext session={session}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <TanstackProvider>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </TanstackProvider>
         </AuthContext>
       </body>
     </html>
