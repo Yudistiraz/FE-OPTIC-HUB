@@ -31,7 +31,6 @@ const basicSchema = {
 
 export const loginSchema = Yup.object({
   ...basicSchema,
-  password: Yup.string()
-    .required("Required")
-    .matches(passwordRules, passwordMsg),
+  password: Yup.string().required("Required"),
+  // .matches(passwordRules, passwordMsg),
 });
