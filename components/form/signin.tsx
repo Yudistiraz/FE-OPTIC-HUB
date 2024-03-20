@@ -6,6 +6,7 @@ import CustomTextField from "../ui/TextField";
 import CustomButton from "../ui/Button";
 import FormLayout from "../ui/FormLayout";
 import { gethelperText } from "@/utils/function";
+import { signIn } from "next-auth/react";
 
 const Signinform = () => {
   const formik = useCustomFormik({
@@ -16,6 +17,14 @@ const Signinform = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       console.log(values);
+      await signIn("credentials", {
+        id: "123456",
+        name: "yudis",
+        role: "staff",
+        token: "asdadasdasas",
+        redirect: true,
+        callbackUrl: "/",
+      });
     },
   });
 
