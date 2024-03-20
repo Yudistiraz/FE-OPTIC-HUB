@@ -1,3 +1,21 @@
+"use client";
+
+import { signOut, useSession } from "next-auth/react";
+
 export default function Home() {
-  return <div className="">s</div>;
+  const { data: session, status } = useSession();
+  console.log(session);
+  console.log(status);
+
+  return (
+    <div className="">
+      <button
+        onClick={() => {
+          signOut();
+        }}
+      >
+        signout
+      </button>
+    </div>
+  );
 }
