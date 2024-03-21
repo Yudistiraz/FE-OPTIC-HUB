@@ -48,6 +48,7 @@ const Signinform = () => {
         name: "yudis",
         role: "staff",
         token: "asdadasdasas",
+        email: "aaaa@example.com",
         redirect: true,
         callbackUrl: "/",
       });
