@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/lib/MuiTheme";
-
+import AuthContext from "@/components/providers/SessionProvider";
+import { getServerSession } from "next-auth";
+import TanstackProvider from "@/components/providers/TanstackProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -11,11 +13,12 @@ export const metadata: Metadata = {
   description: "Optic Hub",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <head>
@@ -23,7 +26,11 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
       </head>
       <body className={`!tw-bg-white ${inter.className}`}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <AuthContext session={session}>
+          <TanstackProvider>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </TanstackProvider>
+        </AuthContext>
       </body>
     </html>
   );
