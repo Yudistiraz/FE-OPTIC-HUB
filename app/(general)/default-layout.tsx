@@ -19,6 +19,7 @@ export default function DefaultLayout({
   const router = useRouter();
   const checkSession = async () => {
     const session = await getSession();
+
     if (!session) {
       router.push("/signin");
     }
@@ -32,14 +33,14 @@ export default function DefaultLayout({
     <div className="tw-flex">
       <CustomDrawer
         variant="permanent"
-        drawerPaperClass="tw-bg-primary-500 tw-w-[270px]"
+        drawerPaperClass="tw-bg-primary-500 tw-w-[270px] no-scrollbar"
         containerClass="tw-px-4"
       >
         <SidebarMenu />
       </CustomDrawer>
 
       {/* <Header /> */}
-      <CustomContainer className="">{children}</CustomContainer>
+      <CustomContainer>{children}</CustomContainer>
     </div>
   );
 }
