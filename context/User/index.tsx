@@ -5,13 +5,21 @@
  */
 
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 // Create the context
 const UserContext = createContext<
   | {
       userRole: string;
       setUserRole: (role: string) => void;
+      hasMounted: boolean;
+      setHasMounted: (mounted: boolean) => void;
     }
   | undefined
 >(undefined);
@@ -30,12 +38,18 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userRole, setUserRole] = useState<string>("owner");
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   return (
     <UserContext.Provider
       value={{
         userRole,
         setUserRole,
+        hasMounted,
+        setHasMounted,
       }}
     >
       {children}
