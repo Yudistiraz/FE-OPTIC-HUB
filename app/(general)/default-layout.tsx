@@ -33,12 +33,11 @@ export default function DefaultLayout({
     <div className="tw-flex">
       <CustomDrawer
         variant="permanent"
-        drawerPaperClass="tw-bg-primary-500 tw-w-[270px] no-scrollbar"
-        containerClass="tw-px-4"
+        drawerPaperClass="tw-bg-primary-500 tw-w-[270px] no-scrollbar "
+        containerClass="tw-w-full tw-px-2"
       >
         <SidebarMenu />
       </CustomDrawer>
-
       {/* <Header /> */}
       <CustomContainer>{children}</CustomContainer>
     </div>

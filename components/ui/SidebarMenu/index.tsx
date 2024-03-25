@@ -1,11 +1,12 @@
 "use client";
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ReactNode, useEffect, useMemo } from "react";
 
 import ImageLoader from "@/components/ui/ImageLoader";
 import { OWNER_SITEMAPS, STAFF_SITEMAPS } from "@/utils/constants";
+import { useUserState } from "@/context/User";
 
 interface MenuProps {
   name?: string;
@@ -22,20 +23,11 @@ function SidebarMenu() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const { hasMounted } = useUserState();
+
   const { data: session } = useSession();
-  // console.log(session?.user);
 
-  // const role = "staff";
-
-  const role = useMemo(() => {
-    console.log("a");
-
-    return session?.user.role;
-  }, []);
-
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
+  const role = session?.user.role;
 
   const onMenuClick = (url: string) => {
     router.push(url);
@@ -43,14 +35,7 @@ function SidebarMenu() {
 
   const NavItem: React.FC<MenuProps> = ({ children, path }) => {
     const isActive = pathname === path;
-    return (
-      <Typography
-        className="group-hover:tw-text-white"
-        color={isActive ? "#FFFFFF" : "#A0A5AB"}
-      >
-        {children}
-      </Typography>
-    );
+    return <Typography className="tw-text-white">{children}</Typography>;
   };
 
   const NavigationMenu: React.FC<NavigationMenuProps> = ({
@@ -62,25 +47,27 @@ function SidebarMenu() {
         return (
           <div
             key={index}
-            className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-bg-[#50565C] tw-rounded-2xl tw-flex tw-gap-2"
+            className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-bg-primary-400 tw-rounded-md tw-flex tw-gap-4 tw-items-center"
             onClick={() => onMenuClick(item?.path)}
           >
-            {/* <ImageLoader
-              isFlat
-              src={`/assets/navbar/${item?.img}_active.png`}
-              alt={item?.name}
-              className="tw-w-[15px] tw-h-[15px]"
-            /> */}
+            <div className="tw-w-6 tw-h-6">
+              <ImageLoader
+                isFlat
+                priority
+                src={`/assets/navbar/${item?.img}.svg`}
+                alt={item?.name}
+              />
+            </div>
 
-            <NavItem path={item.path}>{item.name}</NavItem>
-          </div>
-        );
-      }
-
-      if (!item?.path) {
-        return (
-          <div key={index} className="tw-py-3 tw-px-2 tw-mb-2">
-            <Typography>{item?.name}</Typography>
+            <NavItem path={item.path}>
+              <Typography
+                variant="subtitle2"
+                component="span"
+                className="tw-text-white"
+              >
+                {item.name}
+              </Typography>
+            </NavItem>
           </div>
         );
       }
@@ -88,26 +75,74 @@ function SidebarMenu() {
       return (
         <div
           key={index}
-          className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer hover:tw-bg-[#50565C] hover:tw-rounded-2xl tw-group tw-flex tw-gap-2"
+          className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-group tw-items-center tw-flex tw-gap-4 hover:tw-bg-primary-400 tw-rounded-md tw-duration-75"
           onClick={() => onMenuClick(item?.path)}
         >
-          {/* <ImageLoader
-            isFlat
-            src={`/assets/navbar/${item?.img}_idle.png`}
-            alt={item?.name}
-            className="tw-w-[15px] tw-h-[15px]"
-          /> */}
+          <div className="tw-w-6 tw-h-6">
+            <ImageLoader
+              isFlat
+              priority
+              src={`/assets/navbar/${item?.img}.svg`}
+              alt={item?.name}
+            />
+          </div>
 
-          <NavItem path={item.path}>{item.name}</NavItem>
+          <NavItem path={item.path}>
+            <Typography
+              variant="subtitle2"
+              component="span"
+              className="tw-text-white group-hover:tw-mx-4 tw-duration-100"
+            >
+              {item.name}
+            </Typography>
+          </NavItem>
         </div>
       );
     });
   };
 
   return (
-    <NavigationMenu
-      menus={role === "staff" ? OWNER_SITEMAPS : STAFF_SITEMAPS}
-    />
+    <div className="tw-w-full">
+      logo
+      {hasMounted && (
+        <>
+          <NavigationMenu
+            menus={role === "staff" ? OWNER_SITEMAPS : STAFF_SITEMAPS}
+          />
+          <Divider
+            className="tw-my-4"
+            sx={{
+              borderBottomWidth: 3,
+              bgcolor: "white",
+              borderColor: "white",
+            }}
+          />
+          <div
+            className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-group tw-bg-primary-400 tw-rounded-md tw-flex tw-gap-4 tw-items-center hover:tw-bg-primary-600 tw-duration-75"
+            onClick={() => onMenuClick("/transactions/add")}
+          >
+            <div className="tw-w-6 tw-h-6">
+              <ImageLoader
+                isFlat
+                priority
+                src={`/assets/navbar/add-transaction.svg`}
+                alt="add-transaction"
+              />
+            </div>
+
+            <NavItem path={"/transactions/add"}>
+              <Typography
+                variant="subtitle2"
+                component="span"
+                className="tw-text-white group-hover:tw-mx-4 tw-duration-100"
+              >
+                Buat Transaksi
+              </Typography>
+            </NavItem>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 

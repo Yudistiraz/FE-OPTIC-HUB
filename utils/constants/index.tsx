@@ -27,24 +27,24 @@ export const STAFF_SITEMAPS = [
     img: "dashboard",
   },
   {
-    name: "Schedule",
-    path: "/schedule",
-    img: "schedule",
+    name: "Manage Product",
+    path: "/product",
+    img: "product",
   },
   {
-    name: "Sales",
-    path: "/sales",
-    img: "sales",
+    name: "Manage Employee",
+    path: "/employee",
+    img: "employee",
   },
   {
-    name: "Promotion Banner",
-    path: "/promotion-banner",
-    img: "promotionBanner",
+    name: "Transaction",
+    path: "/transaction",
+    img: "transaction",
   },
   {
-    name: "Customer",
-    path: "/customer",
-    img: "customer",
+    name: "Setting",
+    path: "/setting",
+    img: "setting",
   },
 ];
 
@@ -55,58 +55,24 @@ export const OWNER_SITEMAPS = [
     img: "dashboard",
   },
   {
-    name: "Schedule",
-    path: "/schedule",
-    img: "schedule",
+    name: "Manage Product",
+    path: "/product",
+    img: "product",
   },
   {
-    name: "Sales",
-    path: "/sales",
-    img: "sales",
+    name: "Manage Employee",
+    path: "/employee",
+    img: "employee",
   },
   {
-    name: "Promotion Banner",
-    path: "/promotion-banner",
-    img: "promotionBanner",
+    name: "Transaction",
+    path: "/transaction",
+    img: "transaction",
   },
   {
-    name: "Customer",
-    path: "/customer",
-    img: "customer",
-  },
-  {
-    name: "MANAGEMENT",
-    path: "",
-  },
-  {
-    name: "Classes",
-    path: "/classes",
-    img: "classes",
-  },
-  {
-    name: "Location",
-    path: "/location",
-    img: "location",
-  },
-  {
-    name: "Plan Package",
-    path: "/plan-package",
-    img: "planPackage",
-  },
-  {
-    name: "Instructor",
-    path: "/instructor",
-    img: "instructor",
-  },
-  {
-    name: "Class Layout",
-    path: "/class-layout",
-    img: "classLayout",
-  },
-  {
-    name: "Admin",
-    path: "/admin",
-    img: "admin",
+    name: "Setting",
+    path: "/setting",
+    img: "setting",
   },
 ];
 
