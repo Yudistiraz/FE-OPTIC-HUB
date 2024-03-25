@@ -53,6 +53,7 @@ const config: Config = {
           300: "#6c6c6c", // hover
           400: "#2453C2", // pressed
           500: "#457DFF", // default state
+          600: "#1A45AA",
         },
         light: {
           500: "#F3F8FB",
