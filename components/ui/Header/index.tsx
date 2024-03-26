@@ -1,15 +1,16 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { AppBar, IconButton, MenuItem, Typography, Menu } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import CustomContainer from "@/components/ui/Container";
-import ImageLoader from "@/components/ui/ImageLoader";
+import { useUserState } from "@/context/User";
 
 const drawerWidth = 270;
 
 const Header = () => {
   const session = useSession();
+  const { hasMounted } = useUserState();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -29,68 +30,62 @@ const Header = () => {
   };
 
   return (
-    <>
-      <AppBar
-        className="tw-bg-white tw-shadow-none tw-border tw-border-b-gray-300 tw-p-0"
-        sx={{
-          width: `calc(100% - ${drawerWidth}px)`,
-          ml: `${drawerWidth}px`,
-          height: "80px",
-        }}
-      >
-        <CustomContainer className="tw-py-[20px] tw-flex tw-justify-between">
-          <div>{/* breadcrumb here */}</div>
+    <Fragment>
+      {hasMounted && (
+        <AppBar
+          className="tw-bg-white tw-shadow-none tw-border tw-border-b-gray-300 tw-p-0"
+          sx={{
+            width: `calc(100% - ${drawerWidth}px)`,
+            ml: `${drawerWidth}px`,
+            height: "80px",
+          }}
+        >
+          <CustomContainer className="tw-py-[20px] tw-flex tw-justify-between">
+            <div>{/* breadcrumb here */}</div>
 
-          <div className="tw-flex tw-gap-4 tw-items-center">
-            <div className="tw-bg-[#F7F7F7] tw-p-[12px] tw-rounded-lg tw-w-10 tw-h-10">
-              <ImageLoader
-                isFlat
-                src="/assets/user_placeholder.svg"
-                alt="profile_pict"
-              />
-            </div>
+            <div className="tw-flex tw-gap-4 tw-items-center">
+              {session?.data && (
+                <div>
+                  <Typography
+                    fontSize="16px"
+                    fontWeight={600}
+                    lineHeight="21px"
+                    className="tw-capitalize"
+                    color="#252525"
+                  >
+                    Hi, Admin!
+                  </Typography>
+                </div>
+              )}
 
-            {session?.data && (
               <div>
-                <Typography
-                  fontSize="16px"
-                  fontWeight={600}
-                  lineHeight="21px"
-                  className="tw-capitalize"
-                  color="#252525"
+                <IconButton onClick={handleMenu} size="small">
+                  <KeyboardArrowDownIcon />
+                </IconButton>
+
+                <Menu
+                  sx={{ mt: "40px" }}
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
                 >
-                  Hi, Admin!
-                </Typography>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
               </div>
-            )}
-
-            <div>
-              <IconButton onClick={handleMenu} size="small">
-                <KeyboardArrowDownIcon />
-              </IconButton>
-
-              <Menu
-                sx={{ mt: "40px" }}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </Menu>
             </div>
-          </div>
-        </CustomContainer>
-      </AppBar>
-    </>
+          </CustomContainer>
+        </AppBar>
+      )}
+    </Fragment>
   );
 };
 
