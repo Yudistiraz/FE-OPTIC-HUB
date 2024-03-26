@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import CustomContainer from "@/components/ui/Container";
 import CustomDrawer from "@/components/ui/Drawer";
 import Header from "@/components/ui/Header";
 import SidebarMenu from "@/components/ui/SidebarMenu";
-import { useUserState } from "@/context/User";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -18,7 +18,6 @@ export default function DefaultLayout({
     children;
   }
   const router = useRouter();
-  const { hasMounted } = useUserState();
   const checkSession = async () => {
     const session = await getSession();
 
@@ -38,13 +37,10 @@ export default function DefaultLayout({
         drawerPaperClass="tw-bg-primary-500 tw-w-[270px] no-scrollbar "
         containerClass="tw-w-full tw-px-2"
       >
-        {hasMounted && <SidebarMenu />}
+        <SidebarMenu />
       </CustomDrawer>
-      {hasMounted && <Header />}
-
-      {hasMounted && (
-        <CustomContainer className="tw-pt-32">{children}</CustomContainer>
-      )}
+      <Header />
+      <CustomContainer className="tw-pt-32">{children}</CustomContainer>
     </div>
   );
 }
