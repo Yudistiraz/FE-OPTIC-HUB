@@ -31,7 +31,7 @@ const Header = () => {
   return (
     <>
       <AppBar
-        className="tw-bg-white tw-shadow-none tw-p-0"
+        className="tw-bg-white tw-shadow-none tw-border tw-border-b-gray-300 tw-p-0"
         sx={{
           width: `calc(100% - ${drawerWidth}px)`,
           ml: `${drawerWidth}px`,
@@ -42,12 +42,11 @@ const Header = () => {
           <div>{/* breadcrumb here */}</div>
 
           <div className="tw-flex tw-gap-4 tw-items-center">
-            <div className="tw-bg-[#F7F7F7] tw-p-[12px] tw-rounded-lg">
+            <div className="tw-bg-[#F7F7F7] tw-p-[12px] tw-rounded-lg tw-w-10 tw-h-10">
               <ImageLoader
                 isFlat
                 src="/assets/user_placeholder.svg"
                 alt="profile_pict"
-                className="tw-w-[18px] tw-h-[18px]"
               />
             </div>
 
@@ -60,16 +59,7 @@ const Header = () => {
                   className="tw-capitalize"
                   color="#252525"
                 >
-                  Hi Admin
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  fontWeight={400}
-                  lineHeight="21px"
-                  color="#707085"
-                  className="tw-capitalize"
-                >
-                  Admin
+                  Hi, Admin!
                 </Typography>
               </div>
             )}
