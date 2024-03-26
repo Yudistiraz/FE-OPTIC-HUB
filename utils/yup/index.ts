@@ -34,3 +34,12 @@ export const loginSchema = Yup.object({
   password: Yup.string().required("Required"),
   // .matches(passwordRules, passwordMsg),
 });
+
+export const addEmployeeSchema = Yup.object({
+  name: Yup.string().required("Name Required"),
+  dob: Yup.mixed().required("Date of Birth Required"),
+  phone_number: Yup.string().required("Phone Number Required"),
+  email: Yup.string().required("Email Required"),
+  password: Yup.string().required("Password Required"),
+  role: Yup.string().required("Role Required"),
+});
