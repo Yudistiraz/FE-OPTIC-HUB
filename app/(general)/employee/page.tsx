@@ -1,6 +1,6 @@
 "use client";
 
-import CustomDropdown from "@/components/Select";
+import CustomDropdown from "@/components/ui/Select";
 import CustomButton from "@/components/ui/Button";
 import CustomDataTable from "@/components/ui/DataTableV2";
 import CustomSearchbar from "@/components/ui/Searchbar";
@@ -14,7 +14,7 @@ export default function Employee() {
   return (
     <div className="tw-flex tw-flex-col tw-gap-6">
       <div className="tw-flex">
-        <Typography variant="h2">Admin</Typography>
+        <Typography variant="h2">Employee</Typography>
 
         <CustomButton
           className="tw-w-[165px] tw-ml-auto"
