@@ -113,6 +113,17 @@ export const STATUS_OPTIONS = [
   },
 ];
 
+export const EMPLOYEE_OPTIONS = [
+  {
+    label: "Owner",
+    value: "owner",
+  },
+  {
+    label: "Staff",
+    value: "staff",
+  },
+];
+
 export const DAY_HOURS_OPTIONS = [
   { label: "Days", value: "days" },
   { label: "Hours", value: "hours" },
@@ -145,4 +156,87 @@ export const PHONE_PREFIX = [
 export const STATUS_CLASSES_OPTIONS = [
   { label: "Active", value: "active" },
   { label: "Inactive", value: "inactive" },
+];
+
+export const DUMMY_EMPLOYEE = [
+  {
+    id: "EMP1",
+    name: "Employee 1",
+    phone: "123-456-1",
+    email: "employee1@example.com",
+    status: true,
+    role: "staff",
+  },
+  {
+    id: "EMP2",
+    name: "Employee 2",
+    phone: "123-456-2",
+    email: "employee2@example.com",
+    status: false,
+    role: "staff",
+  },
+  {
+    id: "EMP3",
+    name: "Employee 3",
+    phone: "123-456-3",
+    email: "employee3@example.com",
+    status: true,
+    role: "staff",
+  },
+  {
+    id: "EMP4",
+    name: "Employee 4",
+    phone: "123-456-4",
+    email: "employee4@example.com",
+    status: false,
+    role: "staff",
+  },
+  {
+    id: "EMP5",
+    name: "Employee 5",
+    phone: "123-456-5",
+    email: "employee5@example.com",
+    status: true,
+    role: "staff",
+  },
+  {
+    id: "EMP6",
+    name: "Employee 6",
+    phone: "123-456-6",
+    email: "employee6@example.com",
+    status: false,
+    role: "admin",
+  },
+  {
+    id: "EMP7",
+    name: "Employee 7",
+    phone: "123-456-7",
+    email: "employee7@example.com",
+    status: true,
+    role: "owner",
+  },
+  {
+    id: "EMP8",
+    name: "Employee 8",
+    phone: "123-456-8",
+    email: "employee8@example.com",
+    status: false,
+    role: "admin",
+  },
+  {
+    id: "EMP9",
+    name: "Employee 9",
+    phone: "123-456-9",
+    email: "employee9@example.com",
+    status: true,
+    role: "admin",
+  },
+  {
+    id: "EMP10",
+    name: "Employee 10",
+    phone: "123-456-10",
+    email: "employee10@example.com",
+    status: false,
+    role: "admin",
+  },
 ];
