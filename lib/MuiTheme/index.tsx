@@ -22,6 +22,7 @@ declare module "@mui/material/styles" {
     labelBig: React.CSSProperties;
     labelSmall: React.CSSProperties;
     helperText: React.CSSProperties;
+    customBadgeText: React.CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -43,6 +44,7 @@ declare module "@mui/material/styles" {
     labelBig?: React.CSSProperties;
     labelSmall?: React.CSSProperties;
     helperText?: React.CSSProperties;
+    customBadgeText?: React.CSSProperties;
   }
 }
 
@@ -66,6 +68,7 @@ declare module "@mui/material/Typography" {
     labelBig: true;
     labelSmall: true;
     helperText: true;
+    customBadgeText: true;
   }
 }
 
@@ -272,9 +275,9 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#252525", // Primary color
-      light: "#c1c1c1",
-      dark: "#9f9f9f",
+      main: "#457EFF", // Primary color
+      light: "#1A5FFF",
+      dark: "#1A5FFF",
       contrastText: "#fff",
     },
     secondary: {
@@ -455,6 +458,11 @@ export const theme = createTheme({
       lineHeight: "18px",
       letterSpacing: "6%",
       color: "#cf1c0c",
+    },
+    customBadgeText: {
+      color: "#252525",
+      fontSize: "13px",
+      fontWeight: 500,
     },
   },
 });

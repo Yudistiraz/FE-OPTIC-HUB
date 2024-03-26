@@ -1,19 +1,21 @@
-import nextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-const authOptions: NextAuthOptions = {
+
+const handler = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         id: {},
-        email: {},
+        shortId: {},
         name: {},
-        token: {},
+        email: {},
         role: {},
+        token: {},
       },
       async authorize(credentials) {
         // Return null if user data could not be retrieved
@@ -21,9 +23,9 @@ const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const { id, email, name, token, role } = credentials;
+        const { id, shortId, name, email, role, token } = credentials;
 
-        return { id, email, name, token, role };
+        return { id, shortId, name, email, role, token };
       },
     }),
   ],
@@ -31,22 +33,30 @@ const authOptions: NextAuthOptions = {
     async signIn() {
       return true;
     },
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, trigger, session }) {
       // Persist the OAuth access_token to the token right after signin
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
+
       if (user) {
         token.accessToken = user.token;
-        token.name = user.name;
-        token.role = user.role;
         token.id = user.id;
+        token.shortId = user.shortId;
+        token.name = user.name;
+        token.email = user.email;
+        token.role = user.role;
       }
       return token;
     },
-    async session({ session, token }: any) {
+    async session({ session, token }) {
       if (session && token) {
         session.accessToken = token.accessToken;
-        session.name = token.name;
-        session.role = token.role;
-        session.id = token.id as string;
+        session.user.id = token.id;
+        session.user.shortId = token.shortId;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.role = token.role;
       }
       return session;
     },
@@ -56,7 +66,6 @@ const authOptions: NextAuthOptions = {
         : Promise.resolve(baseUrl);
     },
   },
-};
+});
 
-const handler = nextAuth(authOptions);
 export { handler as GET, handler as POST };
