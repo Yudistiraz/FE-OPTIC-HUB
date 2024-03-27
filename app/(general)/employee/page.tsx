@@ -68,7 +68,7 @@ export default function Employee() {
         onRowClick={(item: any, data: any) => {
           const cell = data.target.getAttribute("data-colindex");
           if (cell < "5" && cell !== null) {
-            router.push(`/admin/${item?.row?.id}`);
+            router.push(`/employee/${item?.row?.id}`);
           }
         }}
         onPageChange={(param: number) => {
