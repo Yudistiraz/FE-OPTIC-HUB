@@ -9,6 +9,7 @@ interface CustomSwitchProps {
   activeText?: string;
   inactiveText?: string;
   helperText?: string;
+  value: boolean;
   onChange: (value: boolean) => void; // Fix the function type
 }
 
@@ -21,9 +22,10 @@ function CustomSwitch({
   inactiveText = "Inactive",
   className = "",
   helperText = "",
+  value = false,
   ...rest
 }: CustomSwitchProps) {
-  const [checked, SetChecked] = useState(false);
+  const [checked, SetChecked] = useState(value);
 
   return (
     <div className="tw-w-full">
