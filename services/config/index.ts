@@ -5,7 +5,6 @@ import { QueryClient } from "react-query";
 
 // import { badRequestHandler } from './error-handler'
 
-export const ADMIN_V1 = "/admin/v1";
 let redirectUnauth = false;
 
 interface ApiParams extends Omit<AxiosRequestConfig, "auth"> {

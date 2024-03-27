@@ -44,7 +44,7 @@ const CustomDrawer = ({
       className={
         anchor === "top"
           ? `!tw-z-[1000] tw-w-[${drawerWidth}]`
-          : `!tw-z-[1500] tw-w-[${drawerWidth}]`
+          : `!tw-z-[1200] tw-w-[${drawerWidth}]`
       }
       variant={variant}
       anchor={anchor}

@@ -33,7 +33,15 @@ const CustomDataTable = (props: any) => {
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "" : "tw-bg-[#F6F6F6]"
           }
-          sx={{ border: 1 }}
+          sx={{
+            border: 1,
+            ".MuiDataGrid-cell:focus": {
+              outline: "none",
+            },
+            "& .MuiDataGrid-row:hover": {
+              cursor: "pointer",
+            },
+          }}
           autoHeight={true}
           disableExtendRowFullWidth={true}
         />

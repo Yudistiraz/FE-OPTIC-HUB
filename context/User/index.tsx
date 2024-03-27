@@ -5,21 +5,20 @@
  */
 
 "use client";
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Create the context
 const UserContext = createContext<
   | {
-      userRole: string;
-      setUserRole: (role: string) => void;
-      hasMounted: boolean;
-      setHasMounted: (mounted: boolean) => void;
+      openDialog: boolean;
+      dialogType: "confirmation" | "success" | "alert";
+      dialogTitle: string;
+      dialogMessage: string;
+      setOpenDialog: (openDialog: boolean) => void;
+      setDialogType: (dialogType: "confirmation" | "success" | "alert") => void;
+      setDialogTitle: (dialogTitle: string) => void;
+      setDialogMessage: (dialogMessage: string) => void;
+      resetDialogText: () => void;
     }
   | undefined
 >(undefined);
@@ -37,19 +36,32 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [userRole, setUserRole] = useState<string>("owner");
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  //DIALOG
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [dialogType, setDialogType] = useState<
+    "confirmation" | "success" | "alert"
+  >("alert");
+  const [dialogTitle, setDialogTitle] = useState<string>("Error");
+  const [dialogMessage, setDialogMessage] = useState<string>("");
+
+  const resetDialogText = () => {
+    setDialogTitle("Error");
+    setDialogType("alert");
+    setDialogMessage("");
+  };
 
   return (
     <UserContext.Provider
       value={{
-        userRole,
-        setUserRole,
-        hasMounted,
-        setHasMounted,
+        openDialog,
+        setOpenDialog,
+        dialogType,
+        setDialogType,
+        dialogTitle,
+        setDialogTitle,
+        resetDialogText,
+        dialogMessage,
+        setDialogMessage,
       }}
     >
       {children}

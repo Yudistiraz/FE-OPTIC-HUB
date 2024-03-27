@@ -7,6 +7,7 @@ import AuthContext from "@/components/providers/SessionProvider";
 import { getServerSession } from "next-auth";
 import TanstackProvider from "@/components/providers/TanstackProvider";
 import { UserProvider } from "@/context/User";
+import { ScreenSizeProvider } from "@/context/MediaQuery";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -30,7 +31,9 @@ export default async function RootLayout({
         <AuthContext session={session}>
           <TanstackProvider>
             <UserProvider>
-              <ThemeProvider theme={theme}>{children}</ThemeProvider>
+              <ScreenSizeProvider>
+                <ThemeProvider theme={theme}>{children}</ThemeProvider>
+              </ScreenSizeProvider>
             </UserProvider>
           </TanstackProvider>
         </AuthContext>

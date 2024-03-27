@@ -2,11 +2,12 @@
 import { Divider, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ReactNode, useEffect, useMemo } from "react";
+import { Fragment, ReactNode, useEffect, useMemo } from "react";
 
 import ImageLoader from "@/components/ui/ImageLoader";
 import { OWNER_SITEMAPS, STAFF_SITEMAPS } from "@/utils/constants";
-import { useUserState } from "@/context/User";
+import useMounted from "@/hooks/mounted";
+import { isSideBarActive } from "@/utils/function";
 
 interface MenuProps {
   name?: string;
@@ -23,7 +24,7 @@ function SidebarMenu() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { hasMounted } = useUserState();
+  const hasMounted = useMounted();
 
   const { data: session } = useSession();
 
@@ -34,7 +35,6 @@ function SidebarMenu() {
   };
 
   const NavItem: React.FC<MenuProps> = ({ children, path }) => {
-    const isActive = pathname === path;
     return <Typography className="tw-text-white">{children}</Typography>;
   };
 
@@ -42,7 +42,7 @@ function SidebarMenu() {
     menus,
   }: NavigationMenuProps) => {
     return menus.map((item, index) => {
-      const isActive = pathname === item.path;
+      const isActive = isSideBarActive(pathname, item.path);
       if (isActive) {
         return (
           <div
@@ -102,10 +102,10 @@ function SidebarMenu() {
   };
 
   return (
-    <div className="tw-w-full">
-      logo
+    <Fragment>
       {hasMounted && (
-        <>
+        <div className="tw-w-full">
+          logo
           <NavigationMenu
             menus={role === "staff" ? OWNER_SITEMAPS : STAFF_SITEMAPS}
           />
@@ -140,9 +140,9 @@ function SidebarMenu() {
               </Typography>
             </NavItem>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </Fragment>
   );
 }
 

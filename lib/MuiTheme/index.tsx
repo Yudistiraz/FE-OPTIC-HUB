@@ -76,6 +76,7 @@ declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     primary: true;
     secondary: true;
+    redButton: true;
   }
 }
 
@@ -134,11 +135,11 @@ export const theme = createTheme({
             opacity: 1,
             transition: "0.3s",
             ":hover": {
-              backgroundColor: "#1A5FFF !important",
+              backgroundColor: "#1A45AA !important",
               color: "#fff",
             },
             ":disabled": {
-              backgroundColor: "#1A5FFF !important",
+              backgroundColor: "#1A45AA !important",
               color: "#fff",
             },
           },
@@ -180,6 +181,26 @@ export const theme = createTheme({
             ":disabled": {
               borderColor: "#A0A5AB",
               color: "black",
+            },
+          },
+        },
+        {
+          props: { variant: "redButton" },
+          style: {
+            backgroundColor: "#FF4242 !important",
+            color: "#fff",
+            width: "100%",
+            height: "48px",
+            boxShadow: "none",
+            opacity: 1,
+            transition: "0.3s",
+            ":hover": {
+              backgroundColor: "#E43030 !important",
+              color: "#fff",
+            },
+            ":disabled": {
+              backgroundColor: "#E43030 !important",
+              color: "#fff",
             },
           },
         },
@@ -268,6 +289,18 @@ export const theme = createTheme({
         root: {
           "& .MuiBreadcrumbs-ol": {
             gap: "0.5rem",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          // Customize the root style of outlined TextField
+          borderRadius: "0.5rem",
+          "& .Mui-disabled": {
+            WebkitTextFillColor: "#000000 !important",
+            backgroundColor: "#E3E3E3 !important",
           },
         },
       },

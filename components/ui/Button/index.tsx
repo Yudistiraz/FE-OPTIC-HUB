@@ -8,7 +8,8 @@ type CustomButtonVariant =
   | "secondary"
   | "outlined"
   | "contained"
-  | "text";
+  | "text"
+  | "redButton";
 
 interface CustomButtonProps {
   children: ReactNode;
