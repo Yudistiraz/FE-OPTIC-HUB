@@ -12,6 +12,9 @@ import CustomDropdown from "../ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "../ui/Switch";
 import { TEmployee } from "@/utils/models";
+import { useUserState } from "@/context/User";
+import CustomDialog from "../ui/Dialog";
+import ConfirmationDialog from "../features/ConfirmationDialog";
 
 interface EmployeeFormProps {
   isEdit?: boolean;
@@ -19,6 +22,30 @@ interface EmployeeFormProps {
 }
 
 const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
+  const {
+    openDialog,
+    setOpenDialog,
+    dialogMessage,
+    dialogTitle,
+    resetDialogText,
+    setDialogMessage,
+    setDialogTitle,
+  } = useUserState();
+
+  const onPopUpCancel = () => {
+    setOpenDialog(false);
+  };
+
+  const onPopUpApply = () => {
+    console.log(data?.id);
+  };
+
+  const onDeleteClick = () => {
+    resetDialogText();
+    setDialogTitle(`Are you sure you want to Delete ${data?.name} Employee?`);
+    setOpenDialog(true);
+  };
+
   const formik = useCustomFormik({
     initialValues: {
       id: data?.id || "",
@@ -150,13 +177,29 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
               Cancel
             </CustomButton>
             {isEdit && (
-              <CustomButton className="tw-w-1/4" variant="redButton">
+              <CustomButton
+                className="tw-w-1/4"
+                variant="redButton"
+                onClick={onDeleteClick}
+              >
                 Delete
               </CustomButton>
             )}
           </div>
         </FormLayout>
       </form>
+
+      <CustomDialog open={openDialog} independent maxWidth="xs">
+        <ConfirmationDialog
+          title={dialogTitle}
+          description={dialogMessage}
+          applyText={"YES"}
+          cancelText={"NO"}
+          type={"confirmation"}
+          onCancel={onPopUpCancel}
+          onApply={onPopUpApply}
+        />
+      </CustomDialog>
     </div>
   );
 };
