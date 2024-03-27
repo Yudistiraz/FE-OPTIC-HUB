@@ -4,6 +4,14 @@ export function gethelperText(isError: boolean, message: string) {
   else return "";
 }
 
+// const isActiveSidebar = (pathname: string, path) => {
+//   return pathname.startsWith(path);
+// };
+
+export function isSideBarActive(pathname: string, path: string): boolean {
+  return pathname === path || pathname.startsWith(path + "/");
+}
+
 export function checkDateValidity(d: Dayjs) {
   return dayjs(d).isValid();
 }

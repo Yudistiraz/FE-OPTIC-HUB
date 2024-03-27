@@ -7,6 +7,7 @@ import { Fragment, ReactNode, useEffect, useMemo } from "react";
 import ImageLoader from "@/components/ui/ImageLoader";
 import { OWNER_SITEMAPS, STAFF_SITEMAPS } from "@/utils/constants";
 import useMounted from "@/hooks/mounted";
+import { isSideBarActive } from "@/utils/function";
 
 interface MenuProps {
   name?: string;
@@ -41,7 +42,7 @@ function SidebarMenu() {
     menus,
   }: NavigationMenuProps) => {
     return menus.map((item, index) => {
-      const isActive = pathname === item.path;
+      const isActive = isSideBarActive(pathname, item.path);
       if (isActive) {
         return (
           <div
