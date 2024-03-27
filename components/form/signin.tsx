@@ -7,42 +7,49 @@ import CustomButton from "../ui/Button";
 import FormLayout from "../ui/FormLayout";
 import { gethelperText } from "@/utils/function";
 import { signIn } from "next-auth/react";
+import { adminSignIn } from "@/services/admin/v1/auth";
+import { useMutation } from "react-query";
+import { AxiosError } from "axios";
 // import { useMutation } from "react-query";
 // import { adminSignIn } from "@/services/admin/v1/auth";
 // import { AxiosError } from "axios";
 
 const Signinform = () => {
-  // const signInMutation = useMutation({
-  //   mutationFn: adminSignIn,
-  //   onSuccess: async (data) => {
-  //     const admin = data?.data?.data || {};
+  const signInMutation = useMutation({
+    mutationFn: adminSignIn,
+    onSuccess: async (data) => {
+      console.log(data);
 
-  //     await signIn("credentials", {
-  //       id: admin?.admin?.id || "",
-  //       name: admin?.admin?.name || "",
-  //       role: admin?.admin?.role || "",
-  //       token: admin?.token || "",
-  //       redirect: true,
-  //       callbackUrl: "/",
-  //     });
-  //   },
-  //   onError: (error) => {
-  //     if (error instanceof AxiosError) {
-  //       const errorResponse = error?.response?.data || {};
-  //       console.log(errorResponse);
-  //     }
-  //   },
-  // });
+      // const admin = data?.data?.data || {};
+
+      // await signIn("credentials", {
+      //   id: admin?.admin?.id || "",
+      //   name: admin?.admin?.name || "",
+      //   role: admin?.admin?.role || "",
+      //   token: admin?.token || "",
+      //   redirect: true,
+      //   callbackUrl: "/",
+      // });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {};
+        console.log(errorResponse);
+      }
+    },
+  });
 
   const formik = useCustomFormik({
     initialValues: {
+      name: "fransiskus",
       email: "",
       password: "",
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       console.log(values);
-      // signInMutation.mutate({ ...values });
+      //  signInMutation.mutate({ ...values });
+
       await signIn("credentials", {
         id: "123456",
         name: "yudis",
