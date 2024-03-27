@@ -11,21 +11,24 @@ import CustomDatePicker from "../ui/DatePicker";
 import CustomDropdown from "../ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "../ui/Switch";
+import { TEmployee } from "@/utils/models";
 
 interface EmployeeFormProps {
   isEdit?: boolean;
+  data?: TEmployee | null;
 }
 
-const EmployeeForm = ({ isEdit = false }: EmployeeFormProps) => {
+const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
   const formik = useCustomFormik({
     initialValues: {
-      name: "",
-      dob: "",
-      phone_number: "",
-      email: "",
-      password: "",
-      role: "staff",
-      status: true,
+      id: data?.id || "",
+      name: data?.name || "",
+      dob: data?.dob || "",
+      phoneNumber: data?.phoneNumber || "",
+      email: data?.email || "",
+      password: data?.password || "",
+      role: data?.role || "staff",
+      status: data?.status || true,
       countryCode: "+62",
     },
     validationSchema: addEmployeeSchema,
@@ -38,6 +41,11 @@ const EmployeeForm = ({ isEdit = false }: EmployeeFormProps) => {
     <div>
       <form onSubmit={formik.handleSubmit} className="!tw-w-1/2">
         <FormLayout>
+          <CustomTextField
+            label="ID"
+            disabled
+            {...formik.getFieldProps("id")}
+          />
           <CustomTextField
             label="Name"
             placeholder="Input Name"
@@ -74,11 +82,11 @@ const EmployeeForm = ({ isEdit = false }: EmployeeFormProps) => {
               />
             }
             helperText={gethelperText(
-              formik.touched.phone_number as boolean,
-              formik.errors.phone_number as string
+              formik.touched.phoneNumber as boolean,
+              formik.errors.phoneNumber as string
             )}
-            error={formik.touched.phone_number && !!formik.errors.phone_number}
-            {...formik.getFieldProps("phone_number")}
+            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
+            {...formik.getFieldProps("phoneNumber")}
           />
 
           <CustomTextField
@@ -129,17 +137,23 @@ const EmployeeForm = ({ isEdit = false }: EmployeeFormProps) => {
                 onChange={(value) => {
                   formik.setFieldValue("status", value);
                 }}
+                value={formik.values.status}
               />
             </Fragment>
           )}
 
           <div className="tw-flex tw-gap-4 tw-w-full">
             <CustomButton type="submit" className="tw-w-1/4">
-              Add
+              {isEdit ? "Update" : "Add"}
             </CustomButton>
             <CustomButton className="tw-w-1/4" variant="secondary">
               Cancel
             </CustomButton>
+            {isEdit && (
+              <CustomButton className="tw-w-1/4" variant="redButton">
+                Delete
+              </CustomButton>
+            )}
           </div>
         </FormLayout>
       </form>
