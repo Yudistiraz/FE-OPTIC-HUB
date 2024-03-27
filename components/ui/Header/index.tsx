@@ -4,13 +4,13 @@ import { signOut, useSession } from "next-auth/react";
 import { Fragment, useState } from "react";
 
 import CustomContainer from "@/components/ui/Container";
-import { useUserState } from "@/context/User";
+import useMounted from "@/hooks/mounted";
 
 const drawerWidth = 270;
 
 const Header = () => {
   const session = useSession();
-  const { hasMounted } = useUserState();
+  const hasMounted = useMounted();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
