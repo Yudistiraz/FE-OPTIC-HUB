@@ -28,7 +28,6 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
     dialogMessage,
     dialogTitle,
     resetDialogText,
-    setDialogMessage,
     setDialogTitle,
   } = useUserState();
 
