@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 
-import { api, ADMIN_V1 } from "@/services/config";
+import { api } from "@/services/config";
 
 interface ParamInterface {
   [key: string]: number | string | unknown | undefined | null;
@@ -11,7 +11,7 @@ export const adminSignIn = async (
 ): Promise<AxiosResponse> => {
   const fetcher = await api();
 
-  return fetcher.post(ADMIN_V1 + "/auth/login", {
+  return fetcher.post("/auth/login", {
     ...data,
   });
 };
