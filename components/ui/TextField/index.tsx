@@ -25,6 +25,7 @@ interface TextFieldProps {
   disableUnderline?: boolean;
   className?: string;
   sx?: SxProps;
+  type?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Fix the function type
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   // onBlur?: () => void
@@ -48,6 +49,7 @@ function CustomTextField({
   variant = "outlined",
   disableUnderline = false,
   className = "",
+  type = "text",
   // onBlur,
   ...rest
 }: TextFieldProps) {
@@ -109,7 +111,7 @@ function CustomTextField({
         className={className}
         variant={variant}
         // type={type}
-        type={hidePassword ? "password" : "text"}
+        type={hidePassword ? "password" : type}
         // label={label}
         name={name}
         value={value}
