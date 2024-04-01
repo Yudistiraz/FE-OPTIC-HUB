@@ -47,7 +47,7 @@ export const addEmployeeSchema = Yup.object({
 export const addProductScheme = Yup.object({
   name: Yup.string().required("Proudct Name Required"),
   categoryID: Yup.string().required("Product Category Required"),
-  image_url: Yup.string().required("Product Image Required"),
-  price: Yup.number().required("Proudct Price Required"),
+  // image_url: Yup.string().required("Product Image Required"),
+  price: Yup.string().required("Proudct Price Required"),
   quantity: Yup.number().required("Proudct Stock Required"),
 });
