@@ -53,13 +53,33 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
       price: data?.price || "",
       quantity: data?.quantity || "",
       status: data?.status || true,
-      image_url: data?.image_url || "",
+      imageUrl: data?.imageUrl || "",
+      newImage: null,
     },
     validationSchema: addProductScheme,
     onSubmit: async (values) => {
       console.log(values);
     },
   });
+
+  const onImageChange = (image: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const url = reader.result as string;
+      formik.setFieldValue("imageUrl", url);
+    };
+    reader.readAsDataURL(image);
+    formik.setFieldValue("newImage", image);
+  };
+
+  const onImageClear = () => {
+    if (isEdit) {
+      formik.setFieldValue("imageUrl", data?.imageUrl);
+    } else {
+      formik.setFieldValue("imageUrl", null);
+    }
+    formik.setFieldValue("newImage", null);
+  };
 
   return (
     <div>
@@ -73,7 +93,14 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             />
           )}
 
-          <ImageUpload />
+          <ImageUpload
+            value={formik?.values?.name}
+            imageUrl={formik?.values?.imageUrl}
+            onImageChange={onImageChange}
+            onImageClear={onImageClear}
+            newImage={formik?.values?.newImage}
+            onEdit={isEdit ? true : false}
+          />
 
           <CustomTextField
             label="Product Name"
@@ -130,7 +157,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
           />
           {isEdit && (
             <CustomSwitch
-              label="EMPLOYEE STATUS"
+              label="PRODUCT STATUS"
               name="Status"
               onChange={(value) => {
                 formik.setFieldValue("status", value);
