@@ -11,11 +11,10 @@ export type TEmployee = {
 
 export type TProduct = {
   id: string;
-  product: string;
   categoryID: string;
   name: string;
   price: number;
   status: boolean;
   quantity: number;
-  image_url: string;
+  imageUrl: string;
 };
