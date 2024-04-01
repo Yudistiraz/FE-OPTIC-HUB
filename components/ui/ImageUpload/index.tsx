@@ -1,7 +1,7 @@
 import { Add } from "@mui/icons-material";
 import React, { Fragment } from "react";
 import ImageLoader from "../ImageLoader";
-import DeleteButton from "@/components/features/DeleteButton";
+import ImageEditButtonProps from "@/components/features/ImageEditButton";
 
 interface ImageUploadProps {
   imageUrl?: string;
@@ -61,7 +61,28 @@ const ImageUpload = ({
       {imageUrl && (
         <Fragment>
           <ImageLoader src={imageUrl} layout={"fill"} />
-          <DeleteButton onDelete={onImageClear} />
+          {onEdit ? (
+            <Fragment>
+              {!newImage ? (
+                <label htmlFor="avatar">
+                  <ImageEditButtonProps
+                    onClick={onImageClear}
+                    type={!newImage && onEdit ? "edit" : "delete"}
+                  />
+                </label>
+              ) : (
+                <ImageEditButtonProps onClick={onImageClear} />
+              )}
+            </Fragment>
+          ) : (
+            <ImageEditButtonProps onClick={onImageClear} />
+          )}
+          {/* {onEdit && (
+            <ImageEditButtonProps
+              onClick={onImageClear}
+              type={!newImage && onEdit ? "edit" : "delete"}
+            />
+          )} */}
         </Fragment>
       )}
 
