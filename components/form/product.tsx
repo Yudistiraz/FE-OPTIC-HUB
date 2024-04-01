@@ -1,7 +1,7 @@
 import { useCustomFormik } from "@/hooks/formik";
-import { addEmployeeSchema, addProductScheme } from "@/utils/yup";
+import { addProductScheme } from "@/utils/yup";
 
-import React, { Fragment } from "react";
+import React from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
@@ -13,6 +13,8 @@ import { TProduct } from "@/utils/models";
 import { useUserState } from "@/context/User";
 import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
+import { NumericFormat } from "react-number-format";
+import ImageUpload from "@/components/ui/ImageUpload";
 
 interface ProductFormProps {
   isEdit?: boolean;
@@ -48,8 +50,8 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
       id: data?.id || "",
       name: data?.name || "",
       categoryID: data?.categoryID || "",
-      price: data?.price || 0,
-      quantity: data?.quantity || 0,
+      price: data?.price || "",
+      quantity: data?.quantity || "",
       status: data?.status || true,
       image_url: data?.image_url || "",
     },
@@ -70,6 +72,9 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
               {...formik.getFieldProps("id")}
             />
           )}
+
+          <ImageUpload />
+
           <CustomTextField
             label="Product Name"
             placeholder="Input Product Name"
@@ -81,10 +86,13 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             {...formik.getFieldProps("name")}
           />
 
-          <CustomTextField
+          <NumericFormat
+            thousandSeparator=","
+            customInput={CustomTextField}
             label="Product Price"
-            type="number"
+            type="text"
             placeholder="Input Product Price"
+            startAdornment={<div className="">Rp. </div>}
             helperText={gethelperText(
               formik.touched.price as boolean,
               formik.errors.price as string
@@ -104,7 +112,6 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             error={formik.touched.quantity && !!formik.errors.quantity}
             {...formik.getFieldProps("quantity")}
           />
-
           <CustomDropdown
             fullWidth
             label="PRODUCT CATEGORY"
@@ -113,7 +120,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             value={formik.values.categoryID}
             placeholder="Choose Product Category"
             onChange={(e) => {
-              formik.setFieldValue("role", e.value);
+              formik.setFieldValue("categoryID", e.value);
             }}
             helperText={gethelperText(
               formik.touched.categoryID as boolean,
@@ -121,7 +128,6 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             )}
             error={formik.touched.categoryID && !!formik.errors.categoryID}
           />
-
           {isEdit && (
             <CustomSwitch
               label="EMPLOYEE STATUS"
@@ -132,7 +138,6 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
               value={formik.values.status}
             />
           )}
-
           <div className="tw-flex tw-gap-4 tw-w-full">
             <CustomButton type="submit" className="tw-w-1/4">
               {isEdit ? "Update" : "Add"}
