@@ -8,3 +8,13 @@ export type TEmployee = {
   status: boolean;
   role: string;
 };
+
+export type TProduct = {
+  id: string;
+  categoryID: string;
+  name: string;
+  price: number;
+  status: boolean;
+  quantity: number;
+  imageUrl: string;
+};

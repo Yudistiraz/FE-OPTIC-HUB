@@ -260,3 +260,106 @@ export const DUMMY_EMPLOYEE = [
     role: "owner",
   },
 ];
+
+export const DUMMY_PRODUCT = [
+  {
+    id: "1",
+    categoryID: "CT2",
+    name: "SuperPhone X",
+    price: 799,
+    status: true,
+    quantity: 50,
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/en/a/a6/Sunny_Day_Real_Estate_-_Diary.jpg",
+  },
+
+  {
+    id: "2",
+    categoryID: "CT1",
+    name: "UltraBook Y",
+    price: 1299,
+    status: true,
+    quantity: 20,
+    imageUrl: "https://example.com/laptop_y.jpg",
+  },
+
+  {
+    id: "3",
+    categoryID: "CT3",
+    name: "Noise-Canceling Z",
+    price: 199,
+    status: true,
+    quantity: 100,
+    imageUrl: "https://example.com/headphones_z.jpg",
+  },
+
+  {
+    id: "4",
+    categoryID: "CT4",
+    name: "FitnessTracker W",
+    price: 149,
+    status: true,
+    quantity: 75,
+    imageUrl: "https://example.com/smartwatch_w.jpg",
+  },
+
+  {
+    id: "5",
+    categoryID: "CT2",
+    name: "Professional Camera A",
+    price: 1499,
+    status: true,
+    quantity: 30,
+    imageUrl: "https://example.com/camera_a.jpg",
+  },
+
+  {
+    id: "6",
+    categoryID: "CT3",
+    name: "Hi-Fi Speaker B",
+    price: 249,
+    status: true,
+    quantity: 60,
+    imageUrl: "https://example.com/speaker_b.jpg",
+  },
+
+  {
+    id: "7",
+    categoryID: "CT1",
+    name: "SuperTablet C",
+    price: 599,
+    status: true,
+    quantity: 25,
+    imageUrl: "https://example.com/tablet_c.jpg",
+  },
+
+  {
+    id: "8",
+    categoryID: "CT4",
+    name: "Next-Gen Console D",
+    price: 499,
+    status: true,
+    quantity: 15,
+    imageUrl: "https://example.com/console_d.jpg",
+  },
+
+  {
+    id: "9",
+    categoryID: "CT2",
+    name: "High-Speed Printer E",
+    price: 299,
+    status: true,
+    quantity: 40,
+    imageUrl: "https://example.com/printer_e.jpg",
+  },
+
+  {
+    id: "10",
+    categoryID: "CT3",
+    name: "Terabyte Storage F",
+    price: 129,
+    status: true,
+    quantity: 80,
+    imageUrl: "https://example.com/harddrive_f.jpg",
+  },
+];
