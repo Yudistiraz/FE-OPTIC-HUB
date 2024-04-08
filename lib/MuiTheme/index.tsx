@@ -87,6 +87,12 @@ declare module "@mui/material/Chip" {
   }
 }
 
+declare module "@mui/material/Paper" {
+  interface PaperPropsVariantOverrides {
+    blue: true;
+  }
+}
+
 export const theme = createTheme({
   breakpoints: {
     values: {
@@ -98,6 +104,16 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      variants: [
+        {
+          props: { variant: "blue" },
+          style: {
+            backgroundColor: "#457DFF",
+          },
+        },
+      ],
+    },
     MuiAvatar: {
       styleOverrides: {
         root: {
@@ -327,6 +343,7 @@ export const theme = createTheme({
     },
     // Add more custom colors as needed
   },
+
   //Added New Variants and Edited Current Variants for Texts Variants
   //----------------------------------------------------------------------
   typography: {
