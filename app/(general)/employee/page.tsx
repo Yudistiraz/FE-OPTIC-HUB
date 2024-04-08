@@ -14,6 +14,10 @@ import { Delete } from "@mui/icons-material";
 import CustomBadge from "@/components/ui/CustomBadge";
 import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
+import { useFilterState } from "@/hooks/useQuery";
+import { useQuery } from "react-query";
+import { getAllEmployee } from "@/services/admin/v1/employee";
+import { checkPageValidity } from "@/utils/function";
 
 export default function Employee() {
   const router = useRouter();
@@ -25,6 +29,18 @@ export default function Employee() {
     resetDialogText,
     setDialogTitle,
   } = useUserState();
+
+  const { page, setPage, search, setSearch } = useFilterState();
+
+  const employeeQuery = useQuery({
+    queryKey: ["employee", search, page],
+    queryFn: async () => {
+      const res = await getAllEmployee();
+      console.log(res.data);
+
+      return res.data;
+    },
+  });
 
   const onDeleteClick = (name: string) => {
     resetDialogText();
@@ -68,7 +84,7 @@ export default function Employee() {
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return `+62 ${data?.row?.phone}`;
+        return data?.row?.phone_number;
       },
       readonly: true,
     },
@@ -82,7 +98,7 @@ export default function Employee() {
           <Fragment>
             <div className="tw-flex tw-items-center tw-h-full">
               <CustomBadge
-                status={data?.row?.role === "owner" ? true : false}
+                status={data?.row?.role === "admin" ? true : false}
                 trueLabel="Owner"
                 falseLabel="Staff"
               />
@@ -184,7 +200,7 @@ export default function Employee() {
 
       <CustomDataTable
         columns={employeeColumn}
-        rows={DUMMY_EMPLOYEE}
+        rows={employeeQuery?.data}
         limit={10}
         disableColumnResize={true}
         disableColumnMenu={true}
@@ -199,6 +215,7 @@ export default function Employee() {
         }}
         page={1}
         totalPage={10}
+        getRowId={(row: any) => row?.name}
       />
 
       <CustomDialog open={openDialog} independent maxWidth="xs">
