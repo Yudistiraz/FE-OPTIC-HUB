@@ -10,26 +10,21 @@ import { signIn } from "next-auth/react";
 import { adminSignIn } from "@/services/admin/v1/auth";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
-// import { useMutation } from "react-query";
-// import { adminSignIn } from "@/services/admin/v1/auth";
-// import { AxiosError } from "axios";
 
 const Signinform = () => {
   const signInMutation = useMutation({
     mutationFn: adminSignIn,
     onSuccess: async (data) => {
-      console.log(data);
+      const admin = data?.data?.data || {};
 
-      // const admin = data?.data?.data || {};
-
-      // await signIn("credentials", {
-      //   id: admin?.admin?.id || "",
-      //   name: admin?.admin?.name || "",
-      //   role: admin?.admin?.role || "",
-      //   token: admin?.token || "",
-      //   redirect: true,
-      //   callbackUrl: "/",
-      // });
+      await signIn("credentials", {
+        id: admin?.id || "",
+        name: admin?.name || "",
+        role: admin?.role || "",
+        token: data?.data?.access_token || "",
+        redirect: true,
+        callbackUrl: "/",
+      });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -47,18 +42,18 @@ const Signinform = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      //  signInMutation.mutate({ ...values });
+      // console.log(values);
+      signInMutation.mutate({ ...values });
 
-      await signIn("credentials", {
-        id: "123456",
-        name: "yudis",
-        role: "staff",
-        token: "asdadasdasas",
-        email: "aaaa@example.com",
-        redirect: true,
-        callbackUrl: "/",
-      });
+      // await signIn("credentials", {
+      //   id: "123456",
+      //   name: "yudis",
+      //   role: "staff",
+      //   token: "asdadasdasas",
+      //   email: "aaaa@example.com",
+      //   redirect: true,
+      //   callbackUrl: "/",
+      // });
     },
   });
 
@@ -84,6 +79,7 @@ const Signinform = () => {
             label="Password"
             placeholder="Password"
             password
+            type="text"
             helperText={gethelperText(
               formik.touched.password as boolean,
               formik.errors.password as string
@@ -92,7 +88,11 @@ const Signinform = () => {
             {...formik.getFieldProps("password")}
           />
 
-          <CustomButton type="submit" className="!tw-mt-4">
+          <CustomButton
+            type="submit"
+            className="!tw-mt-4"
+            disabled={signInMutation.isLoading}
+          >
             Sign In
           </CustomButton>
         </FormLayout>
