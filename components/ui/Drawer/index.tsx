@@ -1,3 +1,4 @@
+"use client";
 import { Drawer, Typography } from "@mui/material";
 import { ReactNode } from "react";
 
@@ -50,7 +51,7 @@ const CustomDrawer = ({
       anchor={anchor}
       open={open}
       onClose={() => onClose?.()}
-      PaperProps={{ style: paperStyle }} // Add the PaperProps with custom style
+      PaperProps={{ style: paperStyle, variant: "blue" }} // Add the PaperProps with custom style
     >
       <ContainerWrapper className={`tw-h-full ${containerClass}`}>
         <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
