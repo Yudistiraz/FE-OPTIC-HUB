@@ -22,3 +22,11 @@ export function findDataById<T extends { id: string }>(
 ): T | undefined {
   return dataArray.find((item) => item.id === id);
 }
+
+export function checkPageValidity(page: number) {
+  if (page <= 0 || page === null || page === undefined) {
+    return 1;
+  } else {
+    return page;
+  }
+}
