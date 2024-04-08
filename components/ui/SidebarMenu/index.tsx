@@ -2,11 +2,11 @@
 import { Divider, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Fragment, ReactNode, useEffect, useMemo } from "react";
+import { ReactNode } from "react";
 
 import ImageLoader from "@/components/ui/ImageLoader";
 import { OWNER_SITEMAPS, STAFF_SITEMAPS } from "@/utils/constants";
-import useMounted from "@/hooks/mounted";
+
 import { isSideBarActive } from "@/utils/function";
 
 interface MenuProps {
@@ -23,8 +23,6 @@ interface NavigationMenuProps {
 function SidebarMenu() {
   const router = useRouter();
   const pathname = usePathname();
-
-  const hasMounted = useMounted();
 
   const { data: session } = useSession();
 
@@ -102,47 +100,43 @@ function SidebarMenu() {
   };
 
   return (
-    <Fragment>
-      {hasMounted && (
-        <div className="tw-w-full">
-          logo
-          <NavigationMenu
-            menus={role === "staff" ? OWNER_SITEMAPS : STAFF_SITEMAPS}
+    <div className="tw-w-full">
+      logo
+      <NavigationMenu
+        menus={role === "staff" ? OWNER_SITEMAPS : STAFF_SITEMAPS}
+      />
+      <Divider
+        className="tw-my-4"
+        sx={{
+          borderBottomWidth: 3,
+          bgcolor: "white",
+          borderColor: "white",
+        }}
+      />
+      <div
+        className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-group tw-bg-primary-400 tw-rounded-md tw-flex tw-gap-4 tw-items-center hover:tw-bg-primary-600 tw-duration-75"
+        onClick={() => onMenuClick("/transactions/add")}
+      >
+        <div className="tw-w-6 tw-h-6">
+          <ImageLoader
+            isFlat
+            priority
+            src={`/assets/navbar/add-transaction.svg`}
+            alt="add-transaction"
           />
-          <Divider
-            className="tw-my-4"
-            sx={{
-              borderBottomWidth: 3,
-              bgcolor: "white",
-              borderColor: "white",
-            }}
-          />
-          <div
-            className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-group tw-bg-primary-400 tw-rounded-md tw-flex tw-gap-4 tw-items-center hover:tw-bg-primary-600 tw-duration-75"
-            onClick={() => onMenuClick("/transactions/add")}
-          >
-            <div className="tw-w-6 tw-h-6">
-              <ImageLoader
-                isFlat
-                priority
-                src={`/assets/navbar/add-transaction.svg`}
-                alt="add-transaction"
-              />
-            </div>
-
-            <NavItem path={"/transactions/add"}>
-              <Typography
-                variant="subtitle2"
-                component="span"
-                className="tw-text-white group-hover:tw-mx-4 tw-duration-100"
-              >
-                Buat Transaksi
-              </Typography>
-            </NavItem>
-          </div>
         </div>
-      )}
-    </Fragment>
+
+        <NavItem path={"/transactions/add"}>
+          <Typography
+            variant="subtitle2"
+            component="span"
+            className="tw-text-white group-hover:tw-mx-4 tw-duration-100"
+          >
+            Buat Transaksi
+          </Typography>
+        </NavItem>
+      </div>
+    </div>
   );
 }
 
