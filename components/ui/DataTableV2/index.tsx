@@ -34,21 +34,21 @@ const CustomDataTable = (props: any) => {
             params.indexRelativeToCurrentPage % 2 === 0 ? "" : "tw-bg-[#F6F6F6]"
           }
           sx={{
-            border: 1,
             ".MuiDataGrid-cell:focus": {
               outline: "none",
             },
             "& .MuiDataGrid-row:hover": {
               cursor: "pointer",
             },
+            height: "100%",
           }}
-          autoHeight={true}
+          // autoHeight={true}
           disableExtendRowFullWidth={true}
         />
       </div>
 
       {!hidePagination && (
-        <div className="tw-mt-6">
+        <div className="tw-mt-2">
           <MuiPagination
             className="tw-flex tw-items-center"
             onChange={(_e, page) => {
