@@ -50,7 +50,7 @@ const Header = () => {
                 className="tw-capitalize"
                 color="#252525"
               >
-                Hi, Admin!
+                Hi, {session?.data?.user?.name || ""}
               </Typography>
             </div>
           )}
