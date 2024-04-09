@@ -13,7 +13,22 @@ export const getAllEmployee = async (params?: ParamInterface) => {
 
 export const addEmployee = async (data: any) => {
   const fetcher = await api();
-  return fetcher.post("/user/add-user", data.data);
+  return fetcher.post("/user", data.data);
+};
+
+export const getEmployeeById = async (id: string) => {
+  const fetcher = await api();
+  return fetcher.get("/user/" + id);
+};
+
+export const updateEmployee = async (data: any) => {
+  const fetcher = await api();
+  return fetcher.patch("/user/" + data.id, data.data);
+};
+
+export const deleteEmployee = async (id: string) => {
+  const fetcher = await api();
+  return fetcher.delete("/user/" + id);
 };
 
 // export const getAdminByID = async (id: string) => {
