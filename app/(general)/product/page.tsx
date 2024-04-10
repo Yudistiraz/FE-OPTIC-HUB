@@ -14,6 +14,14 @@ import { Delete } from "@mui/icons-material";
 import CustomBadge from "@/components/ui/CustomBadge";
 import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
+import { useQuery } from "react-query";
+import { useFilterState } from "@/hooks/useQuery";
+import { getAllProduct } from "@/services/admin/v1/product";
+import { getAllProductCategory } from "@/services/admin/v1/productCategory";
+import {
+  convertDataToDropdownOptions,
+  getThousandSeparator,
+} from "@/utils/function";
 
 export default function Product() {
   const router = useRouter();
@@ -25,6 +33,24 @@ export default function Product() {
     resetDialogText,
     setDialogTitle,
   } = useUserState();
+
+  const { page, setPage, search, setSearch } = useFilterState();
+
+  const productsQuery = useQuery({
+    queryKey: ["products", search, page],
+    queryFn: async () => {
+      const res = await getAllProduct();
+      return res.data;
+    },
+  });
+
+  const productCategoryQuery = useQuery({
+    queryKey: ["productCategories"],
+    queryFn: async () => {
+      const res = await getAllProductCategory();
+      return res.data;
+    },
+  });
 
   const onDeleteClick = (name: string) => {
     resetDialogText();
@@ -55,7 +81,7 @@ export default function Product() {
     {
       field: "categoryID",
       headerName: "Category",
-      width: 350,
+      width: 250,
       sortable: false,
       renderCell: (data: any) => {
         return data?.row?.categoryID;
@@ -65,10 +91,10 @@ export default function Product() {
     {
       field: "price",
       headerName: "Price",
-      width: 150,
+      width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.price;
+        return `Rp. ${getThousandSeparator(data?.row?.price)}`;
       },
       readonly: true,
     },
@@ -156,10 +182,15 @@ export default function Product() {
             fullWidth
             label="FILTER BY CATEGORY"
             name="PurchaseOptions"
-            options={STATUS_OPTIONS}
+            options={convertDataToDropdownOptions(
+              productCategoryQuery.data,
+              "name",
+              "id"
+            )}
             value={""}
             placeholder="Filter by Role"
-            allOption="All Role"
+            allOption="All Category"
+            disabled={productCategoryQuery.isLoading}
             onChange={(e) => {
               console.log(e);
 
@@ -172,24 +203,26 @@ export default function Product() {
         </div>
       </div>
 
-      <CustomDataTable
-        columns={productColumn}
-        rows={DUMMY_PRODUCT}
-        limit={10}
-        disableColumnResize={true}
-        disableColumnMenu={true}
-        onRowClick={(item: any, data: any) => {
-          const cell = data.target.getAttribute("data-colindex");
-          if (cell < "5" && cell !== null) {
-            router.push(`/product/${item?.row?.id}`);
-          }
-        }}
-        onPageChange={(param: number) => {
-          //   setPage(param);
-        }}
-        page={1}
-        totalPage={10}
-      />
+      {!productsQuery.isLoading && !productCategoryQuery.isLoading && (
+        <CustomDataTable
+          columns={productColumn}
+          rows={productsQuery.data}
+          limit={10}
+          disableColumnResize={true}
+          disableColumnMenu={true}
+          onRowClick={(item: any, data: any) => {
+            const cell = data.target.getAttribute("data-colindex");
+            if (cell < "5" && cell !== null) {
+              router.push(`/product/${item?.row?.id}`);
+            }
+          }}
+          onPageChange={(param: number) => {
+            //   setPage(param);
+          }}
+          page={1}
+          totalPage={10}
+        />
+      )}
 
       <CustomDialog open={openDialog} independent maxWidth="xs">
         <ConfirmationDialog
