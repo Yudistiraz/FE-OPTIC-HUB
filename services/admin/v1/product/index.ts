@@ -11,10 +11,10 @@ export const getAllProduct = async (params?: ParamInterface) => {
   });
 };
 
-// export const addEmployee = async (data: any) => {
-//   const fetcher = await api();
-//   return fetcher.post("/user", data.data);
-// };
+export const addProduct = async (data: any) => {
+  const fetcher = await api();
+  return fetcher.post("/products/add-product", data.data);
+};
 
 // export const getEmployeeById = async (id: string) => {
 //   const fetcher = await api();
