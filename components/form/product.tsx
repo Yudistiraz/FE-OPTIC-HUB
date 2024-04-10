@@ -5,7 +5,11 @@ import React from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
-import { gethelperText } from "@/utils/function";
+import {
+  convertDataToDropdownOptions,
+  gethelperText,
+  removeThousandsSeparator,
+} from "@/utils/function";
 import CustomDropdown from "@/components/ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "@/components/ui/Switch";
@@ -15,6 +19,10 @@ import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
 import { NumericFormat } from "react-number-format";
 import ImageUpload from "@/components/ui/ImageUpload";
+import { useMutation, useQuery } from "react-query";
+import { addProduct } from "@/services/admin/v1/product";
+import { useRouter } from "next/navigation";
+import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 
 interface ProductFormProps {
   isEdit?: boolean;
@@ -30,6 +38,28 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     resetDialogText,
     setDialogTitle,
   } = useUserState();
+
+  const router = useRouter();
+
+  const productCategoryQuery = useQuery({
+    queryKey: ["productCategories"],
+    queryFn: async () => {
+      const res = await getAllProductCategory();
+      return res.data;
+    },
+  });
+
+  const productAddMutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
 
   const onPopUpCancel = () => {
     setOpenDialog(false);
@@ -49,7 +79,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     initialValues: {
       id: data?.id || "",
       name: data?.name || "",
-      categoryID: data?.categoryID || "",
+      categoryId: data?.categoryId || "",
       price: data?.price || "",
       quantity: data?.quantity || "",
       status: data?.status || true,
@@ -58,7 +88,18 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     },
     validationSchema: addProductScheme,
     onSubmit: async (values) => {
-      console.log(values);
+      const payload = {
+        name: values.name,
+        categoryId: values.categoryId,
+        price: removeThousandsSeparator(values.price),
+        quantity: values.quantity,
+        status: values.status,
+        image_url: values.imageUrl || "test.png",
+      };
+      if (isEdit) {
+      } else {
+        productAddMutation.mutate({ data: payload });
+      }
     },
   });
 
@@ -142,18 +183,23 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
           <CustomDropdown
             fullWidth
             label="PRODUCT CATEGORY"
-            name="categoryID"
-            options={EMPLOYEE_OPTIONS}
-            value={formik.values.categoryID}
+            name="categoryId"
+            options={convertDataToDropdownOptions(
+              productCategoryQuery.data,
+              "name",
+              "id"
+            )}
+            disabled={productCategoryQuery.isLoading}
+            value={formik.values.categoryId}
             placeholder="Choose Product Category"
             onChange={(e) => {
-              formik.setFieldValue("categoryID", e.value);
+              formik.setFieldValue("categoryId", e.value);
             }}
             helperText={gethelperText(
-              formik.touched.categoryID as boolean,
-              formik.errors.categoryID as string
+              formik.touched.categoryId as boolean,
+              formik.errors.categoryId as string
             )}
-            error={formik.touched.categoryID && !!formik.errors.categoryID}
+            error={formik.touched.categoryId && !!formik.errors.categoryId}
           />
           {isEdit && (
             <CustomSwitch
