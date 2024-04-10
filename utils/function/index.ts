@@ -40,6 +40,10 @@ export function getThousandSeparator(value: number) {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+export function removeThousandsSeparator(numberString: string): number {
+  return parseFloat(numberString.replace(/,/g, ""));
+}
+
 export function convertDataToDropdownOptions<T>(
   originalData: T[],
   labelField: keyof T,
