@@ -19,7 +19,7 @@ const CustomDataTable = (props: any) => {
   } = props;
   return (
     <>
-      <div style={{ height: height ? height : 580, width: "100%" }}>
+      <div style={{ width: "100%" }}>
         <DataGrid
           {...otherProps}
           loading={isLoading}
@@ -42,7 +42,7 @@ const CustomDataTable = (props: any) => {
             },
             height: "100%",
           }}
-          // autoHeight={true}
+          autoHeight={true}
           disableExtendRowFullWidth={true}
         />
       </div>
