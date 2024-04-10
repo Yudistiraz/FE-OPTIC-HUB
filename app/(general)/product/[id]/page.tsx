@@ -1,18 +1,25 @@
 "use client";
 import ProductForm from "@/components/form/product";
-import { DUMMY_PRODUCT } from "@/utils/constants";
-import { findDataById } from "@/utils/function";
-import { TProduct } from "@/utils/models";
+import { getProductById } from "@/services/admin/v1/product";
+
 import { Typography } from "@mui/material";
+import { useQuery } from "react-query";
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
-  const data: TProduct | undefined = findDataById(DUMMY_PRODUCT, params.id);
-  console.log(data);
+  const productDetailQuery = useQuery({
+    queryKey: ["product", params.id],
+    queryFn: async () => {
+      const res = await getProductById(params.id);
+      return res.data;
+    },
+  });
 
   return (
     <div className="tw-flex tw-flex-col tw-gap-6">
       <Typography variant="h2">Product : {params.id}</Typography>
-      <ProductForm isEdit data={data} />
+      {!productDetailQuery.isLoading && (
+        <ProductForm isEdit data={productDetailQuery.data} />
+      )}
     </div>
   );
 }
