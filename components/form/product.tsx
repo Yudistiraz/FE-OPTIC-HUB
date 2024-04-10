@@ -11,7 +11,6 @@ import {
   removeThousandsSeparator,
 } from "@/utils/function";
 import CustomDropdown from "@/components/ui/Select";
-import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "@/components/ui/Switch";
 import { TProduct } from "@/utils/models";
 import { useUserState } from "@/context/User";
@@ -20,7 +19,7 @@ import ConfirmationDialog from "@/components/features/ConfirmationDialog";
 import { NumericFormat } from "react-number-format";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { useMutation, useQuery } from "react-query";
-import { addProduct } from "@/services/admin/v1/product";
+import { addProduct, updateProduct } from "@/services/admin/v1/product";
 import { useRouter } from "next/navigation";
 import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 
@@ -61,6 +60,18 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     },
   });
 
+  const productUpdateMutation = useMutation({
+    mutationFn: updateProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
   const onPopUpCancel = () => {
     setOpenDialog(false);
   };
@@ -83,7 +94,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
       price: data?.price || "",
       quantity: data?.quantity || "",
       status: data?.status || true,
-      imageUrl: data?.imageUrl || "",
+      imageUrl: "",
       newImage: null,
     },
     validationSchema: addProductScheme,
@@ -96,7 +107,9 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
         status: values.status,
         image_url: values.imageUrl || "test.png",
       };
+
       if (isEdit) {
+        productUpdateMutation.mutate({ id: data?.id, data: payload });
       } else {
         productAddMutation.mutate({ data: payload });
       }
@@ -212,10 +225,25 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             />
           )}
           <div className="tw-flex tw-gap-4 tw-w-full">
-            <CustomButton type="submit" className="tw-w-1/4">
+            <CustomButton
+              type="submit"
+              className="tw-w-1/4"
+              disabled={
+                productUpdateMutation.isLoading || productAddMutation.isLoading
+              }
+            >
               {isEdit ? "Update" : "Add"}
             </CustomButton>
-            <CustomButton className="tw-w-1/4" variant="secondary">
+            <CustomButton
+              className="tw-w-1/4"
+              variant="secondary"
+              onClick={() => {
+                router.push("/product");
+              }}
+              disabled={
+                productUpdateMutation.isLoading || productAddMutation.isLoading
+              }
+            >
               Cancel
             </CustomButton>
             {isEdit && (
@@ -223,6 +251,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
                 className="tw-w-1/4"
                 variant="redButton"
                 onClick={onDeleteClick}
+                disabled={productUpdateMutation.isLoading}
               >
                 Delete
               </CustomButton>
