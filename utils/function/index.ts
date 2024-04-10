@@ -4,6 +4,11 @@ export function gethelperText(isError: boolean, message: string) {
   else return "";
 }
 
+type optionsDataType = {
+  label: string;
+  value: string;
+};
+
 // const isActiveSidebar = (pathname: string, path) => {
 //   return pathname.startsWith(path);
 // };
@@ -29,4 +34,19 @@ export function checkPageValidity(page: number) {
   } else {
     return page;
   }
+}
+
+export function getThousandSeparator(value: number) {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+export function convertDataToDropdownOptions<T>(
+  originalData: T[],
+  labelField: keyof T,
+  valueField: keyof T
+): optionsDataType[] {
+  return (originalData || []).map((item) => ({
+    label: String(item[labelField]),
+    value: String(item[valueField]),
+  }));
 }
