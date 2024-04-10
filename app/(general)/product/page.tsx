@@ -5,7 +5,6 @@ import CustomButton from "@/components/ui/Button";
 import CustomDataTable from "@/components/ui/DataTableV2";
 import CustomSearchbar from "@/components/ui/Searchbar";
 
-import { DUMMY_PRODUCT, STATUS_OPTIONS } from "@/utils/constants";
 import { IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useUserState } from "@/context/User";
@@ -14,9 +13,9 @@ import { Delete } from "@mui/icons-material";
 import CustomBadge from "@/components/ui/CustomBadge";
 import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useFilterState } from "@/hooks/useQuery";
-import { getAllProduct } from "@/services/admin/v1/product";
+import { deleteProduct, getAllProduct } from "@/services/admin/v1/product";
 import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 import {
   convertDataToDropdownOptions,
@@ -32,8 +31,9 @@ export default function Product() {
     dialogTitle,
     resetDialogText,
     setDialogTitle,
+    selectedId,
+    setSelectedId,
   } = useUserState();
-
   const { page, setPage, search, setSearch } = useFilterState();
 
   const productsQuery = useQuery({
@@ -52,18 +52,37 @@ export default function Product() {
     },
   });
 
-  const onDeleteClick = (name: string) => {
+  const productDeleteMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      setOpenDialog(false);
+      resetDialogText();
+      setSelectedId("");
+      productsQuery.refetch();
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const onDeleteClick = (name: string, id: string) => {
     resetDialogText();
+    setSelectedId(id);
     setDialogTitle(`Are you sure you want to Delete ${name} Product?`);
     setOpenDialog(true);
   };
 
   const onPopUpCancel = () => {
     setOpenDialog(false);
+    setSelectedId("");
   };
 
   const onPopUpApply = () => {
-    console.log("a");
+    if (selectedId) {
+      productDeleteMutation.mutate(selectedId);
+    }
   };
 
   const productColumn = [
@@ -136,7 +155,7 @@ export default function Product() {
               <IconButton
                 sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
                 onClick={() => {
-                  onDeleteClick(data?.row?.name);
+                  onDeleteClick(data?.row?.name, data.row?.id);
                   console.log(data?.row?.name);
                 }}
               >
