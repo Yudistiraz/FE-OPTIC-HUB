@@ -4,7 +4,7 @@ export type TEmployee = {
   name: string;
   email: string;
   password: string;
-  phoneNumber: string;
+  phone_number: string;
   status: boolean;
   role: string;
 };

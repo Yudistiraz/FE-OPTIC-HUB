@@ -9,11 +9,16 @@ import { DUMMY_EMPLOYEE, STATUS_OPTIONS } from "@/utils/constants";
 import { IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useUserState } from "@/context/User";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Delete } from "@mui/icons-material";
 import CustomBadge from "@/components/ui/CustomBadge";
 import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
+import { useFilterState } from "@/hooks/useQuery";
+import { useMutation, useQuery } from "react-query";
+import { deleteEmployee, getAllEmployee } from "@/services/admin/v1/employee";
+import { checkPageValidity } from "@/utils/function";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Employee() {
   const router = useRouter();
@@ -26,18 +31,54 @@ export default function Employee() {
     setDialogTitle,
   } = useUserState();
 
-  const onDeleteClick = (name: string) => {
+  const { page, setPage, search, setSearch } = useFilterState();
+  const [selectedId, setSelectedId] = useState("");
+  const session = useSession();
+
+  const employeeQuery = useQuery({
+    queryKey: ["employee", search, page],
+    queryFn: async () => {
+      const res = await getAllEmployee();
+      return res.data;
+    },
+  });
+
+  const employeeDeleteMutation = useMutation({
+    mutationFn: deleteEmployee,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      setOpenDialog(false);
+      resetDialogText();
+      if (selectedId) {
+        if (selectedId === session?.data?.user?.id) {
+          signOut();
+        } else {
+          employeeQuery.refetch();
+        }
+      }
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const onDeleteClick = (name: string, id: string) => {
     resetDialogText();
+    setSelectedId(id);
     setDialogTitle(`Are you sure you want to Delete ${name} Employee?`);
     setOpenDialog(true);
   };
 
   const onPopUpCancel = () => {
     setOpenDialog(false);
+    setSelectedId("");
   };
 
   const onPopUpApply = () => {
-    console.log("a");
+    if (selectedId) {
+      employeeDeleteMutation.mutate(selectedId);
+    }
   };
 
   const employeeColumn = [
@@ -68,7 +109,7 @@ export default function Employee() {
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return `+62 ${data?.row?.phone}`;
+        return data?.row?.phone_number;
       },
       readonly: true,
     },
@@ -120,7 +161,7 @@ export default function Employee() {
               <IconButton
                 sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
                 onClick={() => {
-                  onDeleteClick(data?.row?.name);
+                  onDeleteClick(data?.row?.name, data?.row?.id);
                   console.log(data?.row?.name);
                 }}
               >
@@ -184,7 +225,7 @@ export default function Employee() {
 
       <CustomDataTable
         columns={employeeColumn}
-        rows={DUMMY_EMPLOYEE}
+        rows={employeeQuery?.data}
         limit={10}
         disableColumnResize={true}
         disableColumnMenu={true}
@@ -199,6 +240,7 @@ export default function Employee() {
         }}
         page={1}
         totalPage={10}
+        getRowId={(row: any) => row?.name}
       />
 
       <CustomDialog open={openDialog} independent maxWidth="xs">

@@ -1,20 +1,28 @@
 import { useCustomFormik } from "@/hooks/formik";
-import { addEmployeeSchema } from "@/utils/yup";
+import { addEmployeeSchema, updateEmployeeSchema } from "@/utils/yup";
 
-import React, { Fragment } from "react";
-import CustomTextField from "../ui/TextField";
-import CustomButton from "../ui/Button";
-import FormLayout from "../ui/FormLayout";
+import React from "react";
+import CustomTextField from "@/components/ui/TextField";
+import CustomButton from "@/components/ui/Button";
+import FormLayout from "@/components/ui/FormLayout";
 import { gethelperText } from "@/utils/function";
-import PhoneCodeMenu from "../ui/PhoneCode";
-import CustomDatePicker from "../ui/DatePicker";
-import CustomDropdown from "../ui/Select";
+import CustomDatePicker from "@/components/ui/DatePicker";
+import CustomDropdown from "@/components/ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
-import CustomSwitch from "../ui/Switch";
+import CustomSwitch from "@/components/ui/Switch";
 import { TEmployee } from "@/utils/models";
 import { useUserState } from "@/context/User";
-import CustomDialog from "../ui/Dialog";
-import ConfirmationDialog from "../features/ConfirmationDialog";
+import CustomDialog from "@/components/ui/Dialog";
+import ConfirmationDialog from "@/components/features/ConfirmationDialog";
+import { formateDate1 } from "@/utils/dateFormatter";
+import { useMutation } from "react-query";
+import {
+  addEmployee,
+  deleteEmployee,
+  updateEmployee,
+} from "@/services/admin/v1/employee";
+import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 interface EmployeeFormProps {
   isEdit?: boolean;
@@ -31,12 +39,93 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
     setDialogTitle,
   } = useUserState();
 
+  const session = useSession();
+
+  const router = useRouter();
+
+  const employeeAddMutation = useMutation({
+    mutationFn: addEmployee,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/employee");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const employeeUpdateMutation = useMutation({
+    mutationFn: updateEmployee,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/employee");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const employeeDeleteMutation = useMutation({
+    mutationFn: deleteEmployee,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      setOpenDialog(false);
+      resetDialogText();
+      if (data) {
+        if (data.id === session?.data?.user?.id) {
+          signOut();
+        } else {
+          router.push("/employee");
+        }
+      }
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const formik = useCustomFormik({
+    initialValues: {
+      id: data?.id || "",
+      name: data?.name || "",
+      dob: data?.dob || "",
+      phone_number: data?.phone_number || "",
+      email: data?.email || "",
+      password: "",
+      role: data?.role || "staff",
+      status: data?.status || true,
+    },
+    validationSchema: isEdit ? updateEmployeeSchema : addEmployeeSchema,
+    onSubmit: async (values) => {
+      const payload = {
+        name: values.name,
+        email: values.email,
+        dob: formateDate1(values.dob),
+        phone_number: values.phoneNumber,
+        password: values.password,
+        status: values.status,
+        role: values.role,
+      };
+      console.log(payload);
+      if (isEdit) {
+        employeeUpdateMutation.mutate({ id: data?.id, data: payload });
+      } else {
+        employeeAddMutation.mutate({ data: payload });
+      }
+    },
+  });
+
   const onPopUpCancel = () => {
     setOpenDialog(false);
   };
 
   const onPopUpApply = () => {
-    console.log(data?.id);
+    if (data?.id) {
+      employeeDeleteMutation.mutate(data.id);
+    }
   };
 
   const onDeleteClick = () => {
@@ -45,33 +134,17 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
     setOpenDialog(true);
   };
 
-  const formik = useCustomFormik({
-    initialValues: {
-      id: data?.id || "",
-      name: data?.name || "",
-      dob: data?.dob || "",
-      phoneNumber: data?.phoneNumber || "",
-      email: data?.email || "",
-      password: data?.password || "",
-      role: data?.role || "staff",
-      status: data?.status || true,
-      countryCode: "+62",
-    },
-    validationSchema: addEmployeeSchema,
-    onSubmit: async (values) => {
-      console.log(values);
-    },
-  });
-
   return (
     <div>
       <form onSubmit={formik.handleSubmit} className="!tw-w-1/2">
         <FormLayout>
-          <CustomTextField
-            label="ID"
-            disabled
-            {...formik.getFieldProps("id")}
-          />
+          {isEdit && (
+            <CustomTextField
+              label="ID"
+              disabled
+              {...formik.getFieldProps("id")}
+            />
+          )}
           <CustomTextField
             label="Name"
             placeholder="Input Name"
@@ -90,7 +163,6 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
             format="DD MMMM YYYY"
             value={formik.values.dob}
             onDateChange={(name, value) => formik.setFieldValue(name, value)}
-            positionTop
             helperText={gethelperText(
               formik.touched.dob as boolean,
               formik.errors.dob as string
@@ -101,18 +173,13 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
           <CustomTextField
             label="Phone Number"
             placeholder="Input Phone Number"
-            startAdornment={
-              <PhoneCodeMenu
-                item={formik.values.countryCode}
-                onChange={(e) => formik.setFieldValue("countryCode", e)}
-              />
-            }
+            startAdornment={<div className="">+62</div>}
             helperText={gethelperText(
-              formik.touched.phoneNumber as boolean,
-              formik.errors.phoneNumber as string
+              formik.touched.phone_number as boolean,
+              formik.errors.phone_number as string
             )}
-            error={formik.touched.phoneNumber && !!formik.errors.phoneNumber}
-            {...formik.getFieldProps("phoneNumber")}
+            error={formik.touched.phone_number && !!formik.errors.phone_number}
+            {...formik.getFieldProps("phone_number")}
           />
 
           <CustomTextField
@@ -127,8 +194,8 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
           />
 
           <CustomTextField
-            label="Password"
-            placeholder="Input Password"
+            label={isEdit ? "New Password" : "Password"}
+            placeholder={isEdit ? "Input New Password" : "Input Password"}
             password
             helperText={gethelperText(
               formik.touched.password as boolean,
@@ -138,41 +205,53 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
             {...formik.getFieldProps("password")}
           />
 
-          {isEdit && (
-            <Fragment>
-              <CustomDropdown
-                fullWidth
-                label="ROLE"
-                name="role"
-                options={EMPLOYEE_OPTIONS}
-                value={formik.values.role}
-                placeholder="Choose Role"
-                onChange={(e) => {
-                  formik.setFieldValue("role", e.value);
-                }}
-                helperText={gethelperText(
-                  formik.touched.role as boolean,
-                  formik.errors.role as string
-                )}
-                error={formik.touched.role && !!formik.errors.role}
-              />
+          <CustomDropdown
+            fullWidth
+            label="ROLE"
+            name="role"
+            options={EMPLOYEE_OPTIONS}
+            value={formik.values.role}
+            placeholder="Choose Role"
+            onChange={(e) => {
+              formik.setFieldValue("role", e.value);
+            }}
+            helperText={gethelperText(
+              formik.touched.role as boolean,
+              formik.errors.role as string
+            )}
+            error={formik.touched.role && !!formik.errors.role}
+          />
 
-              <CustomSwitch
-                label="EMPLOYEE STATUS"
-                name="Status"
-                onChange={(value) => {
-                  formik.setFieldValue("status", value);
-                }}
-                value={formik.values.status}
-              />
-            </Fragment>
+          {isEdit && (
+            <CustomSwitch
+              label="EMPLOYEE STATUS"
+              name="Status"
+              onChange={(value) => {
+                formik.setFieldValue("status", value);
+              }}
+              value={formik.values.status}
+            />
           )}
 
           <div className="tw-flex tw-gap-4 tw-w-full">
-            <CustomButton type="submit" className="tw-w-1/4">
+            <CustomButton
+              type="submit"
+              className="tw-w-1/4"
+              disabled={
+                employeeAddMutation.isLoading ||
+                employeeUpdateMutation.isLoading
+              }
+            >
               {isEdit ? "Update" : "Add"}
             </CustomButton>
-            <CustomButton className="tw-w-1/4" variant="secondary">
+            <CustomButton
+              className="tw-w-1/4"
+              variant="secondary"
+              disabled={
+                employeeAddMutation.isLoading ||
+                employeeUpdateMutation.isLoading
+              }
+            >
               Cancel
             </CustomButton>
             {isEdit && (
@@ -180,6 +259,10 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
                 className="tw-w-1/4"
                 variant="redButton"
                 onClick={onDeleteClick}
+                disabled={
+                  employeeAddMutation.isLoading ||
+                  employeeUpdateMutation.isLoading
+                }
               >
                 Delete
               </CustomButton>

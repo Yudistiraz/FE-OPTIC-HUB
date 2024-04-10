@@ -44,6 +44,14 @@ export const addEmployeeSchema = Yup.object({
   role: Yup.string().required("Role Required"),
 });
 
+export const updateEmployeeSchema = Yup.object({
+  name: Yup.string().required("Name Required"),
+  dob: Yup.mixed().required("Date of Birth Required"),
+  phone_number: Yup.string().required("Phone Number Required"),
+  email: Yup.string().required("Email Required"),
+  role: Yup.string().required("Role Required"),
+});
+
 export const addProductScheme = Yup.object({
   name: Yup.string().required("Proudct Name Required"),
   categoryID: Yup.string().required("Product Category Required"),
