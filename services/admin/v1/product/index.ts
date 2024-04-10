@@ -16,15 +16,15 @@ export const addProduct = async (data: any) => {
   return fetcher.post("/products/add-product", data.data);
 };
 
-// export const getEmployeeById = async (id: string) => {
-//   const fetcher = await api();
-//   return fetcher.get("/user/" + id);
-// };
+export const getProductById = async (id: string) => {
+  const fetcher = await api();
+  return fetcher.get("/products/search?id=" + id);
+};
 
-// export const updateEmployee = async (data: any) => {
-//   const fetcher = await api();
-//   return fetcher.patch("/user/" + data.id, data.data);
-// };
+export const updateProduct = async (data: any) => {
+  const fetcher = await api();
+  return fetcher.patch("/products/" + data.id, data.data);
+};
 
 // export const deleteEmployee = async (id: string) => {
 //   const fetcher = await api();
