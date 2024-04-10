@@ -4,7 +4,7 @@ export function gethelperText(isError: boolean, message: string) {
   else return "";
 }
 
-type optionsDataType = {
+export type optionsDataType = {
   label: string;
   value: string;
 };
@@ -40,8 +40,13 @@ export function getThousandSeparator(value: number) {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-export function removeThousandsSeparator(numberString: string): number {
-  return parseFloat(numberString.replace(/,/g, ""));
+export function removeThousandsSeparator(
+  numberString: string | number
+): number {
+  const str =
+    typeof numberString === "number" ? numberString.toString() : numberString;
+
+  return parseFloat(str.replace(/,/g, ""));
 }
 
 export function convertDataToDropdownOptions<T>(
