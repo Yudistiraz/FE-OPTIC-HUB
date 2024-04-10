@@ -19,7 +19,11 @@ import ConfirmationDialog from "@/components/features/ConfirmationDialog";
 import { NumericFormat } from "react-number-format";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { useMutation, useQuery } from "react-query";
-import { addProduct, updateProduct } from "@/services/admin/v1/product";
+import {
+  addProduct,
+  deleteProduct,
+  updateProduct,
+} from "@/services/admin/v1/product";
 import { useRouter } from "next/navigation";
 import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 
@@ -72,12 +76,28 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     },
   });
 
+  const productDeleteMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      setOpenDialog(false);
+      resetDialogText();
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
   const onPopUpCancel = () => {
     setOpenDialog(false);
   };
 
   const onPopUpApply = () => {
-    console.log(data?.id);
+    if (data?.id) {
+      productDeleteMutation.mutate(data.id);
+    }
   };
 
   const onDeleteClick = () => {
