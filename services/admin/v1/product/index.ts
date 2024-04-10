@@ -26,10 +26,10 @@ export const updateProduct = async (data: any) => {
   return fetcher.patch("/products/" + data.id, data.data);
 };
 
-// export const deleteEmployee = async (id: string) => {
-//   const fetcher = await api();
-//   return fetcher.delete("/user/" + id);
-// };
+export const deleteProduct = async (id: string) => {
+  const fetcher = await api();
+  return fetcher.delete("/products/" + id);
+};
 
 // export const getAdminByID = async (id: string) => {
 //   const fetcher = await api();
