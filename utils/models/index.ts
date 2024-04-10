@@ -24,5 +24,5 @@ export type TProduct = {
   status: boolean;
   quantity: number;
   imageUrl: string;
-  categoryID?: string;
+  categoryId?: string;
 };
