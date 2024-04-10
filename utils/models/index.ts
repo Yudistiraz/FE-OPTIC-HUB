@@ -1,5 +1,8 @@
 export type TEmployee = {
   id: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  deletedAt?: Date | string;
   dob: Date | string;
   name: string;
   email: string;
@@ -11,10 +14,15 @@ export type TEmployee = {
 
 export type TProduct = {
   id: string;
-  categoryID: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  deletedAt?: Date | string;
   name: string;
+  priceBeforeTax: number;
+  tax: number;
   price: number;
   status: boolean;
   quantity: number;
   imageUrl: string;
+  categoryID?: string;
 };
