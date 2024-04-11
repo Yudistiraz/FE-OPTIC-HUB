@@ -14,10 +14,12 @@ const UserContext = createContext<
       dialogType: "confirmation" | "success" | "alert";
       dialogTitle: string;
       dialogMessage: string;
+      selectedId: string;
       setOpenDialog: (openDialog: boolean) => void;
       setDialogType: (dialogType: "confirmation" | "success" | "alert") => void;
       setDialogTitle: (dialogTitle: string) => void;
       setDialogMessage: (dialogMessage: string) => void;
+      setSelectedId: (dialogTitle: string) => void;
       resetDialogText: () => void;
     }
   | undefined
@@ -43,6 +45,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   >("alert");
   const [dialogTitle, setDialogTitle] = useState<string>("Error");
   const [dialogMessage, setDialogMessage] = useState<string>("");
+  const [selectedId, setSelectedId] = useState<string>("");
 
   const resetDialogText = () => {
     setDialogTitle("Error");
@@ -62,6 +65,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         resetDialogText,
         dialogMessage,
         setDialogMessage,
+        selectedId,
+        setSelectedId,
       }}
     >
       {children}

@@ -109,7 +109,7 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
         status: values.status,
         role: values.role,
       };
-      console.log(payload);
+
       if (isEdit) {
         employeeUpdateMutation.mutate({ id: data?.id, data: payload });
       } else {

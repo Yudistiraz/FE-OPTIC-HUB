@@ -5,9 +5,12 @@ import React from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
-import { gethelperText } from "@/utils/function";
+import {
+  convertDataToDropdownOptions,
+  gethelperText,
+  removeThousandsSeparator,
+} from "@/utils/function";
 import CustomDropdown from "@/components/ui/Select";
-import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "@/components/ui/Switch";
 import { TProduct } from "@/utils/models";
 import { useUserState } from "@/context/User";
@@ -15,6 +18,14 @@ import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
 import { NumericFormat } from "react-number-format";
 import ImageUpload from "@/components/ui/ImageUpload";
+import { useMutation, useQuery } from "react-query";
+import {
+  addProduct,
+  deleteProduct,
+  updateProduct,
+} from "@/services/admin/v1/product";
+import { useRouter } from "next/navigation";
+import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 
 interface ProductFormProps {
   isEdit?: boolean;
@@ -31,12 +42,62 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     setDialogTitle,
   } = useUserState();
 
+  const router = useRouter();
+
+  const productCategoryQuery = useQuery({
+    queryKey: ["productCategories"],
+    queryFn: async () => {
+      const res = await getAllProductCategory();
+      return res.data;
+    },
+  });
+
+  const productAddMutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const productUpdateMutation = useMutation({
+    mutationFn: updateProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
+  const productDeleteMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      setOpenDialog(false);
+      resetDialogText();
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
+
   const onPopUpCancel = () => {
     setOpenDialog(false);
   };
 
   const onPopUpApply = () => {
-    console.log(data?.id);
+    if (data?.id) {
+      productDeleteMutation.mutate(data.id);
+    }
   };
 
   const onDeleteClick = () => {
@@ -49,16 +110,29 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     initialValues: {
       id: data?.id || "",
       name: data?.name || "",
-      categoryID: data?.categoryID || "",
+      categoryId: data?.categoryId || "",
       price: data?.price || "",
       quantity: data?.quantity || "",
       status: data?.status || true,
-      imageUrl: data?.imageUrl || "",
+      imageUrl: "",
       newImage: null,
     },
     validationSchema: addProductScheme,
     onSubmit: async (values) => {
-      console.log(values);
+      const payload = {
+        name: values.name,
+        categoryId: values.categoryId,
+        price: removeThousandsSeparator(values.price),
+        quantity: values.quantity,
+        status: values.status,
+        image_url: values.imageUrl || "test.png",
+      };
+
+      if (isEdit) {
+        productUpdateMutation.mutate({ id: data?.id, data: payload });
+      } else {
+        productAddMutation.mutate({ data: payload });
+      }
     },
   });
 
@@ -142,18 +216,23 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
           <CustomDropdown
             fullWidth
             label="PRODUCT CATEGORY"
-            name="categoryID"
-            options={EMPLOYEE_OPTIONS}
-            value={formik.values.categoryID}
+            name="categoryId"
+            options={convertDataToDropdownOptions(
+              productCategoryQuery.data,
+              "name",
+              "id"
+            )}
+            disabled={productCategoryQuery.isLoading}
+            value={formik.values.categoryId}
             placeholder="Choose Product Category"
             onChange={(e) => {
-              formik.setFieldValue("categoryID", e.value);
+              formik.setFieldValue("categoryId", e.value);
             }}
             helperText={gethelperText(
-              formik.touched.categoryID as boolean,
-              formik.errors.categoryID as string
+              formik.touched.categoryId as boolean,
+              formik.errors.categoryId as string
             )}
-            error={formik.touched.categoryID && !!formik.errors.categoryID}
+            error={formik.touched.categoryId && !!formik.errors.categoryId}
           />
           {isEdit && (
             <CustomSwitch
@@ -166,10 +245,25 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             />
           )}
           <div className="tw-flex tw-gap-4 tw-w-full">
-            <CustomButton type="submit" className="tw-w-1/4">
+            <CustomButton
+              type="submit"
+              className="tw-w-1/4"
+              disabled={
+                productUpdateMutation.isLoading || productAddMutation.isLoading
+              }
+            >
               {isEdit ? "Update" : "Add"}
             </CustomButton>
-            <CustomButton className="tw-w-1/4" variant="secondary">
+            <CustomButton
+              className="tw-w-1/4"
+              variant="secondary"
+              onClick={() => {
+                router.push("/product");
+              }}
+              disabled={
+                productUpdateMutation.isLoading || productAddMutation.isLoading
+              }
+            >
               Cancel
             </CustomButton>
             {isEdit && (
@@ -177,6 +271,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
                 className="tw-w-1/4"
                 variant="redButton"
                 onClick={onDeleteClick}
+                disabled={productUpdateMutation.isLoading}
               >
                 Delete
               </CustomButton>
