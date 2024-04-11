@@ -26,3 +26,21 @@ export type TProduct = {
   imageUrl: string;
   categoryId?: string;
 };
+
+export type TTransaction = {
+  id: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  deletedAt?: Date | string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string;
+  totalItem: number;
+  isComplete: boolean;
+  paymentMethod: string;
+  subTotal: number;
+  tax: number;
+  totalPrice: number;
+  imageUrl: string;
+  transactionDate: Date | string;
+};
