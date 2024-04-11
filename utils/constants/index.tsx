@@ -113,6 +113,17 @@ export const STATUS_OPTIONS = [
   },
 ];
 
+export const TRANSACTION_STATUS_OPTIONS = [
+  {
+    label: "Completed",
+    value: "complete",
+  },
+  {
+    label: "Ongoing",
+    value: "ongoing",
+  },
+];
+
 export const EMPLOYEE_OPTIONS = [
   {
     label: "Owner",
