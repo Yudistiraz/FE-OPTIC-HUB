@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+import { OrderItem, TProduct } from "../models";
 export function gethelperText(isError: boolean, message: string) {
   if (isError) return message;
   else return "";
@@ -28,6 +29,13 @@ export function findDataById<T extends { id: string }>(
   return dataArray.find((item) => item.id === id);
 }
 
+export function isItemInArray<T extends { id: string }>(
+  array: T[],
+  item: T
+): boolean {
+  return array.some((arrayItem) => arrayItem.id === item.id);
+}
+
 export function checkPageValidity(page: number) {
   if (page <= 0 || page === null || page === undefined) {
     return 1;
@@ -36,8 +44,12 @@ export function checkPageValidity(page: number) {
   }
 }
 
-export function getThousandSeparator(value: number) {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+export function getThousandSeparator(value: number | undefined) {
+  if (value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  } else {
+    return;
+  }
 }
 
 export function removeThousandsSeparator(
@@ -58,4 +70,52 @@ export function convertDataToDropdownOptions<T>(
     label: String(item[labelField]),
     value: String(item[valueField]),
   }));
+}
+
+// export function addProductToArray<T extends TProduct>(
+//   productData: TProduct,
+//   array: T[]
+// ) {
+//   const productWithQuantity = { ...productData, qty: 1 } as T;
+//   array.push(productWithQuantity);
+// }
+
+export function addProductToArray(productData: TProduct, array: OrderItem[]) {
+  const productWithQuantity = { ...productData, qty: 1 };
+  array.push(productWithQuantity);
+}
+
+export function deleteProductFromArray<T extends { id: string }>(
+  productId: string,
+  array: T[]
+) {
+  const index = array.findIndex((item) => item.id === productId);
+  if (index !== -1) {
+    array.splice(index, 1);
+  }
+}
+
+export function updateOrderItemQuantity(
+  quantity: number,
+  orderItem: OrderItem,
+  maxStock: number
+): OrderItem {
+  const updatedQuantity = Math.max(1, Math.min(quantity, maxStock));
+  return {
+    ...orderItem,
+    qty: updatedQuantity || 1,
+  };
+}
+
+export function updateOrderItems(
+  updatedOrderItem: OrderItem,
+  orderItems: OrderItem[]
+): OrderItem[] {
+  const updatedItems = orderItems.map((item) => {
+    if (item.id === updatedOrderItem.id) {
+      return updatedOrderItem;
+    }
+    return item;
+  });
+  return updatedItems;
 }

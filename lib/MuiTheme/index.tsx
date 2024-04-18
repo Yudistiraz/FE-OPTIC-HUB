@@ -8,6 +8,7 @@ declare module "@mui/material/styles" {
     display2: React.CSSProperties;
     display3: React.CSSProperties;
     display4: React.CSSProperties;
+    display5: React.CSSProperties;
     title1: React.CSSProperties;
     title2: React.CSSProperties;
     subtitle1Reg: React.CSSProperties;
@@ -30,6 +31,7 @@ declare module "@mui/material/styles" {
     display2?: React.CSSProperties;
     display3?: React.CSSProperties;
     display4?: React.CSSProperties;
+    display5?: React.CSSProperties;
     title1: React.CSSProperties;
     title2: React.CSSProperties;
     subtitle1Reg?: React.CSSProperties;
@@ -54,6 +56,7 @@ declare module "@mui/material/Typography" {
     display2: true;
     display3: true;
     display4: true;
+    display5: true;
     title1: true;
     title2: true;
     subtitle1Reg: true;
@@ -268,6 +271,19 @@ export const theme = createTheme({
         },
       },
     },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+            {
+              display: "none",
+            },
+          "& input[type=number]": {
+            MozAppearance: "textfield",
+          },
+        },
+      },
+    },
     MuiPopover: {
       styleOverrides: {
         root: {
@@ -370,6 +386,12 @@ export const theme = createTheme({
       fontSize: "28px",
       fontWeight: 700,
       lineHeight: "42px",
+      color: "black",
+    },
+    display5: {
+      fontSize: "24px",
+      fontWeight: 700,
+      lineHeight: "36px",
       color: "black",
     },
     h1: {

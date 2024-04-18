@@ -59,3 +59,5 @@ export const addProductScheme = Yup.object({
   price: Yup.mixed().required("Proudct Price Required"),
   quantity: Yup.number().required("Proudct Stock Required"),
 });
+
+export const addTransactionScheme = Yup.object({});
