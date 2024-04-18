@@ -137,7 +137,7 @@ export const theme = createTheme({
           letterSpacing: "2%",
           textTransform: "uppercase",
           borderRadius: "12px",
-          fontFamily: "__Inter_aaf875",
+          fontFamily: "var(--font-nunito)",
         },
       },
       //Create New Variants for Buttons
@@ -363,7 +363,7 @@ export const theme = createTheme({
   //Added New Variants and Edited Current Variants for Texts Variants
   //----------------------------------------------------------------------
   typography: {
-    fontFamily: "__Inter_aaf875",
+    fontFamily: "var(--font-nunito)",
     display1: {
       fontSize: "40px",
       fontWeight: 700,
