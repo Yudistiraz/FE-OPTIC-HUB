@@ -38,8 +38,12 @@ export default function Employee() {
   const employeeQuery = useQuery({
     queryKey: ["employee", search, page],
     queryFn: async () => {
-      const res = await getAllEmployee();
-      return res.data;
+      const res = await getAllEmployee({
+        search: search,
+        page: page,
+        limit: 10,
+      });
+      return res.data.data;
     },
   });
 
