@@ -39,8 +39,12 @@ export default function Product() {
   const productsQuery = useQuery({
     queryKey: ["products", search, page],
     queryFn: async () => {
-      const res = await getAllProduct();
-      return res.data;
+      const res = await getAllProduct({
+        search: search,
+        page: page,
+        limit: 10,
+      });
+      return res.data.data;
     },
   });
 
