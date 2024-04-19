@@ -1,7 +1,7 @@
 import { useCustomFormik } from "@/hooks/formik";
 import { addTransactionScheme } from "@/utils/yup";
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
@@ -24,17 +24,27 @@ import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 import { useSession } from "next-auth/react";
 import { Divider, Typography } from "@mui/material";
 import { DUMMY_PRODUCT, PAYMENT_METHOD_OPTIONS } from "@/utils/constants";
-import CustomCheckbox from "../ui/Checkbox";
-import ProductSearchBar from "../features/ProductSearchBar";
+import CustomCheckbox from "../../ui/Checkbox";
+import ProductSearchBar from "../../features/ProductSearchBar";
 import { SentimentVeryDissatisfied } from "@mui/icons-material";
-import ProductOverview from "../features/ProductOverview";
+import ProductOverview from "../../features/ProductOverview";
 import { OrderItem, TProduct } from "@/utils/models";
 
 interface ProductFormProps {
   isEdit?: boolean;
+  productSearch?: string;
+  setProductSearch?: (productSearch: string) => void;
+  productData?: TProduct[];
+  isProductLoading?: boolean;
 }
 
-const TransactionForm = ({ isEdit = false }: ProductFormProps) => {
+const TransactionForm = ({
+  isEdit = false,
+  productSearch = "",
+  setProductSearch = () => {},
+  productData = [],
+  isProductLoading = false,
+}: ProductFormProps) => {
   const {
     openDialog,
     setOpenDialog,
@@ -44,49 +54,13 @@ const TransactionForm = ({ isEdit = false }: ProductFormProps) => {
     setDialogTitle,
   } = useUserState();
 
-  const [productSearch, setProductSearch] = useState("");
-
   const router = useRouter();
   const session = useSession();
-
-  //   const productCategoryQuery = useQuery({
-  //     queryKey: ["productCategories"],
-  //     queryFn: async () => {
-  //       const res = await getAllProductCategory();
-  //       return res.data;
-  //     },
-  //   });
 
   //   const productAddMutation = useMutation({
   //     mutationFn: addProduct,
   //     onSuccess: async () => {
   //       // toast.success("Success Added Admin");
-  //       router.push("/product");
-  //     },
-  //     onError: (error) => {
-  //       const errorMessage = (error as any)?.response?.data?.message || "Error";
-  //       // toast.error(errorMessage);
-  //     },
-  //   });
-
-  //   const productUpdateMutation = useMutation({
-  //     mutationFn: updateProduct,
-  //     onSuccess: async () => {
-  //       // toast.success("Success Added Admin");
-  //       router.push("/product");
-  //     },
-  //     onError: (error) => {
-  //       const errorMessage = (error as any)?.response?.data?.message || "Error";
-  //       // toast.error(errorMessage);
-  //     },
-  //   });
-
-  //   const productDeleteMutation = useMutation({
-  //     mutationFn: deleteProduct,
-  //     onSuccess: async () => {
-  //       // toast.success("Success Added Admin");
-  //       setOpenDialog(false);
-  //       resetDialogText();
   //       router.push("/product");
   //     },
   //     onError: (error) => {
@@ -121,22 +95,22 @@ const TransactionForm = ({ isEdit = false }: ProductFormProps) => {
     onSubmit: async (values) => {
       const payload = {
         userId: values.userId,
-        customerName: "",
-        customerPhone: "",
-        customerEmail: "",
-        paymentMethod: "",
+        customerName: values.customerName,
+        customerPhone: values.customerPhone,
+        customerEmail: values.customerEmail,
+        paymentMethod: values.paymentMethod,
         isComplete: false,
-        right_sph: "",
-        right_cylinder: "",
-        right_axis: "",
-        right_add: "",
-        right_pd: "",
-        left_sph: "",
-        left_cylinder: "",
-        left_axis: "",
-        left_add: "",
-        left_pd: "",
-        orderItem: [],
+        right_sph: values.right_sph,
+        right_cylinder: values.right_cylinder,
+        right_axis: values.right_axis,
+        right_add: values.right_add,
+        right_pd: values.right_pd,
+        left_sph: values.left_sph,
+        left_cylinder: values.left_cylinder,
+        left_axis: values.left_axis,
+        left_add: values.left_add,
+        left_pd: values.left_pd,
+        orderItem: values.orderItem,
       };
 
       console.log(payload);
@@ -167,6 +141,10 @@ const TransactionForm = ({ isEdit = false }: ProductFormProps) => {
       updateOrderItems(editedItem, formikArray)
     );
   };
+
+  useEffect(() => {
+    console.log(formik.values);
+  }, [formik.values]);
 
   return (
     <div>
@@ -299,9 +277,10 @@ const TransactionForm = ({ isEdit = false }: ProductFormProps) => {
             }}
             fullWidth
             hideDropdown={productSearch.length === 0}
-            productData={DUMMY_PRODUCT}
+            productData={productData}
             onProductDropdownClick={onProductDropdownClick}
             selectedArray={formik.values.orderItem}
+            isLoading={isProductLoading}
           />
 
           <ProductOverview
