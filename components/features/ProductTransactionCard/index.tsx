@@ -33,7 +33,7 @@ export default function ProductTransactionCard({
           </Typography>
 
           <Typography variant="h2" className="tw-ml-auto tw-text-red-500">
-            Rp.{getThousandSeparator(data?.quantity * data?.price)}
+            Rp.{getThousandSeparator(data?.qty * data?.price)}
           </Typography>
         </div>
 
