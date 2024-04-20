@@ -119,3 +119,13 @@ export function updateOrderItems(
   });
   return updatedItems;
 }
+
+export function calculateTotalPrice(products: OrderItem[]): number {
+  let totalPrice = 0;
+
+  products.forEach((product) => {
+    totalPrice += product.price * product.qty;
+  });
+
+  return totalPrice;
+}
