@@ -1,6 +1,6 @@
 "use client";
 
-import Signinform from "@/components/form/signin";
+import Signinform from "@/components/form/SignInForm";
 
 const Signin = () => {
   return (
