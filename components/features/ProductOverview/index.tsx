@@ -9,12 +9,16 @@ interface ProductOverviewProps {
   productData: any[];
   onDeleteProduct: (productData: any) => void;
   onOrderItemChange: (OrderItem: OrderItem) => void;
+  error?: boolean;
+  helperText?: string;
 }
 
 export default function ProductOverview({
   productData,
   onDeleteProduct = () => {},
   onOrderItemChange = () => {},
+  error = false,
+  helperText = "",
 }: ProductOverviewProps) {
   return (
     <div className="tw-w-full tw-min-h-48 tw-bg-gray-200 tw-rounded-md tw-overflow-hidden tw-p-2 tw-flex tw-gap-2 tw-flex-col">
@@ -41,6 +45,11 @@ export default function ProductOverview({
             There's No Product on This Transaction
           </Typography>
         </div>
+      )}
+      {error && (
+        <Typography variant="helperText" className="text-danger tw-italic">
+          {helperText}
+        </Typography>
       )}
     </div>
   );
