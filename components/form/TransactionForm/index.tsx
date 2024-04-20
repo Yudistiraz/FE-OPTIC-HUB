@@ -1,34 +1,29 @@
 import { useCustomFormik } from "@/hooks/formik";
 import { addTransactionScheme } from "@/utils/yup";
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
 import {
   addProductToArray,
-  convertDataToDropdownOptions,
+  calculateTotalPrice,
+  getThousandSeparator,
   gethelperText,
   updateOrderItems,
 } from "@/utils/function";
 import CustomDropdown from "@/components/ui/Select";
 import { useUserState } from "@/context/User";
-import { useMutation, useQuery } from "react-query";
-import {
-  addProduct,
-  deleteProduct,
-  updateProduct,
-} from "@/services/admin/v1/product";
+import { useMutation } from "react-query";
 import { useRouter } from "next/navigation";
-import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 import { useSession } from "next-auth/react";
 import { Divider, Typography } from "@mui/material";
 import { DUMMY_PRODUCT, PAYMENT_METHOD_OPTIONS } from "@/utils/constants";
 import CustomCheckbox from "../../ui/Checkbox";
 import ProductSearchBar from "../../features/ProductSearchBar";
-import { SentimentVeryDissatisfied } from "@mui/icons-material";
 import ProductOverview from "../../features/ProductOverview";
 import { OrderItem, TProduct } from "@/utils/models";
+import { addTransaction } from "@/services/admin/v1/transaction";
 
 interface ProductFormProps {
   isEdit?: boolean;
@@ -57,17 +52,17 @@ const TransactionForm = ({
   const router = useRouter();
   const session = useSession();
 
-  //   const productAddMutation = useMutation({
-  //     mutationFn: addProduct,
-  //     onSuccess: async () => {
-  //       // toast.success("Success Added Admin");
-  //       router.push("/product");
-  //     },
-  //     onError: (error) => {
-  //       const errorMessage = (error as any)?.response?.data?.message || "Error";
-  //       // toast.error(errorMessage);
-  //     },
-  //   });
+  const transactionAddMutation = useMutation({
+    mutationFn: addTransaction,
+    onSuccess: async () => {
+      // toast.success("Success Added Admin");
+      router.push("/product");
+    },
+    onError: (error) => {
+      const errorMessage = (error as any)?.response?.data?.message || "Error";
+      // toast.error(errorMessage);
+    },
+  });
 
   const formik = useCustomFormik({
     initialValues: {
@@ -95,6 +90,7 @@ const TransactionForm = ({
     onSubmit: async (values) => {
       const payload = {
         userId: values.userId,
+        userName: values.userName,
         customerName: values.customerName,
         customerPhone: values.customerPhone,
         customerEmail: values.customerEmail,
@@ -114,12 +110,7 @@ const TransactionForm = ({
       };
 
       console.log(payload);
-
-      //   if (isEdit) {
-      //     productUpdateMutation.mutate({ id: data?.id, data: payload });
-      //   } else {
-      //     productAddMutation.mutate({ data: payload });
-      //   }
+      // transactionAddMutation.mutate({ data: payload });
     },
     isEnableReinitialize: true,
   });
@@ -143,12 +134,16 @@ const TransactionForm = ({
   };
 
   useEffect(() => {
-    console.log(formik.values);
+    // console.log(formik.values);
+    console.log(formik.errors);
   }, [formik.values]);
 
   return (
     <div>
-      <form onSubmit={formik.handleSubmit} className="!tw-w-1/2">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="!tw-w-1/2 tw-flex tw-flex-col tw-gap-4"
+      >
         <FormLayout>
           {isEdit && (
             <CustomTextField
@@ -208,7 +203,7 @@ const TransactionForm = ({
             {...formik.getFieldProps("customerName")}
           />
 
-          <div className="tw-flex tw-gap-6">
+          <div className="tw-flex tw-gap-6 tw-items-start">
             <CustomTextField
               label="Customer's Phone Number"
               placeholder="Input Customer's Phone Number"
@@ -287,6 +282,11 @@ const TransactionForm = ({
             productData={formik.values.orderItem}
             onDeleteProduct={onDeleteProduct}
             onOrderItemChange={onOrderItemChange}
+            helperText={gethelperText(
+              formik.touched.orderItem as boolean,
+              formik.errors.orderItem as string
+            )}
+            error={formik.touched.orderItem && !!formik.errors.orderItem}
           />
 
           <CustomCheckbox
@@ -297,149 +297,159 @@ const TransactionForm = ({
             }}
             value={formik.values.withPrescriptions}
           />
-
-          {formik.values.withPrescriptions && (
-            <Fragment>
-              <div className="tw-flex tw-gap-6">
-                <CustomTextField
-                  label="Right Sphere"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.right_sph as boolean,
-                    formik.errors.right_sph as string
-                  )}
-                  error={formik.touched.right_sph && !!formik.errors.right_sph}
-                  {...formik.getFieldProps("right_sph")}
-                />
-                <CustomTextField
-                  label="Left Sphere"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.left_sph as boolean,
-                    formik.errors.left_sph as string
-                  )}
-                  error={formik.touched.left_sph && !!formik.errors.left_sph}
-                  {...formik.getFieldProps("left_sph")}
-                />
-              </div>
-
-              <div className="tw-flex tw-gap-6">
-                <CustomTextField
-                  label="Right Cylinder"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.right_cylinder as boolean,
-                    formik.errors.right_cylinder as string
-                  )}
-                  error={
-                    formik.touched.right_cylinder &&
-                    !!formik.errors.right_cylinder
-                  }
-                  {...formik.getFieldProps("right_cylinder")}
-                />
-                <CustomTextField
-                  label="Left Cylinder"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.left_cylinder as boolean,
-                    formik.errors.left_cylinder as string
-                  )}
-                  error={
-                    formik.touched.left_cylinder &&
-                    !!formik.errors.left_cylinder
-                  }
-                  {...formik.getFieldProps("left_cylinder")}
-                />
-              </div>
-
-              <div className="tw-flex tw-gap-6">
-                <CustomTextField
-                  label="Right Axis"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.right_axis as boolean,
-                    formik.errors.right_axis as string
-                  )}
-                  error={
-                    formik.touched.right_axis && !!formik.errors.right_axis
-                  }
-                  {...formik.getFieldProps("right_axis")}
-                />
-                <CustomTextField
-                  label="Left Axis"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.left_axis as boolean,
-                    formik.errors.left_axis as string
-                  )}
-                  error={formik.touched.left_axis && !!formik.errors.left_axis}
-                  {...formik.getFieldProps("left_axis")}
-                />
-              </div>
-
-              <div className="tw-flex tw-gap-6">
-                <CustomTextField
-                  label="Right Add"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.right_add as boolean,
-                    formik.errors.right_add as string
-                  )}
-                  error={formik.touched.right_add && !!formik.errors.right_add}
-                  {...formik.getFieldProps("right_add")}
-                />
-                <CustomTextField
-                  label="Left Add"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.left_add as boolean,
-                    formik.errors.left_add as string
-                  )}
-                  error={formik.touched.left_add && !!formik.errors.left_add}
-                  {...formik.getFieldProps("left_add")}
-                />
-              </div>
-
-              <div className="tw-flex tw-gap-6">
-                <CustomTextField
-                  label="Right PD"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.right_pd as boolean,
-                    formik.errors.right_pd as string
-                  )}
-                  error={formik.touched.right_pd && !!formik.errors.right_pd}
-                  {...formik.getFieldProps("right_pd")}
-                />
-                <CustomTextField
-                  label="Left PD"
-                  placeholder=""
-                  helperText={gethelperText(
-                    formik.touched.left_pd as boolean,
-                    formik.errors.left_pd as string
-                  )}
-                  error={formik.touched.left_pd && !!formik.errors.left_pd}
-                  {...formik.getFieldProps("left_pd")}
-                />
-              </div>
-            </Fragment>
-          )}
-
-          <div className="tw-flex tw-gap-4 tw-w-full">
-            <CustomButton type="submit" className="tw-w-1/4">
-              Add
-            </CustomButton>
-            <CustomButton
-              className="tw-w-1/4"
-              variant="secondary"
-              onClick={() => {
-                router.push("/product");
-              }}
-            >
-              Cancel
-            </CustomButton>
-          </div>
         </FormLayout>
+
+        {formik.values.withPrescriptions && (
+          <div>
+            <div className="tw-flex tw-gap-6">
+              <CustomTextField
+                label="Right Sphere"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.right_sph as boolean,
+                  formik.errors.right_sph as string
+                )}
+                error={formik.touched.right_sph && !!formik.errors.right_sph}
+                {...formik.getFieldProps("right_sph")}
+              />
+              <CustomTextField
+                label="Left Sphere"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.left_sph as boolean,
+                  formik.errors.left_sph as string
+                )}
+                error={formik.touched.left_sph && !!formik.errors.left_sph}
+                {...formik.getFieldProps("left_sph")}
+              />
+            </div>
+
+            <div className="tw-flex tw-gap-6">
+              <CustomTextField
+                label="Right Cylinder"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.right_cylinder as boolean,
+                  formik.errors.right_cylinder as string
+                )}
+                error={
+                  formik.touched.right_cylinder &&
+                  !!formik.errors.right_cylinder
+                }
+                {...formik.getFieldProps("right_cylinder")}
+              />
+              <CustomTextField
+                label="Left Cylinder"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.left_cylinder as boolean,
+                  formik.errors.left_cylinder as string
+                )}
+                error={
+                  formik.touched.left_cylinder && !!formik.errors.left_cylinder
+                }
+                {...formik.getFieldProps("left_cylinder")}
+              />
+            </div>
+
+            <div className="tw-flex tw-gap-6">
+              <CustomTextField
+                label="Right Axis"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.right_axis as boolean,
+                  formik.errors.right_axis as string
+                )}
+                error={formik.touched.right_axis && !!formik.errors.right_axis}
+                {...formik.getFieldProps("right_axis")}
+              />
+              <CustomTextField
+                label="Left Axis"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.left_axis as boolean,
+                  formik.errors.left_axis as string
+                )}
+                error={formik.touched.left_axis && !!formik.errors.left_axis}
+                {...formik.getFieldProps("left_axis")}
+              />
+            </div>
+
+            <div className="tw-flex tw-gap-6">
+              <CustomTextField
+                label="Right Add"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.right_add as boolean,
+                  formik.errors.right_add as string
+                )}
+                error={formik.touched.right_add && !!formik.errors.right_add}
+                {...formik.getFieldProps("right_add")}
+              />
+              <CustomTextField
+                label="Left Add"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.left_add as boolean,
+                  formik.errors.left_add as string
+                )}
+                error={formik.touched.left_add && !!formik.errors.left_add}
+                {...formik.getFieldProps("left_add")}
+              />
+            </div>
+
+            <div className="tw-flex tw-gap-6">
+              <CustomTextField
+                label="Right PD"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.right_pd as boolean,
+                  formik.errors.right_pd as string
+                )}
+                error={formik.touched.right_pd && !!formik.errors.right_pd}
+                {...formik.getFieldProps("right_pd")}
+              />
+              <CustomTextField
+                label="Left PD"
+                placeholder=""
+                helperText={gethelperText(
+                  formik.touched.left_pd as boolean,
+                  formik.errors.left_pd as string
+                )}
+                error={formik.touched.left_pd && !!formik.errors.left_pd}
+                {...formik.getFieldProps("left_pd")}
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="tw-flex tw-gap-2">
+          <Typography variant="h1">Total Cost : </Typography>
+          <Typography variant="h1" className="tw-text-red-500">
+            Rp.{" "}
+            {getThousandSeparator(calculateTotalPrice(formik.values.orderItem))}
+          </Typography>
+        </div>
+
+        <div className="tw-w-full tw-flex tw-gap-4">
+          <CustomButton
+            type="submit"
+            className="tw-w-1/4"
+            disabled={transactionAddMutation.isLoading}
+          >
+            Add
+          </CustomButton>
+          <CustomButton
+            className="tw-w-1/4"
+            variant="secondary"
+            onClick={() => {
+              router.push("/product");
+            }}
+            disabled={transactionAddMutation.isLoading}
+          >
+            Cancel
+          </CustomButton>
+        </div>
       </form>
     </div>
   );
