@@ -525,7 +525,7 @@ export const theme = createTheme({
     },
     helperText: {
       margin: "3px 14px",
-      fontSize: "11px",
+      fontSize: "12px",
       fontWeight: 400,
       lineHeight: "18px",
       letterSpacing: "6%",
