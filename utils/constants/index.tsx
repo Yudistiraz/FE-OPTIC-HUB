@@ -130,8 +130,12 @@ export const PAYMENT_METHOD_OPTIONS = [
     value: "cash",
   },
   {
-    label: "Online",
-    value: "online",
+    label: "QRIS",
+    value: "qris",
+  },
+  {
+    label: "Debit Card",
+    value: "debit",
   },
 ];
 
