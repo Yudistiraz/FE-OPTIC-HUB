@@ -102,12 +102,12 @@ export default function Product() {
       readonly: true,
     },
     {
-      field: "categoryID",
+      field: "category",
       headerName: "Category",
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.categoryID;
+        return <div className="tw-capitalize">{data?.row?.category?.name}</div>;
       },
       readonly: true,
     },
