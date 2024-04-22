@@ -104,7 +104,7 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
         name: values.name,
         email: values.email,
         dob: formateDate1(values.dob),
-        phone_number: values.phoneNumber,
+        phone_number: values.phone_number,
         password: values.password,
         status: values.status,
         role: values.role,

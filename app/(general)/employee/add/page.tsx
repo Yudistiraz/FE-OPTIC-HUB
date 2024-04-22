@@ -1,5 +1,5 @@
 "use client";
-import EmployeeForm from "@/components/form/employee";
+import EmployeeForm from "@/components/form/EmployeeForm";
 import { Typography } from "@mui/material";
 
 export default function AddEmployee() {
