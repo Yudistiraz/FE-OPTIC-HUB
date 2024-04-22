@@ -107,10 +107,11 @@ const TransactionForm = ({
         left_add: values.left_add,
         left_pd: values.left_pd,
         orderItem: values.orderItem,
+        withPrescriptions: values.withPrescriptions,
       };
 
       console.log(payload);
-      // transactionAddMutation.mutate({ data: payload });
+      transactionAddMutation.mutate({ data: payload });
     },
     isEnableReinitialize: true,
   });
