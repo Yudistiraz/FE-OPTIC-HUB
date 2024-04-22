@@ -13,5 +13,5 @@ export const getAllTransaction = async (params?: ParamInterface) => {
 
 export const addTransaction = async (data: any) => {
   const fetcher = await api();
-  return fetcher.post("/order/add-order", data.data);
+  return fetcher.post("/order", data.data);
 };
