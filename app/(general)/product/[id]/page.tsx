@@ -1,5 +1,5 @@
 "use client";
-import ProductForm from "@/components/form/product";
+import ProductForm from "@/components/form/ProductForm";
 import { getProductById } from "@/services/admin/v1/product";
 
 import { Typography } from "@mui/material";

@@ -134,6 +134,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
         productAddMutation.mutate({ data: payload });
       }
     },
+    isEnableReinitialize: true,
   });
 
   const onImageChange = (image: File) => {
