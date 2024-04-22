@@ -10,7 +10,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     queryKey: ["product", params.id],
     queryFn: async () => {
       const res = await getProductById(params.id);
-      return res.data;
+      return res.data.data;
     },
   });
 
