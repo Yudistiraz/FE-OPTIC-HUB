@@ -5,7 +5,11 @@ import CustomButton from "@/components/ui/Button";
 import CustomDataTable from "@/components/ui/DataTableV2";
 import CustomSearchbar from "@/components/ui/Searchbar";
 
-import { DUMMY_EMPLOYEE, STATUS_OPTIONS } from "@/utils/constants";
+import {
+  DUMMY_EMPLOYEE,
+  EMPLOYEE_OPTIONS,
+  STATUS_OPTIONS,
+} from "@/utils/constants";
 import { IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useUserState } from "@/context/User";
@@ -31,15 +35,28 @@ export default function Employee() {
     setDialogTitle,
   } = useUserState();
 
-  const { page, setPage, search, setSearch } = useFilterState();
+  const {
+    page,
+    setPage,
+    search,
+    setSearch,
+    additionalParams,
+    setAdditionalParams,
+  } = useFilterState();
   const [selectedId, setSelectedId] = useState("");
   const session = useSession();
 
   const employeeQuery = useQuery({
-    queryKey: ["employee", search, page],
+    queryKey: ["employee", search, page, additionalParams],
     queryFn: async () => {
-      const res = await getAllEmployee();
-      return res.data;
+      const res = await getAllEmployee({
+        search: search,
+        page: page,
+        role: additionalParams.role,
+        status: additionalParams.status,
+        limit: 10,
+      });
+      return res.data.data;
     },
   });
 
@@ -191,13 +208,13 @@ export default function Employee() {
       </div>
 
       <div className="tw-w-full tw-flex tw-items-center tw-gap-8">
-        <div className="tw-w-1/4">
+        <div className="tw-w-1/3">
           <CustomSearchbar
             fullWidth
-            search=""
+            search={search}
             debounce
-            setSearch={() => {
-              console.log("ok");
+            setSearch={(text: string) => {
+              setSearch(text);
             }}
           />
         </div>
@@ -207,17 +224,33 @@ export default function Employee() {
             fullWidth
             label="FILTER BY ROLE"
             name="PurchaseOptions"
-            options={STATUS_OPTIONS}
-            value={""}
+            options={EMPLOYEE_OPTIONS}
+            value={additionalParams.role || ""}
             placeholder="Filter by Role"
             allOption="All Role"
             onChange={(e) => {
-              console.log(e);
+              setAdditionalParams((prevState) => ({
+                ...prevState,
+                role: e.value,
+              }));
+            }}
+          />
+        </div>
 
-              //   setAdditionalParams((prevState) => ({
-              //     ...prevState,
-              //     type: e.value,
-              //   }));
+        <div className="tw-w-1/3">
+          <CustomDropdown
+            fullWidth
+            label="FILTER BY STATUS"
+            name="PurchaseOptions"
+            options={STATUS_OPTIONS}
+            value={additionalParams.status || ""}
+            placeholder="Filter by Status"
+            allOption="All Status"
+            onChange={(e) => {
+              setAdditionalParams((prevState) => ({
+                ...prevState,
+                status: e.value,
+              }));
             }}
           />
         </div>

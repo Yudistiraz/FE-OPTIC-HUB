@@ -1,6 +1,6 @@
 "use client";
 
-import ProductForm from "@/components/form/product";
+import ProductForm from "@/components/form/ProductForm";
 import { Typography } from "@mui/material";
 
 export default function AddProduct() {

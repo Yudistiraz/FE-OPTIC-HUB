@@ -21,6 +21,7 @@ import {
   convertDataToDropdownOptions,
   getThousandSeparator,
 } from "@/utils/function";
+import { STATUS_OPTIONS } from "@/utils/constants";
 
 export default function Product() {
   const router = useRouter();
@@ -34,13 +35,26 @@ export default function Product() {
     selectedId,
     setSelectedId,
   } = useUserState();
-  const { page, setPage, search, setSearch } = useFilterState();
+  const {
+    page,
+    setPage,
+    search,
+    setSearch,
+    additionalParams,
+    setAdditionalParams,
+  } = useFilterState();
 
   const productsQuery = useQuery({
-    queryKey: ["products", search, page],
+    queryKey: ["products", search, page, additionalParams],
     queryFn: async () => {
-      const res = await getAllProduct();
-      return res.data;
+      const res = await getAllProduct({
+        productName: search,
+        categoryId: additionalParams.categoryId || "",
+        status: additionalParams.status || "",
+        page: page,
+        limit: 10,
+      });
+      return res.data.data;
     },
   });
 
@@ -50,6 +64,7 @@ export default function Product() {
       const res = await getAllProductCategory();
       return res.data;
     },
+    refetchOnWindowFocus: false,
   });
 
   const productDeleteMutation = useMutation({
@@ -98,12 +113,12 @@ export default function Product() {
       readonly: true,
     },
     {
-      field: "categoryID",
+      field: "category",
       headerName: "Category",
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.categoryID;
+        return <div className="tw-capitalize">{data?.row?.category?.name}</div>;
       },
       readonly: true,
     },
@@ -188,10 +203,10 @@ export default function Product() {
         <div className="tw-w-1/4">
           <CustomSearchbar
             fullWidth
-            search=""
+            search={search}
             debounce
-            setSearch={() => {
-              console.log("ok");
+            setSearch={(text: string) => {
+              setSearch(text);
             }}
           />
         </div>
@@ -200,23 +215,39 @@ export default function Product() {
           <CustomDropdown
             fullWidth
             label="FILTER BY CATEGORY"
-            name="PurchaseOptions"
+            name="categoryOptions"
             options={convertDataToDropdownOptions(
               productCategoryQuery.data,
               "name",
               "id"
             )}
-            value={""}
-            placeholder="Filter by Role"
+            value={additionalParams.categoryId || ""}
+            placeholder="Filter by Category"
             allOption="All Category"
             disabled={productCategoryQuery.isLoading}
             onChange={(e) => {
-              console.log(e);
+              setAdditionalParams((prevState) => ({
+                ...prevState,
+                categoryId: e.value,
+              }));
+            }}
+          />
+        </div>
 
-              //   setAdditionalParams((prevState) => ({
-              //     ...prevState,
-              //     type: e.value,
-              //   }));
+        <div className="tw-w-1/3">
+          <CustomDropdown
+            fullWidth
+            label="FILTER BY STATUS"
+            name="PurchaseOptions"
+            options={STATUS_OPTIONS}
+            value={additionalParams.status || ""}
+            placeholder="Filter by Status"
+            allOption="All Status"
+            onChange={(e) => {
+              setAdditionalParams((prevState) => ({
+                ...prevState,
+                status: e.value,
+              }));
             }}
           />
         </div>

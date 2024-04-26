@@ -14,7 +14,7 @@ interface DatePickerProps {
   label?: string;
   placeholder?: string;
   value: string;
-  onDateChange: (name: string, newValue: Dayjs | null) => void;
+  onDateChange: (newValue: Dayjs | null, name: string) => void;
   toolbarLabel?: string;
   orientation?: "portrait" | "landscape";
   disableFuture?: boolean;
@@ -89,7 +89,7 @@ export default function CustomDatePicker({
   return (
     <div className={`${fullWidth && "tw-w-full"}`}>
       {label && (
-        <div className="tw-mb-2">
+        <div>
           <Typography variant="labelSmall" className="tw-text-gray-600">
             {label}
           </Typography>
@@ -123,10 +123,10 @@ export default function CustomDatePicker({
           disablePast={disablePast}
           orientation={orientation}
           onChange={(newValue) => {
-            onDateChange(name, newValue); // to accomodate change from keyboard input
+            onDateChange(newValue, name); // to accomodate change from keyboard input
           }}
           onAccept={(newValue) => {
-            onDateChange(name, newValue); // handle on date change onAccept Click
+            onDateChange(newValue, name); // handle on date change onAccept Click
             handleSetOpen();
           }}
           open={open}

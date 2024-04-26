@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { Nunito_Sans } from "next/font/google";
+import "@/app/globals.css";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/lib/MuiTheme";
 import AuthContext from "@/components/providers/SessionProvider";
@@ -8,7 +8,10 @@ import { getServerSession } from "next-auth";
 import TanstackProvider from "@/components/providers/TanstackProvider";
 import { UserProvider } from "@/context/User";
 import { ScreenSizeProvider } from "@/context/MediaQuery";
-const inter = Inter({ subsets: ["latin"] });
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+});
 
 export const metadata: Metadata = {
   title: "Optic Hub App",
@@ -27,7 +30,7 @@ export default async function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className={`!tw-bg-white ${inter.className}`}>
+      <body className={`!tw-bg-white ${nunitoSans.className}`}>
         <AuthContext session={session}>
           <TanstackProvider>
             <UserProvider>

@@ -8,6 +8,7 @@ declare module "@mui/material/styles" {
     display2: React.CSSProperties;
     display3: React.CSSProperties;
     display4: React.CSSProperties;
+    display5: React.CSSProperties;
     title1: React.CSSProperties;
     title2: React.CSSProperties;
     subtitle1Reg: React.CSSProperties;
@@ -30,6 +31,7 @@ declare module "@mui/material/styles" {
     display2?: React.CSSProperties;
     display3?: React.CSSProperties;
     display4?: React.CSSProperties;
+    display5?: React.CSSProperties;
     title1: React.CSSProperties;
     title2: React.CSSProperties;
     subtitle1Reg?: React.CSSProperties;
@@ -54,6 +56,7 @@ declare module "@mui/material/Typography" {
     display2: true;
     display3: true;
     display4: true;
+    display5: true;
     title1: true;
     title2: true;
     subtitle1Reg: true;
@@ -134,7 +137,7 @@ export const theme = createTheme({
           letterSpacing: "2%",
           textTransform: "uppercase",
           borderRadius: "12px",
-          fontFamily: "__Inter_aaf875",
+          fontFamily: "var(--font-nunito)",
         },
       },
       //Create New Variants for Buttons
@@ -174,8 +177,8 @@ export const theme = createTheme({
               backgroundColor: "rgba(0, 59, 209, 0.1)",
             },
             ":disabled": {
-              borderColor: "#E7EAED !important",
-              color: "#A0A5AB",
+              borderColor: "#8A9097 !important",
+              backgroundColor: "#ABB1B7",
             },
           },
         },
@@ -268,6 +271,19 @@ export const theme = createTheme({
         },
       },
     },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+            {
+              display: "none",
+            },
+          "& input[type=number]": {
+            MozAppearance: "textfield",
+          },
+        },
+      },
+    },
     MuiPopover: {
       styleOverrides: {
         root: {
@@ -347,7 +363,7 @@ export const theme = createTheme({
   //Added New Variants and Edited Current Variants for Texts Variants
   //----------------------------------------------------------------------
   typography: {
-    fontFamily: "__Inter_aaf875",
+    fontFamily: "var(--font-nunito)",
     display1: {
       fontSize: "40px",
       fontWeight: 700,
@@ -370,6 +386,12 @@ export const theme = createTheme({
       fontSize: "28px",
       fontWeight: 700,
       lineHeight: "42px",
+      color: "black",
+    },
+    display5: {
+      fontSize: "24px",
+      fontWeight: 700,
+      lineHeight: "36px",
       color: "black",
     },
     h1: {
@@ -503,7 +525,7 @@ export const theme = createTheme({
     },
     helperText: {
       margin: "3px 14px",
-      fontSize: "11px",
+      fontSize: "12px",
       fontWeight: 400,
       lineHeight: "18px",
       letterSpacing: "6%",

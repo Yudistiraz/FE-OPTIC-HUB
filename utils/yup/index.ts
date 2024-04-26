@@ -59,3 +59,13 @@ export const addProductScheme = Yup.object({
   price: Yup.mixed().required("Proudct Price Required"),
   quantity: Yup.number().required("Proudct Stock Required"),
 });
+
+export const addTransactionScheme = Yup.object({
+  userId: Yup.string().required("User ID Required"),
+  userName: Yup.string().required("User Name Required"),
+  customerName: Yup.string().required("Customer Name Required"),
+  customerPhone: Yup.string().required("Customer Phone Number Required"),
+  customerEmail: Yup.string(),
+  paymentMethod: Yup.string().required("Payment Method Required"),
+  orderItem: Yup.array().min(1, "Item Required"),
+});

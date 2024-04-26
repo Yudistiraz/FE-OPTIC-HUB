@@ -115,7 +115,7 @@ function SidebarMenu() {
       />
       <div
         className="tw-py-4 tw-px-4 tw-mb-2 tw-cursor-pointer tw-group tw-bg-primary-400 tw-rounded-md tw-flex tw-gap-4 tw-items-center hover:tw-bg-primary-600 tw-duration-75"
-        onClick={() => onMenuClick("/transactions/add")}
+        onClick={() => onMenuClick("/transaction/add")}
       >
         <div className="tw-w-6 tw-h-6">
           <ImageLoader

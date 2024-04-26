@@ -13,7 +13,7 @@ export const getAllProduct = async (params?: ParamInterface) => {
 
 export const addProduct = async (data: any) => {
   const fetcher = await api();
-  return fetcher.post("/products/add-product", data.data);
+  return fetcher.post("/products", data.data);
 };
 
 export const getProductById = async (id: string) => {

@@ -2,9 +2,9 @@ import { useCustomFormik } from "@/hooks/formik";
 import { loginSchema } from "@/utils/yup";
 import { Typography } from "@mui/material";
 import React from "react";
-import CustomTextField from "../ui/TextField";
-import CustomButton from "../ui/Button";
-import FormLayout from "../ui/FormLayout";
+import CustomTextField from "../../ui/TextField";
+import CustomButton from "../../ui/Button";
+import FormLayout from "../../ui/FormLayout";
 import { gethelperText } from "@/utils/function";
 import { signIn } from "next-auth/react";
 import { adminSignIn } from "@/services/admin/v1/auth";
@@ -36,9 +36,9 @@ const Signinform = () => {
 
   const formik = useCustomFormik({
     initialValues: {
-      name: "fransiskus",
-      email: "",
-      password: "",
+      name: "admin",
+      email: "admin@example.com",
+      password: "admin",
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {

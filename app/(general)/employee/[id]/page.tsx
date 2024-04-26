@@ -1,5 +1,5 @@
 "use client";
-import EmployeeForm from "@/components/form/employee";
+import EmployeeForm from "@/components/form/EmployeeForm";
 import { getEmployeeById } from "@/services/admin/v1/employee";
 import { Typography } from "@mui/material";
 import { Fragment } from "react";
