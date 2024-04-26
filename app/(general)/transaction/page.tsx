@@ -35,7 +35,7 @@ export default function Product() {
     queryKey: ["transactions", search, page],
     queryFn: async () => {
       const res = await getAllTransaction();
-      return res.data;
+      return res.data.data;
     },
   });
 
