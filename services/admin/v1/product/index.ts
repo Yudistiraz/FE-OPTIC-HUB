@@ -18,7 +18,7 @@ export const addProduct = async (data: any) => {
 
 export const getProductById = async (id: string) => {
   const fetcher = await api();
-  return fetcher.get("/products/search?id=" + id);
+  return fetcher.get("/products/" + id);
 };
 
 export const updateProduct = async (data: any) => {
