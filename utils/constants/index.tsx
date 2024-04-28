@@ -116,11 +116,11 @@ export const STATUS_OPTIONS = [
 export const TRANSACTION_STATUS_OPTIONS = [
   {
     label: "Completed",
-    value: "complete",
+    value: "true",
   },
   {
     label: "Ongoing",
-    value: "ongoing",
+    value: "false",
   },
 ];
 
