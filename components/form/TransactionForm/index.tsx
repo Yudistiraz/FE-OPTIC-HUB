@@ -56,7 +56,7 @@ const TransactionForm = ({
     mutationFn: addTransaction,
     onSuccess: async () => {
       // toast.success("Success Added Admin");
-      router.push("/product");
+      router.push("/transaction");
     },
     onError: (error) => {
       const errorMessage = (error as any)?.response?.data?.message || "Error";
@@ -84,7 +84,7 @@ const TransactionForm = ({
       left_add: "",
       left_pd: "",
       orderItem: [],
-      withPrescriptions: false,
+      withPrescription: false,
     },
     validationSchema: addTransactionScheme,
     onSubmit: async (values) => {
@@ -107,7 +107,7 @@ const TransactionForm = ({
         left_add: values.left_add,
         left_pd: values.left_pd,
         orderItem: values.orderItem,
-        withPrescriptions: values.withPrescriptions,
+        withPrescription: values.withPrescription,
       };
 
       console.log(payload);
@@ -292,15 +292,15 @@ const TransactionForm = ({
 
           <CustomCheckbox
             label="With Prescriptions?"
-            name="withPrescriptions"
+            name="withPrescription"
             onChange={(value) => {
-              formik.setFieldValue("withPrescriptions", value);
+              formik.setFieldValue("withPrescription", value);
             }}
-            value={formik.values.withPrescriptions}
+            value={formik.values.withPrescription}
           />
         </FormLayout>
 
-        {formik.values.withPrescriptions && (
+        {formik.values.withPrescription && (
           <div>
             <div className="tw-flex tw-gap-6">
               <CustomTextField
