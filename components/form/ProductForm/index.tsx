@@ -48,7 +48,7 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
     queryKey: ["productCategories"],
     queryFn: async () => {
       const res = await getAllProductCategory();
-      return res.data;
+      return res.data?.data;
     },
   });
 
@@ -218,11 +218,13 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
             fullWidth
             label="PRODUCT CATEGORY"
             name="categoryId"
-            options={convertDataToDropdownOptions(
-              productCategoryQuery.data,
-              "name",
-              "id"
-            )}
+            options={
+              convertDataToDropdownOptions(
+                productCategoryQuery.data,
+                "name",
+                "id"
+              ) || ""
+            }
             disabled={productCategoryQuery.isLoading}
             value={formik.values.categoryId}
             placeholder="Choose Product Category"

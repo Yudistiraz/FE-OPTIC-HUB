@@ -66,10 +66,14 @@ export function convertDataToDropdownOptions<T>(
   labelField: keyof T,
   valueField: keyof T
 ): optionsDataType[] {
-  return (originalData || []).map((item) => ({
-    label: String(item[labelField]),
-    value: String(item[valueField]),
-  }));
+  if (originalData?.length > 0) {
+    return (originalData || []).map((item) => ({
+      label: String(item[labelField]),
+      value: String(item[valueField]),
+    }));
+  } else {
+    return [];
+  }
 }
 
 // export function addProductToArray<T extends TProduct>(
