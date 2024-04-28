@@ -36,8 +36,8 @@ const Signinform = () => {
 
   const formik = useCustomFormik({
     initialValues: {
-      name: "admin",
-      email: "admin@example.com",
+      name: "admin@mail.com",
+      email: "admin@mail.com",
       password: "admin",
     },
     validationSchema: loginSchema,
