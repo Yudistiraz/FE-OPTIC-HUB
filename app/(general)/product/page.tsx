@@ -48,7 +48,7 @@ export default function Product() {
     queryKey: ["products", search, page, additionalParams],
     queryFn: async () => {
       const res = await getAllProduct({
-        productName: search,
+        keyword: search,
         categoryId: additionalParams.categoryId || "",
         status: additionalParams.status || "",
         page: page,
@@ -62,7 +62,7 @@ export default function Product() {
     queryKey: ["productCategories"],
     queryFn: async () => {
       const res = await getAllProductCategory();
-      return res.data;
+      return res.data?.data;
     },
     refetchOnWindowFocus: false,
   });

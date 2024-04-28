@@ -50,7 +50,7 @@ export default function Employee() {
     queryKey: ["employee", search, page, additionalParams],
     queryFn: async () => {
       const res = await getAllEmployee({
-        search: search,
+        keyword: search,
         page: page,
         role: additionalParams.role,
         status: additionalParams.status,
