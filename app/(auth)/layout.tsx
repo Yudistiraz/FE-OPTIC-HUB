@@ -1,9 +1,6 @@
 import ImageLoader from "@/components/ui/ImageLoader";
 import type { Metadata } from "next";
-
-// import BottomMenu from '@/component/layouts/BottomMenu'
-// import Footer from '@/component/layouts/Footer'
-// import Header from '@/component/layouts/Header'
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Optic Hub App",
@@ -23,6 +20,7 @@ export default function AuthLayout({
         </div>
       </div>
       {children}
+      <Toaster position="bottom-center" />
     </div>
   );
 }

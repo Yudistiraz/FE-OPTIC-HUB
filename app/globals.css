@@ -101,3 +101,21 @@ a {
 .pointer {
   cursor: pointer;
 }
+
+@keyframes custom-enter {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes custom-exit {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(125%);
+  }
+}
