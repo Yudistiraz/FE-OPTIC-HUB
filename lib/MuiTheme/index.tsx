@@ -154,11 +154,11 @@ export const theme = createTheme({
             opacity: 1,
             transition: "0.3s",
             ":hover": {
-              backgroundColor: "#1A45AA !important",
+              backgroundColor: "#3569E0 !important",
               color: "#fff",
             },
             ":disabled": {
-              backgroundColor: "#1A45AA !important",
+              backgroundColor: "#3569E0 !important",
               color: "#fff",
             },
           },
@@ -167,18 +167,21 @@ export const theme = createTheme({
           props: { variant: "secondary" },
           style: {
             backgroundColor: "#fff",
-            color: "#252525",
+            color: "#000000",
             width: "100%",
             height: "48px",
             boxShadow: "none",
-            border: "1px solid #252525",
+            border: "2px solid #252525",
             transition: "0.3s",
             ":hover": {
-              backgroundColor: "rgba(0, 59, 209, 0.1)",
+              backgroundColor: "#CBCDCF",
+              borderColor: "#AFB0B0 !important",
             },
             ":disabled": {
-              borderColor: "#8A9097 !important",
-              backgroundColor: "#ABB1B7",
+              backgroundColor: "#CBCDCF",
+              borderColor: "#AFB0B0 !important",
+              // borderColor: "#8A9097 !important",
+              // backgroundColor: "#ABB1B7",
             },
           },
         },
@@ -329,6 +332,13 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           // Customize the root style of outlined TextField
+          "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+            {
+              display: "none",
+            },
+          "& input[type=number]": {
+            MozAppearance: "textfield",
+          },
           borderRadius: "0.5rem",
           "& .Mui-disabled": {
             WebkitTextFillColor: "#000000 !important",
