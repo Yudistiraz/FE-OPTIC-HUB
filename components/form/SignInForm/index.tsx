@@ -79,7 +79,6 @@ const Signinform = () => {
             label="Password"
             placeholder="Password"
             password
-            type="text"
             helperText={gethelperText(
               formik.touched.password as boolean,
               formik.errors.password as string
