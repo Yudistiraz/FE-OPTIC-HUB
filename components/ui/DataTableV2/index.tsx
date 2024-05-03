@@ -19,7 +19,7 @@ const CustomDataTable = (props: any) => {
   } = props;
   return (
     <>
-      <div style={{ width: "100%" }}>
+      <div className="tw-max-w-full">
         <DataGrid
           {...otherProps}
           loading={isLoading}
