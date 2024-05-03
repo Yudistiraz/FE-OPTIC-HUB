@@ -26,6 +26,7 @@ import {
 } from "@/services/admin/v1/product";
 import { useRouter } from "next/navigation";
 import { getAllProductCategory } from "@/services/admin/v1/productCategory";
+import toast from "react-hot-toast";
 
 interface ProductFormProps {
   isEdit?: boolean;
@@ -55,38 +56,41 @@ const ProductForm = ({ isEdit = false, data = null }: ProductFormProps) => {
   const productAddMutation = useMutation({
     mutationFn: addProduct,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Product Successfully Added");
       router.push("/product");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      const errorMessage =
+        (error as any)?.response?.data?.message || "Error Adding Product";
+      toast.error(errorMessage);
     },
   });
 
   const productUpdateMutation = useMutation({
     mutationFn: updateProduct,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Product Successfully Updated");
       router.push("/product");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      const errorMessage =
+        (error as any)?.response?.data?.message || "Error Updating Product";
+      toast.error(errorMessage);
     },
   });
 
   const productDeleteMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Product Successfully Deleted");
       setOpenDialog(false);
       resetDialogText();
       router.push("/product");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      const errorMessage =
+        (error as any)?.response?.data?.message || "Error Deleting Product";
+      toast.error(errorMessage);
     },
   });
 
