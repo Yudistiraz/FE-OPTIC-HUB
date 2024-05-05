@@ -15,14 +15,14 @@ export default function EmployeeDetail({ params }: { params: { id: string } }) {
   });
   return (
     <div className="tw-flex tw-flex-col tw-gap-6">
-      {employeeDetailQuery.data && (
-        <Fragment>
-          <Typography variant="h2">
-            Employee : {employeeDetailQuery.data.name}
-          </Typography>
-          <EmployeeForm isEdit data={employeeDetailQuery?.data} />
-        </Fragment>
-      )}
+      <Typography variant="h2">
+        Employee : {employeeDetailQuery?.data?.name}
+      </Typography>
+      <EmployeeForm
+        isEdit
+        data={employeeDetailQuery?.data}
+        isLoading={employeeDetailQuery.isLoading}
+      />
     </div>
   );
 }
