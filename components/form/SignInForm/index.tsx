@@ -36,7 +36,7 @@ const Signinform = () => {
 
   const formik = useCustomFormik({
     initialValues: {
-      name: "admin@mail.com",
+      // name: "admin@mail.com",
       email: "admin@mail.com",
       password: "admin",
     },
