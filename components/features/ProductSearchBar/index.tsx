@@ -88,20 +88,28 @@ export default function ProductSearchBar({
             </div>
           ) : (
             <Fragment>
-              {productData?.map((product) => (
-                <ProductDropdownCard
-                  data={product}
-                  disabled={
-                    isItemInArray(selectedArray, product) ||
-                    product.quantity === 0
-                  }
-                  onClick={() => {
-                    onProductDropdownClick(product);
-                    resetInput();
-                  }}
-                  key={product.id}
-                />
-              ))}
+              {productData?.length === 0 ? (
+                <div className="tw-flex tw-justify-center tw-items-center tw-p-8">
+                  No Data
+                </div>
+              ) : (
+                <Fragment>
+                  {productData?.map((product) => (
+                    <ProductDropdownCard
+                      data={product}
+                      disabled={
+                        isItemInArray(selectedArray, product) ||
+                        product.quantity === 0
+                      }
+                      onClick={() => {
+                        onProductDropdownClick(product);
+                        resetInput();
+                      }}
+                      key={product.id}
+                    />
+                  ))}
+                </Fragment>
+              )}
             </Fragment>
           )}
         </Paper>
