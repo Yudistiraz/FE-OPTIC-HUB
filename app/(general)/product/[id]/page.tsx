@@ -16,10 +16,14 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
 
   return (
     <div className="tw-flex tw-flex-col tw-gap-6">
-      <Typography variant="h2">Product : {params.id}</Typography>
-      {!productDetailQuery.isLoading && (
-        <ProductForm isEdit data={productDetailQuery.data} />
-      )}
+      <Typography variant="h2">
+        Product : {productDetailQuery?.data?.name}
+      </Typography>
+      <ProductForm
+        isEdit
+        data={productDetailQuery.data}
+        isLoading={productDetailQuery.isLoading}
+      />
     </div>
   );
 }
