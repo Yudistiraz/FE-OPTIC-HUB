@@ -105,11 +105,11 @@ export const DUMMY_SELECT_OPTIONS = [
 export const STATUS_OPTIONS = [
   {
     label: "Active",
-    value: "true",
+    value: "active",
   },
   {
     label: "Inactive",
-    value: "false",
+    value: "inactive",
   },
 ];
 
