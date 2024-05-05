@@ -42,6 +42,8 @@ export default function Product() {
     setSearch,
     additionalParams,
     setAdditionalParams,
+    totalPages,
+    setTotalPages,
   } = useFilterState();
 
   const productsQuery = useQuery({
@@ -54,8 +56,10 @@ export default function Product() {
         page: page,
         limit: 10,
       });
+      setTotalPages(res?.data?.metadata?.totalPages || 1);
       return res.data.data;
     },
+    refetchOnWindowFocus: true,
   });
 
   const productCategoryQuery = useQuery({
@@ -267,10 +271,10 @@ export default function Product() {
             }
           }}
           onPageChange={(param: number) => {
-            //   setPage(param);
+            setPage(param);
           }}
-          page={1}
-          totalPage={10}
+          page={page}
+          totalPage={totalPages}
         />
       )}
 
