@@ -14,6 +14,18 @@ export default function ProductDropdownCard({
   disabled = false,
   data,
 }: ProductDropdownCardProps) {
+  const getItemStatusText = () => {
+    if (disabled) {
+      if (data.quantity === 0) {
+        return "Item Is Not Available";
+      } else {
+        return "Item Already Selected";
+      }
+    } else {
+      `Stock : ${data?.quantity}`;
+    }
+  };
+
   return (
     <div
       className={`tw-w-full tw-flex tw-rounded-md tw-gap-4 tw-p-1 ${
@@ -51,7 +63,7 @@ export default function ProductDropdownCard({
               disabled && "tw-text-red-800 tw-italic"
             }`}
           >
-            {disabled ? "Item Already Selected" : `Stock : ${data?.quantity}`}
+            {getItemStatusText()}
           </div>
         </div>
       </div>
