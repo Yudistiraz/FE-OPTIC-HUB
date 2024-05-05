@@ -38,6 +38,8 @@ export default function Employee() {
     setSearch,
     additionalParams,
     setAdditionalParams,
+    totalPages,
+    setTotalPages,
   } = useFilterState();
   const [selectedId, setSelectedId] = useState("");
   const session = useSession();
@@ -52,8 +54,10 @@ export default function Employee() {
         status: additionalParams.status,
         limit: 10,
       });
+      setTotalPages(res?.data?.metadata?.totalPages || 1);
       return res.data.data;
     },
+    refetchOnWindowFocus: true,
   });
 
   const employeeDeleteMutation = useMutation({
@@ -270,10 +274,10 @@ export default function Employee() {
           }
         }}
         onPageChange={(param: number) => {
-          //   setPage(param);
+          setPage(param);
         }}
-        page={1}
-        totalPage={10}
+        page={page}
+        totalPage={totalPages}
         getRowId={(row: any) => row?.name}
       />
 
