@@ -74,4 +74,5 @@ export type TTransaction = {
   transactionDate: Date | string;
   orderItem?: OrderItem[];
   prescription?: Prescription;
+  withPrescription: boolean;
 };
