@@ -91,11 +91,15 @@ export default function ProductSearchBar({
               {productData?.map((product) => (
                 <ProductDropdownCard
                   data={product}
-                  disabled={isItemInArray(selectedArray, product)}
+                  disabled={
+                    isItemInArray(selectedArray, product) ||
+                    product.quantity === 0
+                  }
                   onClick={() => {
                     onProductDropdownClick(product);
                     resetInput();
                   }}
+                  key={product.id}
                 />
               ))}
             </Fragment>
