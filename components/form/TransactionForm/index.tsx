@@ -1,7 +1,7 @@
 import { useCustomFormik } from "@/hooks/formik";
 import { addTransactionScheme } from "@/utils/yup";
 
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
@@ -13,54 +13,48 @@ import {
   updateOrderItems,
 } from "@/utils/function";
 import CustomDropdown from "@/components/ui/Select";
-import { useUserState } from "@/context/User";
 import { useMutation } from "react-query";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Divider, Typography } from "@mui/material";
-import { DUMMY_PRODUCT, PAYMENT_METHOD_OPTIONS } from "@/utils/constants";
+import { PAYMENT_METHOD_OPTIONS } from "@/utils/constants";
 import CustomCheckbox from "../../ui/Checkbox";
 import ProductSearchBar from "../../features/ProductSearchBar";
 import ProductOverview from "../../features/ProductOverview";
-import { OrderItem, TProduct } from "@/utils/models";
+import { OrderItem, TProduct, TTransaction } from "@/utils/models";
 import { addTransaction } from "@/services/admin/v1/transaction";
+import toast from "react-hot-toast";
 
-interface ProductFormProps {
+interface TransactionFormProps {
   isEdit?: boolean;
   productSearch?: string;
   setProductSearch?: (productSearch: string) => void;
-  productData?: TProduct[];
+  transactionData?: TTransaction | {};
   isProductLoading?: boolean;
+  productData?: TProduct[];
 }
 
 const TransactionForm = ({
   isEdit = false,
   productSearch = "",
   setProductSearch = () => {},
+  transactionData = {},
   productData = [],
   isProductLoading = false,
-}: ProductFormProps) => {
-  const {
-    openDialog,
-    setOpenDialog,
-    dialogMessage,
-    dialogTitle,
-    resetDialogText,
-    setDialogTitle,
-  } = useUserState();
-
+}: TransactionFormProps) => {
   const router = useRouter();
   const session = useSession();
 
   const transactionAddMutation = useMutation({
     mutationFn: addTransaction,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Transaction Successfully Added");
       router.push("/transaction");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      const errorMessage =
+        (error as any)?.response?.data?.message || "Error Adding Transaction";
+      toast.error(errorMessage);
     },
   });
 
@@ -91,21 +85,23 @@ const TransactionForm = ({
       const payload = {
         userId: values.userId,
         userName: values.userName,
-        customerName: values.customerName,
-        customerPhone: values.customerPhone,
-        customerEmail: values.customerEmail,
         paymentMethod: values.paymentMethod,
         isComplete: false,
-        right_sph: values.right_sph,
-        right_cylinder: values.right_cylinder,
-        right_axis: values.right_axis,
-        right_add: values.right_add,
-        right_pd: values.right_pd,
-        left_sph: values.left_sph,
-        left_cylinder: values.left_cylinder,
-        left_axis: values.left_axis,
-        left_add: values.left_add,
-        left_pd: values.left_pd,
+        prescription: {
+          customerName: values.customerName,
+          customerPhone: values.customerPhone,
+          customerEmail: values.customerEmail,
+          right_sph: values.right_sph,
+          right_cylinder: values.right_cylinder,
+          right_axis: values.right_axis,
+          right_add: values.right_add,
+          right_pd: values.right_pd,
+          left_sph: values.left_sph,
+          left_cylinder: values.left_cylinder,
+          left_axis: values.left_axis,
+          left_add: values.left_add,
+          left_pd: values.left_pd,
+        },
         orderItem: values.orderItem,
         withPrescription: values.withPrescription,
       };
