@@ -83,6 +83,12 @@ declare module "@mui/material/Button" {
   }
 }
 
+declare module "@mui/material/Skeleton" {
+  interface SkeletonPropsVariantOverrides {
+    textField: true;
+  }
+}
+
 declare module "@mui/material/Chip" {
   interface ChipPropsVariantOverrides {
     secondary: true;
@@ -228,6 +234,20 @@ export const theme = createTheme({
         },
       ],
     },
+    MuiSkeleton: {
+      variants: [
+        {
+          props: {
+            variant: "textField",
+          },
+          style: {
+            height: "53.125px",
+            width: "100%",
+            borderRadius: "0.5rem",
+          },
+        },
+      ],
+    },
     MuiChip: {
       styleOverrides: {
         root: {
@@ -328,6 +348,16 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          "& .Mui-disabled": {
+            WebkitTextFillColor: "#000000 !important",
+            backgroundColor: "#F3F6F9 !important",
+          },
+        },
+      },
+    },
     MuiTextField: {
       styleOverrides: {
         root: {
@@ -342,7 +372,7 @@ export const theme = createTheme({
           borderRadius: "0.5rem",
           "& .Mui-disabled": {
             WebkitTextFillColor: "#000000 !important",
-            backgroundColor: "#E3E3E3 !important",
+            backgroundColor: "#F3F6F9 !important",
           },
         },
       },
