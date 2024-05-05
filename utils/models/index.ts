@@ -28,16 +28,32 @@ export type TProduct = {
   category?: ProductCategory;
 };
 
-export type OrderItem = TProduct & {
-  qty: number;
-};
-
 export type ProductCategory = {
   id: string;
   createdAt?: Date | string | null;
   updatedAt?: Date | string | null;
   deletedAt?: Date | string | null;
   name: string;
+};
+
+export type OrderItem = TProduct & {
+  qty: number;
+};
+
+export type Prescription = {
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string;
+  right_sph: string;
+  right_cylinder: string;
+  right_axis: string;
+  right_add: string;
+  right_pd: string;
+  left_sph: string;
+  left_cylinder: string;
+  left_axis: string;
+  left_add: string;
+  left_pd: string;
 };
 
 export type TTransaction = {
@@ -56,4 +72,6 @@ export type TTransaction = {
   totalPrice: number;
   imageUrl: string;
   transactionDate: Date | string;
+  orderItem?: OrderItem[];
+  prescription?: Prescription;
 };
