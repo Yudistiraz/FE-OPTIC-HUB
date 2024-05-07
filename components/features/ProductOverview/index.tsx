@@ -24,7 +24,7 @@ export default function ProductOverview({
     <div className="tw-w-full tw-min-h-48 tw-bg-gray-200 tw-rounded-md tw-overflow-hidden tw-p-2 tw-flex tw-gap-2 tw-flex-col">
       {productData?.length > 0 ? (
         <Fragment>
-          {productData.map((product) => (
+          {productData.map((product: OrderItem) => (
             <ProductTransactionCard
               data={product}
               onDelete={(productId: string) => {
@@ -35,6 +35,7 @@ export default function ProductOverview({
               onChange={(orderItemData: OrderItem) => {
                 onOrderItemChange(orderItemData);
               }}
+              key={product.id}
             />
           ))}
         </Fragment>
