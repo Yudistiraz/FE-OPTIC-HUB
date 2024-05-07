@@ -74,7 +74,7 @@ export default function ProductTransactionCard({
                 variant="standard"
                 type="number"
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
-                value={data?.qty}
+                value={data?.qty || 1}
                 onChange={(e) => {
                   onChange(
                     updateOrderItemQuantity(
