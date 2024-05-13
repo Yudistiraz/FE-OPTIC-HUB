@@ -8,7 +8,7 @@ export type TEmployee = {
   email: string;
   password: string;
   phone_number: string;
-  status: boolean;
+  status: string;
   role: string;
 };
 
@@ -21,8 +21,8 @@ export type TProduct = {
   priceBeforeTax: number;
   tax: number;
   price: number;
-  status: boolean;
-  quantity: number;
+  status: string;
+  quantity?: number;
   imageUrl: string;
   categoryId?: string;
   category?: ProductCategory;
@@ -38,6 +38,7 @@ export type ProductCategory = {
 
 export type OrderItem = TProduct & {
   qty: number;
+  categoryName?: string;
 };
 
 export type Prescription = {
@@ -65,7 +66,7 @@ export type TTransaction = {
   customerPhone: string;
   customerEmail: string;
   totalItem: number;
-  isComplete: boolean;
+  status: string;
   paymentMethod: string;
   subTotal: number;
   tax: number;
