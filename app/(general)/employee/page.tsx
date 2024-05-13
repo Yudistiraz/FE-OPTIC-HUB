@@ -153,7 +153,7 @@ export default function Employee() {
         return (
           <div className="tw-flex tw-items-center tw-h-full">
             <CustomBadge
-              status={data?.row?.status}
+              status={data?.row?.status === "active" ? true : false}
               trueLabel="Active"
               falseLabel="Inactive"
             />
@@ -180,6 +180,9 @@ export default function Employee() {
                 console.log(data?.row?.name);
               }}
               id="deleteButton"
+              disabled={
+                data?.row?.id === session?.data?.user?.id ? true : false
+              }
             >
               <Delete />
             </IconButton>
