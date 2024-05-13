@@ -87,10 +87,10 @@ export default function Product() {
   });
 
   const onDeleteClick = (name: string, id: string) => {
-    // resetDialogText();
-    // setSelectedId(id);
-    // setDialogTitle(`Are you sure you want to Delete ${name} Product?`);
-    // setOpenDialog(true);
+    resetDialogText();
+    setSelectedId(id);
+    setDialogTitle(`Are you sure you want to Delete ${name} Product?`);
+    setOpenDialog(true);
   };
 
   const onPopUpCancel = () => {
@@ -155,7 +155,9 @@ export default function Product() {
         return (
           <Fragment>
             <div className="tw-flex tw-items-center tw-h-full">
-              <CustomBadge status={data?.row?.status} />
+              <CustomBadge
+                status={data?.row?.status === "active" ? true : false}
+              />
             </div>
           </Fragment>
         );
