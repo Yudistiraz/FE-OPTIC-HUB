@@ -6,11 +6,12 @@ import { deleteProductFromArray } from "@/utils/function";
 import { OrderItem } from "@/utils/models";
 
 interface ProductOverviewProps {
-  productData: any[];
+  productData: OrderItem[];
   onDeleteProduct: (productData: any) => void;
   onOrderItemChange: (OrderItem: OrderItem) => void;
   error?: boolean;
   helperText?: string;
+  disabled?: boolean;
 }
 
 export default function ProductOverview({
@@ -19,6 +20,7 @@ export default function ProductOverview({
   onOrderItemChange = () => {},
   error = false,
   helperText = "",
+  disabled = false,
 }: ProductOverviewProps) {
   return (
     <div className="tw-w-full tw-min-h-48 tw-bg-gray-200 tw-rounded-md tw-overflow-hidden tw-p-2 tw-flex tw-gap-2 tw-flex-col">
@@ -36,6 +38,7 @@ export default function ProductOverview({
                 onOrderItemChange(orderItemData);
               }}
               key={product.id}
+              disabled={disabled}
             />
           ))}
         </Fragment>
