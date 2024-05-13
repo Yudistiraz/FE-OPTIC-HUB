@@ -116,11 +116,15 @@ export const STATUS_OPTIONS = [
 export const TRANSACTION_STATUS_OPTIONS = [
   {
     label: "Completed",
-    value: "true",
+    value: "complete",
   },
   {
     label: "Ongoing",
-    value: "false",
+    value: "onGoing",
+  },
+  {
+    label: "Cancelled",
+    value: "cancel",
   },
 ];
 
@@ -136,6 +140,10 @@ export const PAYMENT_METHOD_OPTIONS = [
   {
     label: "Debit Card",
     value: "debit",
+  },
+  {
+    label: "Credit Card",
+    value: "credit_card",
   },
 ];
 
