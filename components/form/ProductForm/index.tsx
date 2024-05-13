@@ -7,8 +7,10 @@ import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
 import {
   convertDataToDropdownOptions,
+  convertEnumValue,
   gethelperText,
   removeThousandsSeparator,
+  removeThousandsSeparatortoString,
 } from "@/utils/function";
 import CustomDropdown from "@/components/ui/Select";
 import CustomSwitch from "@/components/ui/Switch";
@@ -135,8 +137,8 @@ const ProductForm = ({
       categoryId: data?.categoryId || "",
       price: data?.price || "",
       quantity: data?.quantity || "",
-      status: data?.status || true,
-      imageUrl: "",
+      status: convertEnumValue(data?.status),
+      imageUrl: data?.imageUrl || "",
       newImage: null,
     },
     validationSchema: addProductScheme,
@@ -150,13 +152,18 @@ const ProductForm = ({
         image_url: values.imageUrl,
       };
 
+      let price = removeThousandsSeparatortoString(values.price);
+
       const formData = new FormData();
-      formData.append("name", payload.name);
-      formData.append("categoryId", payload.categoryId);
-      formData.append("price", payload.categoryId);
-      formData.append("quantity", payload.quantity);
-      formData.append("status", payload.status);
-      formData.append("image_url", payload.image_url);
+      formData.append("name", values.name);
+      formData.append("categoryId", values.categoryId);
+      formData.append("price", price);
+      formData.append("quantity", values.quantity);
+      formData.append(
+        "status",
+        isEdit && values.status === false ? "inactive" : "active"
+      );
+      formData.append("imageUrl", values.newImage);
 
       if (isEdit) {
         productUpdateMutation.mutate({ id: data?.id, data: formData });
@@ -202,8 +209,8 @@ const ProductForm = ({
             )}
 
             <ImageUpload
-              value={formik?.values?.name}
-              imageUrl={formik?.values?.imageUrl}
+              value={formik?.values?.name || ""}
+              imageUrl={formik?.values?.imageUrl || ""}
               onImageChange={onImageChange}
               onImageClear={onImageClear}
               newImage={formik?.values?.newImage}
