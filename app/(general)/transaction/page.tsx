@@ -39,7 +39,7 @@ export default function Product() {
       const res = await getAllTransaction({
         keyword: search,
         page: page,
-        isComplete: additionalParams.status,
+        status: additionalParams.status,
         limit: 10,
       });
       setTotalPages(res?.data?.metadata?.totalPages || 1);
@@ -66,7 +66,7 @@ export default function Product() {
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.customerName;
+        return data?.row?.prescription?.customerName;
       },
       readonly: true,
     },
@@ -90,8 +90,15 @@ export default function Product() {
           <Fragment>
             <div className="tw-flex tw-items-center tw-h-full">
               <CustomBadge
-                status={data?.row?.isComplete}
-                falseLabel="Ongoing"
+                status={data?.row?.status === "complete" ? true : false}
+                falseLabel={
+                  data?.row?.status === "cancel" ? "Cancelled" : "Ongoing"
+                }
+                falseColor={
+                  data?.row?.status === "cancel"
+                    ? "tw-bg-danger-500"
+                    : "tw-bg-gray-700"
+                }
                 trueLabel="Completed"
               />
             </div>
