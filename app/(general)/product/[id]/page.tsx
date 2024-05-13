@@ -12,6 +12,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
       const res = await getProductById(params.id);
       return res.data.data;
     },
+    refetchOnWindowFocus: false,
   });
 
   return (
