@@ -5,7 +5,7 @@ import React from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
-import { gethelperText } from "@/utils/function";
+import { convertEnumValue, gethelperText } from "@/utils/function";
 import CustomDatePicker from "@/components/ui/DatePicker";
 import CustomDropdown from "@/components/ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
@@ -102,7 +102,7 @@ const EmployeeForm = ({
       email: data?.email || "",
       password: "",
       role: data?.role || "staff",
-      status: data?.status || true,
+      status: convertEnumValue(data?.status),
     },
     validationSchema: isEdit ? updateEmployeeSchema : addEmployeeSchema,
     onSubmit: async (values) => {
@@ -112,7 +112,7 @@ const EmployeeForm = ({
         dob: formateDate1(values.dob),
         phone_number: values.phone_number,
         password: values.password,
-        status: values.status,
+        status: isEdit && values.status === false ? "inactive" : "active",
         role: values.role,
       };
 
