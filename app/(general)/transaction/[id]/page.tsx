@@ -18,7 +18,7 @@ export default function TransactionDetail({
   });
   return (
     <div className="tw-flex tw-flex-col tw-gap-6">
-      <Typography variant="h2">Add Transaction</Typography>
+      <Typography variant="h2">Transaction : {params.id}</Typography>
       <TransactionForm
         isLoading={transactionDetailQuery.isLoading}
         transactionData={transactionDetailQuery.data}
