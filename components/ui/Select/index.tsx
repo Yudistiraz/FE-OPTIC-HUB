@@ -67,6 +67,7 @@ function CustomDropdown({
       )}
 
       <Select
+        MenuProps={{ disableScrollLock: true }}
         fullWidth
         className={classNamees}
         variant={variant}

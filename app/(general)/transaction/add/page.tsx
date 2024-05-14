@@ -23,7 +23,7 @@ export default function addTransaction() {
     ["products", productSearch],
     async () => {
       const res = await getAllProduct({
-        search: productSearch,
+        keyword: productSearch,
         page: 1,
         limit: 999,
       });

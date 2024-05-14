@@ -29,14 +29,23 @@ export default function Product() {
     setSearch,
     additionalParams,
     setAdditionalParams,
+    totalPages,
+    setTotalPages,
   } = useFilterState();
 
   const transactionQuery = useQuery({
-    queryKey: ["transactions", search, page],
+    queryKey: ["transactions", search, page, additionalParams],
     queryFn: async () => {
-      const res = await getAllTransaction();
+      const res = await getAllTransaction({
+        keyword: search,
+        page: page,
+        status: additionalParams.status,
+        limit: 10,
+      });
+      setTotalPages(res?.data?.metadata?.totalPages || 1);
       return res.data.data;
     },
+    refetchOnWindowFocus: true,
   });
 
   const transactionColumn = [
@@ -57,7 +66,7 @@ export default function Product() {
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.customerName;
+        return data?.row?.prescription?.customerName;
       },
       readonly: true,
     },
@@ -81,8 +90,15 @@ export default function Product() {
           <Fragment>
             <div className="tw-flex tw-items-center tw-h-full">
               <CustomBadge
-                status={data?.row?.isComplete}
-                falseLabel="Ongoing"
+                status={data?.row?.status === "complete" ? true : false}
+                falseLabel={
+                  data?.row?.status === "cancel" ? "Cancelled" : "Ongoing"
+                }
+                falseColor={
+                  data?.row?.status === "cancel"
+                    ? "tw-bg-danger-500"
+                    : "tw-bg-gray-700"
+                }
                 trueLabel="Completed"
               />
             </div>
@@ -126,10 +142,10 @@ export default function Product() {
         <div className="tw-w-1/4">
           <CustomSearchbar
             fullWidth
-            search=""
+            search={search}
             debounce
-            setSearch={() => {
-              console.log("ok");
+            setSearch={(text: string) => {
+              setSearch(text);
             }}
           />
         </div>
@@ -140,11 +156,14 @@ export default function Product() {
             label="FILTER BY TRANSACTION STATUS"
             name="PurchaseOptions"
             options={TRANSACTION_STATUS_OPTIONS}
-            value={""}
+            value={additionalParams.status || ""}
             placeholder="Filter by Transaction Status"
             allOption="All Status"
             onChange={(e) => {
-              console.log(e);
+              setAdditionalParams((prevState) => ({
+                ...prevState,
+                status: e.value,
+              }));
             }}
           />
         </div>
@@ -184,26 +203,24 @@ export default function Product() {
         </div>
       </div>
 
-      {!transactionQuery.isLoading && (
-        <CustomDataTable
-          columns={transactionColumn}
-          rows={transactionQuery.data}
-          limit={10}
-          disableColumnResize={true}
-          disableColumnMenu={true}
-          onRowClick={(item: any, data: any) => {
-            const cell = data.target.getAttribute("data-colindex");
-            if (cell < "5" && cell !== null) {
-              router.push(`/transaction/${item?.row?.id}`);
-            }
-          }}
-          onPageChange={(param: number) => {
-            //   setPage(param);
-          }}
-          page={1}
-          totalPage={10}
-        />
-      )}
+      <CustomDataTable
+        columns={transactionColumn}
+        rows={transactionQuery?.data}
+        limit={10}
+        disableColumnResize={true}
+        disableColumnMenu={true}
+        onRowClick={(item: any, data: any) => {
+          const cell = data.target.getAttribute("data-colindex");
+          if (cell < "5" && cell !== null) {
+            router.push(`/transaction/${item?.row?.id}`);
+          }
+        }}
+        onPageChange={(param: number) => {
+          setPage(param);
+        }}
+        page={page}
+        totalPage={totalPages}
+      />
     </div>
   );
 }

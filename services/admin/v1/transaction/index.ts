@@ -15,3 +15,13 @@ export const addTransaction = async (data: any) => {
   const fetcher = await api();
   return fetcher.post("/order", data.data);
 };
+
+export const getTransactionById = async (id: string) => {
+  const fetcher = await api();
+  return fetcher.get("/order/" + id);
+};
+
+export const updateTransaction = async (data: any) => {
+  const fetcher = await api();
+  return fetcher.patch("/order/" + data.id, data.data);
+};

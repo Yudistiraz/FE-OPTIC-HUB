@@ -128,6 +128,7 @@ function CustomTextField({
         FormHelperTextProps={{
           style: { marginInline: "0", fontStyle: "italic" },
         }}
+        onWheel={(e) => e.target instanceof HTMLElement && e.target.blur()}
         // onBlur={onBlur}
         InputProps={{
           startAdornment: (

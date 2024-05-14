@@ -61,15 +61,28 @@ export function removeThousandsSeparator(
   return parseFloat(str.replace(/,/g, ""));
 }
 
+export function removeThousandsSeparatortoString(
+  numberString: string | number
+): string {
+  const str =
+    typeof numberString === "number" ? numberString.toString() : numberString;
+
+  return str.replace(/,/g, "");
+}
+
 export function convertDataToDropdownOptions<T>(
   originalData: T[],
   labelField: keyof T,
   valueField: keyof T
 ): optionsDataType[] {
-  return (originalData || []).map((item) => ({
-    label: String(item[labelField]),
-    value: String(item[valueField]),
-  }));
+  if (originalData?.length > 0) {
+    return (originalData || []).map((item) => ({
+      label: String(item[labelField]),
+      value: String(item[valueField]),
+    }));
+  } else {
+    return [];
+  }
 }
 
 // export function addProductToArray<T extends TProduct>(
@@ -98,9 +111,10 @@ export function deleteProductFromArray<T extends { id: string }>(
 export function updateOrderItemQuantity(
   quantity: number,
   orderItem: OrderItem,
-  maxStock: number
+  maxStock: number | undefined
 ): OrderItem {
-  const updatedQuantity = Math.max(1, Math.min(quantity, maxStock));
+  let maximumStock = maxStock || 1;
+  const updatedQuantity = Math.max(1, Math.min(quantity, maximumStock));
   return {
     ...orderItem,
     qty: updatedQuantity || 1,
@@ -128,4 +142,15 @@ export function calculateTotalPrice(products: OrderItem[]): number {
   });
 
   return totalPrice;
+}
+
+export function convertEnumValue(enumValue: string | undefined): boolean {
+  if (enumValue) {
+    if (enumValue === "active") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return true;
 }

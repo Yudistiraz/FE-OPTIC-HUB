@@ -18,7 +18,7 @@ export const addProduct = async (data: any) => {
 
 export const getProductById = async (id: string) => {
   const fetcher = await api();
-  return fetcher.get("/products/search?id=" + id);
+  return fetcher.get("/products/" + id);
 };
 
 export const updateProduct = async (data: any) => {
@@ -30,13 +30,3 @@ export const deleteProduct = async (id: string) => {
   const fetcher = await api();
   return fetcher.delete("/products/" + id);
 };
-
-// export const getAdminByID = async (id: string) => {
-//   const fetcher = await api();
-//   return fetcher.get(ADMIN_V1 + "/admins/" + id);
-// };
-
-// export const updateAdmin = async (data: any) => {
-//   const fetcher = await api();
-//   return fetcher.put(ADMIN_V1 + `/admins/${data.id}`, data.data);
-// };

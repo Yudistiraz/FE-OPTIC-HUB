@@ -11,7 +11,10 @@ const drawerWidth = 270;
 const Header = () => {
   const session = useSession();
 
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -61,6 +64,7 @@ const Header = () => {
             </IconButton>
 
             <Menu
+              disableScrollLock={true}
               sx={{ mt: "40px" }}
               anchorEl={anchorEl}
               anchorOrigin={{

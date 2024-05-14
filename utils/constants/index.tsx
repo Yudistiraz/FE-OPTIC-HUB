@@ -105,11 +105,11 @@ export const DUMMY_SELECT_OPTIONS = [
 export const STATUS_OPTIONS = [
   {
     label: "Active",
-    value: "true",
+    value: "active",
   },
   {
     label: "Inactive",
-    value: "false",
+    value: "inactive",
   },
 ];
 
@@ -120,7 +120,11 @@ export const TRANSACTION_STATUS_OPTIONS = [
   },
   {
     label: "Ongoing",
-    value: "ongoing",
+    value: "onGoing",
+  },
+  {
+    label: "Cancelled",
+    value: "cancel",
   },
 ];
 
@@ -136,6 +140,10 @@ export const PAYMENT_METHOD_OPTIONS = [
   {
     label: "Debit Card",
     value: "debit",
+  },
+  {
+    label: "Credit Card",
+    value: "credit_card",
   },
 ];
 

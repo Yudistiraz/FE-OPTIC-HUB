@@ -14,6 +14,7 @@ const nextConfig = {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
   images: {
+    domains: ["localhost"],
     remotePatterns: [
       {
         protocol: "https",

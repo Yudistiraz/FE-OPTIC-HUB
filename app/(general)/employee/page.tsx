@@ -5,15 +5,11 @@ import CustomButton from "@/components/ui/Button";
 import CustomDataTable from "@/components/ui/DataTableV2";
 import CustomSearchbar from "@/components/ui/Searchbar";
 
-import {
-  DUMMY_EMPLOYEE,
-  EMPLOYEE_OPTIONS,
-  STATUS_OPTIONS,
-} from "@/utils/constants";
+import { EMPLOYEE_OPTIONS, STATUS_OPTIONS } from "@/utils/constants";
 import { IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useUserState } from "@/context/User";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Delete } from "@mui/icons-material";
 import CustomBadge from "@/components/ui/CustomBadge";
 import CustomDialog from "@/components/ui/Dialog";
@@ -42,6 +38,8 @@ export default function Employee() {
     setSearch,
     additionalParams,
     setAdditionalParams,
+    totalPages,
+    setTotalPages,
   } = useFilterState();
   const [selectedId, setSelectedId] = useState("");
   const session = useSession();
@@ -50,14 +48,16 @@ export default function Employee() {
     queryKey: ["employee", search, page, additionalParams],
     queryFn: async () => {
       const res = await getAllEmployee({
-        search: search,
+        keyword: search,
         page: page,
         role: additionalParams.role,
         status: additionalParams.status,
         limit: 10,
       });
+      setTotalPages(res?.data?.metadata?.totalPages || 1);
       return res.data.data;
     },
+    refetchOnWindowFocus: true,
   });
 
   const employeeDeleteMutation = useMutation({
@@ -126,26 +126,20 @@ export default function Employee() {
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.phone_number;
+        return `+62${data?.row?.phone_number}`;
       },
       readonly: true,
     },
     {
       field: "role",
       headerName: "Role",
-      width: 150,
+      width: 100,
       sortable: false,
       renderCell: (data: any) => {
         return (
-          <Fragment>
-            <div className="tw-flex tw-items-center tw-h-full">
-              <CustomBadge
-                status={data?.row?.role === "owner" ? true : false}
-                trueLabel="Owner"
-                falseLabel="Staff"
-              />
-            </div>
-          </Fragment>
+          <div className="tw-flex tw-items-center tw-h-full tw-capitalize">
+            {data?.row?.role}
+          </div>
         );
       },
       readonly: true,
@@ -157,11 +151,13 @@ export default function Employee() {
       sortable: false,
       renderCell: (data: any) => {
         return (
-          <Fragment>
-            <div className="tw-flex">
-              {data?.row?.status ? "Active" : "Inactive"}
-            </div>
-          </Fragment>
+          <div className="tw-flex tw-items-center tw-h-full">
+            <CustomBadge
+              status={data?.row?.status === "active" ? true : false}
+              trueLabel="Active"
+              falseLabel="Inactive"
+            />
+          </div>
         );
       },
       readonly: true,
@@ -173,19 +169,24 @@ export default function Employee() {
       sortable: false,
       renderCell: (data: any) => {
         return (
-          <Fragment>
-            <div className="tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center">
-              <IconButton
-                sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
-                onClick={() => {
-                  onDeleteClick(data?.row?.name, data?.row?.id);
-                  console.log(data?.row?.name);
-                }}
-              >
-                <Delete />
-              </IconButton>
-            </div>
-          </Fragment>
+          <div
+            className="tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center"
+            id="deleteWrapper"
+          >
+            <IconButton
+              sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
+              onClick={() => {
+                onDeleteClick(data?.row?.name, data?.row?.id);
+                console.log(data?.row?.name);
+              }}
+              id="deleteButton"
+              disabled={
+                data?.row?.id === session?.data?.user?.id ? true : false
+              }
+            >
+              <Delete />
+            </IconButton>
+          </div>
         );
       },
       readonly: true,
@@ -264,15 +265,22 @@ export default function Employee() {
         disableColumnMenu={true}
         onRowClick={(item: any, data: any) => {
           const cell = data.target.getAttribute("data-colindex");
-          if (cell < "5" && cell !== null) {
+          const target = data.target;
+          if (
+            cell !== "5" &&
+            !(target instanceof SVGElement) &&
+            target.tagName.toLowerCase() !== "path" &&
+            target.id !== "deleteWrapper" &&
+            target.id !== "deleteButton"
+          ) {
             router.push(`/employee/${item?.row?.id}`);
           }
         }}
         onPageChange={(param: number) => {
-          //   setPage(param);
+          setPage(param);
         }}
-        page={1}
-        totalPage={10}
+        page={page}
+        totalPage={totalPages}
         getRowId={(row: any) => row?.name}
       />
 

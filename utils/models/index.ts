@@ -8,7 +8,7 @@ export type TEmployee = {
   email: string;
   password: string;
   phone_number: string;
-  status: boolean;
+  status: string;
   role: string;
 };
 
@@ -21,15 +21,11 @@ export type TProduct = {
   priceBeforeTax: number;
   tax: number;
   price: number;
-  status: boolean;
-  quantity: number;
+  status: string;
+  quantity?: number;
   imageUrl: string;
   categoryId?: string;
   category?: ProductCategory;
-};
-
-export type OrderItem = TProduct & {
-  qty: number;
 };
 
 export type ProductCategory = {
@@ -38,6 +34,27 @@ export type ProductCategory = {
   updatedAt?: Date | string | null;
   deletedAt?: Date | string | null;
   name: string;
+};
+
+export type OrderItem = TProduct & {
+  qty: number;
+  categoryName?: string;
+};
+
+export type Prescription = {
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string;
+  right_sph: string;
+  right_cylinder: string;
+  right_axis: string;
+  right_add: string;
+  right_pd: string;
+  left_sph: string;
+  left_cylinder: string;
+  left_axis: string;
+  left_add: string;
+  left_pd: string;
 };
 
 export type TTransaction = {
@@ -49,11 +66,14 @@ export type TTransaction = {
   customerPhone: string;
   customerEmail: string;
   totalItem: number;
-  isComplete: boolean;
+  status: string;
   paymentMethod: string;
   subTotal: number;
   tax: number;
   totalPrice: number;
   imageUrl: string;
   transactionDate: Date | string;
+  orderItem?: OrderItem[];
+  prescription?: Prescription;
+  withPrescription: boolean;
 };

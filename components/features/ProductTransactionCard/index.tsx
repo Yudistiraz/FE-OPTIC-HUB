@@ -11,12 +11,14 @@ interface ProductTransactionCardProps {
   data: OrderItem;
   onDelete?: (productIdToDelete: string) => void;
   onChange?: (orderItem: OrderItem) => void;
+  disabled?: boolean;
 }
 
 export default function ProductTransactionCard({
   data,
   onDelete = () => {},
   onChange = () => {},
+  disabled = false,
 }: ProductTransactionCardProps) {
   return (
     <div className="tw-w-full tw-h-44 tw-bg-white tw-rounded-md tw-p-2 tw-flex tw-items-center tw-gap-2">
@@ -38,7 +40,7 @@ export default function ProductTransactionCard({
         </div>
 
         <div className="tw-p-1 tw-rounded-md tw-font-semibold tw-text-xs tw-bg-green-400 tw-text-white tw-w-fit tw-capitalize">
-          {data?.category?.name}
+          {data?.category?.name || data?.categoryName}
         </div>
 
         <div className="tw-mt-auto tw-flex tw-items-center">
@@ -47,18 +49,26 @@ export default function ProductTransactionCard({
           </Typography>
 
           <div className="tw-ml-auto tw-flex tw-gap-4 tw-items-center">
-            <IconButton
-              onClick={() => {
-                onDelete(data?.id);
-              }}
-            >
-              <DeleteOutline />
-            </IconButton>
+            {!disabled && (
+              <IconButton
+                onClick={() => {
+                  onDelete(data?.id);
+                }}
+              >
+                <DeleteOutline />
+              </IconButton>
+            )}
 
-            <div className="tw-flex tw-items-center tw-p-1 tw-outline tw-outline-gray-400 tw-outline-1 tw-gap-4 tw-rounded-md tw-mr-1">
+            <div
+              className={`tw-flex tw-items-center tw-p-1 tw-outline tw-outline-gray-400 tw-outline-1 tw-gap-4 tw-rounded-md tw-mr-1 ${
+                disabled ? "tw-bg-gray-200" : ""
+              }`}
+            >
               <div
                 className={`tw-text-[#9FA1A7] ${
-                  data.qty > 1 && "tw-cursor-pointer "
+                  data.qty > 1 || disabled
+                    ? "tw-cursor-default"
+                    : "tw-cursor-pointer"
                 }`}
                 onClick={() => {
                   onChange(
@@ -74,7 +84,7 @@ export default function ProductTransactionCard({
                 variant="standard"
                 type="number"
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
-                value={data?.qty}
+                value={data?.qty || 1}
                 onChange={(e) => {
                   onChange(
                     updateOrderItemQuantity(
@@ -84,10 +94,11 @@ export default function ProductTransactionCard({
                     )
                   );
                 }}
+                disabled={disabled}
               />
               <div
                 className={`tw-text-[#9FA1A7] ${
-                  data.qty < data.quantity && "tw-cursor-pointer "
+                  data.qty < (data.quantity || 0) && "tw-cursor-pointer "
                 }`}
                 onClick={() => {
                   onChange(

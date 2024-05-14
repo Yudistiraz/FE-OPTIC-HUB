@@ -42,27 +42,31 @@ export default function Product() {
     setSearch,
     additionalParams,
     setAdditionalParams,
+    totalPages,
+    setTotalPages,
   } = useFilterState();
 
   const productsQuery = useQuery({
     queryKey: ["products", search, page, additionalParams],
     queryFn: async () => {
       const res = await getAllProduct({
-        productName: search,
+        keyword: search,
         categoryId: additionalParams.categoryId || "",
         status: additionalParams.status || "",
         page: page,
         limit: 10,
       });
+      setTotalPages(res?.data?.metadata?.totalPages || 1);
       return res.data.data;
     },
+    refetchOnWindowFocus: true,
   });
 
   const productCategoryQuery = useQuery({
     queryKey: ["productCategories"],
     queryFn: async () => {
       const res = await getAllProductCategory();
-      return res.data;
+      return res.data?.data;
     },
     refetchOnWindowFocus: false,
   });
@@ -151,7 +155,9 @@ export default function Product() {
         return (
           <Fragment>
             <div className="tw-flex tw-items-center tw-h-full">
-              <CustomBadge status={data?.row?.status} />
+              <CustomBadge
+                status={data?.row?.status === "active" ? true : false}
+              />
             </div>
           </Fragment>
         );
@@ -165,19 +171,21 @@ export default function Product() {
       sortable: false,
       renderCell: (data: any) => {
         return (
-          <Fragment>
-            <div className="tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center">
-              <IconButton
-                sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
-                onClick={() => {
-                  onDeleteClick(data?.row?.name, data.row?.id);
-                  console.log(data?.row?.name);
-                }}
-              >
-                <Delete />
-              </IconButton>
-            </div>
-          </Fragment>
+          <div
+            className="tw-w-full tw-h-full tw-flex tw-justify-center tw-items-center"
+            id="deleteWrapper"
+          >
+            <IconButton
+              sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
+              onClick={() => {
+                onDeleteClick(data?.row?.name, data.row?.id);
+                console.log(data?.row?.name);
+              }}
+              id="deleteButton"
+            >
+              <Delete />
+            </IconButton>
+          </div>
         );
       },
       readonly: true,
@@ -262,15 +270,22 @@ export default function Product() {
           disableColumnMenu={true}
           onRowClick={(item: any, data: any) => {
             const cell = data.target.getAttribute("data-colindex");
-            if (cell < "5" && cell !== null) {
+            const target = data.target;
+            if (
+              cell !== "5" &&
+              !(target instanceof SVGElement) &&
+              target.tagName.toLowerCase() !== "path" &&
+              target.id !== "deleteWrapper" &&
+              target.id !== "deleteButton"
+            ) {
               router.push(`/product/${item?.row?.id}`);
             }
           }}
           onPageChange={(param: number) => {
-            //   setPage(param);
+            setPage(param);
           }}
-          page={1}
-          totalPage={10}
+          page={page}
+          totalPage={totalPages}
         />
       )}
 

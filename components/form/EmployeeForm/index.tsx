@@ -5,7 +5,7 @@ import React from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
-import { gethelperText } from "@/utils/function";
+import { convertEnumValue, gethelperText } from "@/utils/function";
 import CustomDatePicker from "@/components/ui/DatePicker";
 import CustomDropdown from "@/components/ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
@@ -23,13 +23,19 @@ import {
 } from "@/services/admin/v1/employee";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import LoadingSkeletonForm from "../LoadingSkeletonForm";
 
 interface EmployeeFormProps {
+  isLoading?: boolean;
   isEdit?: boolean;
   data?: TEmployee | null;
 }
 
-const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
+const EmployeeForm = ({
+  isEdit = false,
+  data = null,
+  isLoading = false,
+}: EmployeeFormProps) => {
   const {
     openDialog,
     setOpenDialog,
@@ -96,7 +102,7 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
       email: data?.email || "",
       password: "",
       role: data?.role || "staff",
-      status: data?.status || true,
+      status: convertEnumValue(data?.status),
     },
     validationSchema: isEdit ? updateEmployeeSchema : addEmployeeSchema,
     onSubmit: async (values) => {
@@ -106,7 +112,7 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
         dob: formateDate1(values.dob),
         phone_number: values.phone_number,
         password: values.password,
-        status: values.status,
+        status: isEdit && values.status === false ? "inactive" : "active",
         role: values.role,
       };
 
@@ -116,6 +122,7 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
         employeeAddMutation.mutate({ data: payload });
       }
     },
+    isEnableReinitialize: true,
   });
 
   const onPopUpCancel = () => {
@@ -136,140 +143,146 @@ const EmployeeForm = ({ isEdit = false, data = null }: EmployeeFormProps) => {
 
   return (
     <div>
-      <form onSubmit={formik.handleSubmit} className="!tw-w-1/2">
-        <FormLayout>
-          {isEdit && (
-            <CustomTextField
-              label="ID"
-              disabled
-              {...formik.getFieldProps("id")}
-            />
-          )}
-          <CustomTextField
-            label="Name"
-            placeholder="Input Name"
-            helperText={gethelperText(
-              formik.touched.name as boolean,
-              formik.errors.name as string
-            )}
-            error={formik.touched.name && !!formik.errors.name}
-            {...formik.getFieldProps("name")}
-          />
-
-          <CustomDatePicker
-            label="DATE OF BIRTH"
-            placeholder="Choose Date of Birth"
-            name="dob"
-            format="DD MMMM YYYY"
-            value={formik.values.dob}
-            onDateChange={(value, name) => formik.setFieldValue(name, value)}
-            helperText={gethelperText(
-              formik.touched.dob as boolean,
-              formik.errors.dob as string
-            )}
-            error={formik.touched.dob && !!formik.errors.dob}
-          />
-
-          <CustomTextField
-            label="Phone Number"
-            placeholder="Input Phone Number"
-            startAdornment={<div className="">+62</div>}
-            helperText={gethelperText(
-              formik.touched.phone_number as boolean,
-              formik.errors.phone_number as string
-            )}
-            error={formik.touched.phone_number && !!formik.errors.phone_number}
-            {...formik.getFieldProps("phone_number")}
-          />
-
-          <CustomTextField
-            label="Email"
-            placeholder="Input Email"
-            helperText={gethelperText(
-              formik.touched.email as boolean,
-              formik.errors.email as string
-            )}
-            error={formik.touched.email && !!formik.errors.email}
-            {...formik.getFieldProps("email")}
-          />
-
-          <CustomTextField
-            label={isEdit ? "New Password" : "Password"}
-            placeholder={isEdit ? "Input New Password" : "Input Password"}
-            password
-            helperText={gethelperText(
-              formik.touched.password as boolean,
-              formik.errors.password as string
-            )}
-            error={formik.touched.password && !!formik.errors.password}
-            {...formik.getFieldProps("password")}
-          />
-
-          <CustomDropdown
-            fullWidth
-            label="ROLE"
-            name="role"
-            options={EMPLOYEE_OPTIONS}
-            value={formik.values.role}
-            placeholder="Choose Role"
-            onChange={(e) => {
-              formik.setFieldValue("role", e.value);
-            }}
-            helperText={gethelperText(
-              formik.touched.role as boolean,
-              formik.errors.role as string
-            )}
-            error={formik.touched.role && !!formik.errors.role}
-          />
-
-          {isEdit && (
-            <CustomSwitch
-              label="EMPLOYEE STATUS"
-              name="Status"
-              onChange={(value) => {
-                formik.setFieldValue("status", value);
-              }}
-              value={formik.values.status}
-            />
-          )}
-
-          <div className="tw-flex tw-gap-4 tw-w-full">
-            <CustomButton
-              type="submit"
-              className="tw-w-1/4"
-              disabled={
-                employeeAddMutation.isLoading ||
-                employeeUpdateMutation.isLoading
-              }
-            >
-              {isEdit ? "Update" : "Add"}
-            </CustomButton>
-            <CustomButton
-              className="tw-w-1/4"
-              variant="secondary"
-              disabled={
-                employeeAddMutation.isLoading ||
-                employeeUpdateMutation.isLoading
-              }
-            >
-              Cancel
-            </CustomButton>
+      {isLoading ? (
+        <LoadingSkeletonForm isEmployeeForm />
+      ) : (
+        <form onSubmit={formik.handleSubmit} className="tw-w-3/4 lg:tw-w-1/2">
+          <FormLayout>
             {isEdit && (
+              <CustomTextField
+                label="ID"
+                disabled
+                {...formik.getFieldProps("id")}
+              />
+            )}
+            <CustomTextField
+              label="Name"
+              placeholder="Input Name"
+              helperText={gethelperText(
+                formik.touched.name as boolean,
+                formik.errors.name as string
+              )}
+              error={formik.touched.name && !!formik.errors.name}
+              {...formik.getFieldProps("name")}
+            />
+
+            <CustomDatePicker
+              label="DATE OF BIRTH"
+              placeholder="Choose Date of Birth"
+              name="dob"
+              format="DD MMMM YYYY"
+              value={formik.values.dob}
+              onDateChange={(value, name) => formik.setFieldValue(name, value)}
+              helperText={gethelperText(
+                formik.touched.dob as boolean,
+                formik.errors.dob as string
+              )}
+              error={formik.touched.dob && !!formik.errors.dob}
+            />
+
+            <CustomTextField
+              label="Phone Number"
+              placeholder="Input Phone Number"
+              startAdornment={<div className="">+62</div>}
+              helperText={gethelperText(
+                formik.touched.phone_number as boolean,
+                formik.errors.phone_number as string
+              )}
+              error={
+                formik.touched.phone_number && !!formik.errors.phone_number
+              }
+              {...formik.getFieldProps("phone_number")}
+            />
+
+            <CustomTextField
+              label="Email"
+              placeholder="Input Email"
+              helperText={gethelperText(
+                formik.touched.email as boolean,
+                formik.errors.email as string
+              )}
+              error={formik.touched.email && !!formik.errors.email}
+              {...formik.getFieldProps("email")}
+            />
+
+            <CustomTextField
+              label={isEdit ? "New Password" : "Password"}
+              placeholder={isEdit ? "Input New Password" : "Input Password"}
+              password
+              helperText={gethelperText(
+                formik.touched.password as boolean,
+                formik.errors.password as string
+              )}
+              error={formik.touched.password && !!formik.errors.password}
+              {...formik.getFieldProps("password")}
+            />
+
+            <CustomDropdown
+              fullWidth
+              label="ROLE"
+              name="role"
+              options={EMPLOYEE_OPTIONS}
+              value={formik.values.role}
+              placeholder="Choose Role"
+              onChange={(e) => {
+                formik.setFieldValue("role", e.value);
+              }}
+              helperText={gethelperText(
+                formik.touched.role as boolean,
+                formik.errors.role as string
+              )}
+              error={formik.touched.role && !!formik.errors.role}
+            />
+
+            {isEdit && (
+              <CustomSwitch
+                label="EMPLOYEE STATUS"
+                name="Status"
+                onChange={(value) => {
+                  formik.setFieldValue("status", value);
+                }}
+                value={formik.values.status}
+              />
+            )}
+
+            <div className="tw-flex tw-gap-4 tw-w-full">
               <CustomButton
+                type="submit"
                 className="tw-w-1/4"
-                variant="redButton"
-                onClick={onDeleteClick}
                 disabled={
                   employeeAddMutation.isLoading ||
                   employeeUpdateMutation.isLoading
                 }
               >
-                Delete
+                {isEdit ? "Update" : "Add"}
               </CustomButton>
-            )}
-          </div>
-        </FormLayout>
-      </form>
+              <CustomButton
+                className="tw-w-1/4"
+                variant="secondary"
+                disabled={
+                  employeeAddMutation.isLoading ||
+                  employeeUpdateMutation.isLoading
+                }
+              >
+                Cancel
+              </CustomButton>
+              {isEdit && (
+                <CustomButton
+                  className="tw-w-1/4"
+                  variant="redButton"
+                  onClick={onDeleteClick}
+                  disabled={
+                    employeeAddMutation.isLoading ||
+                    employeeUpdateMutation.isLoading
+                  }
+                >
+                  Delete
+                </CustomButton>
+              )}
+            </div>
+          </FormLayout>
+        </form>
+      )}
 
       <CustomDialog open={openDialog} independent maxWidth="xs">
         <ConfirmationDialog
