@@ -1,7 +1,7 @@
 "use client";
 import "@/app/globals.css";
 import DefaultLayout from "./default-layout";
-import toast, { ToastBar, Toaster } from "react-hot-toast";
+import { ToastBar, Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -59,7 +59,7 @@ export default function RootLayout({
           </ToastBar>
         )}
       </Toaster>
-      ;{/* <Toaster position="top-center"  /> */}
+      ;
     </div>
   );
 }
