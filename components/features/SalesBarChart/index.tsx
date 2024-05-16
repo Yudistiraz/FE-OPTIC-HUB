@@ -79,7 +79,7 @@ const SalesBarChart = () => {
         </div>
       </div>
       {salesDataIsLoading && salesDataIsRefetching ? (
-        <Skeleton className="tw-w-full tw-h-[280px]" variant="rectangular" />
+        <Skeleton className="tw-w-full tw-h-[280px]" variant="rounded" />
       ) : (
         <BarChart
           dataset={salesData || [{ time: "No Data", sales: 0 }]}
