@@ -10,3 +10,11 @@ export const getDashboardSalesReports = async (params?: ParamInterface) => {
     params,
   });
 };
+
+export const getBestSellerItem = async (params?: ParamInterface) => {
+  const fetcher = await api();
+
+  return fetcher.get("/order/best-seller", {
+    params,
+  });
+};
