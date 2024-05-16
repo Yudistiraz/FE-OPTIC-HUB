@@ -103,7 +103,7 @@ function SidebarMenu() {
     <div className="tw-w-full">
       logo
       <NavigationMenu
-        menus={role === "staff" ? OWNER_SITEMAPS : STAFF_SITEMAPS}
+        menus={role === "staff" ? STAFF_SITEMAPS : OWNER_SITEMAPS}
       />
       <Divider
         className="tw-my-4"
