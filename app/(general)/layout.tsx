@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="tw-flex tw-flex-col tw-min-h-screen">
+    <div className="tw-flex tw-flex-col tw-min-h-screen tw-max-w-screen-2xl">
       <DefaultLayout>{children}</DefaultLayout>
       <Toaster
         position="top-right"
