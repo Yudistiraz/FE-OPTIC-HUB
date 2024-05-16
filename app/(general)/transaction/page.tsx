@@ -50,20 +50,18 @@ export default function Product() {
 
   const transactionColumn = [
     {
-      field: "id",
-      headerName: "Transaction ID",
-      flex: 1,
-      minWidth: 250,
+      field: "userName",
+      headerName: "Employee Name",
+      width: 250,
+
       sortable: false,
-      renderCell: (data: any) => {
-        return data?.row?.id;
-      },
       readonly: true,
     },
     {
       field: "customerName",
       headerName: "Customer Name",
-      width: 250,
+      flex: 1,
+      minWidth: 250,
       sortable: false,
       renderCell: (data: any) => {
         return data?.row?.prescription?.customerName;
