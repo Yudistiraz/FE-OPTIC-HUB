@@ -160,11 +160,11 @@ export const theme = createTheme({
             opacity: 1,
             transition: "0.3s",
             ":hover": {
-              backgroundColor: "#3569E0 !important",
+              backgroundColor: "#6190FF !important",
               color: "#fff",
             },
             ":disabled": {
-              backgroundColor: "#3569E0 !important",
+              backgroundColor: "#3D69CF !important",
               color: "#fff",
             },
           },
