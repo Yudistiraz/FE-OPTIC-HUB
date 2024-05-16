@@ -1,12 +1,12 @@
-import { FormikValues, useFormik } from 'formik'
+import { FormikValues, useFormik } from "formik";
 
 interface formikHooksProps {
-  initialValues: FormikValues
-  validationSchema: object
-  onSubmit: (values: FormikValues) => void
-  isEnableReinitialize?: boolean
-  isValidateOnBlur?: boolean
-  isValidateOnChange?: boolean
+  initialValues: FormikValues;
+  validationSchema?: object;
+  onSubmit: (values: FormikValues) => void;
+  isEnableReinitialize?: boolean;
+  isValidateOnBlur?: boolean;
+  isValidateOnChange?: boolean;
 }
 
 export const useCustomFormik = ({
@@ -24,5 +24,5 @@ export const useCustomFormik = ({
     enableReinitialize: isEnableReinitialize,
     validateOnBlur: isValidateOnBlur,
     validateOnChange: isValidateOnChange,
-  })
-}
+  });
+};
