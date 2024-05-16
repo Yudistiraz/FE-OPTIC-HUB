@@ -69,3 +69,8 @@ export const addTransactionScheme = Yup.object({
   paymentMethod: Yup.string().required("Payment Method Required"),
   orderItem: Yup.array().min(1, "Item Required"),
 });
+
+export const changePasswordScheme = Yup.object({
+  oldPassword: Yup.string().required("Old Password Required"),
+  newPassword: Yup.string().required("New Password Required"),
+});
