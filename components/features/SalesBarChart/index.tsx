@@ -27,8 +27,6 @@ const SalesBarChart = () => {
         dataSet = transformArrayBarChart(res?.data, "week");
       }
 
-      console.log(dataSet);
-
       return dataSet || [];
     },
     {
