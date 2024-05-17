@@ -34,11 +34,11 @@ const Header = () => {
   return (
     <AppBar
       className="tw-bg-white tw-shadow-none tw-border tw-border-b-gray-300 tw-p-0"
-      sx={{
-        width: `calc(100% - ${drawerWidth}px)`,
-        ml: `${drawerWidth}px`,
-        height: "80px",
-      }}
+      // sx={{
+      //   width: `calc(100% - ${drawerWidth}px)`,
+      //   ml: `${drawerWidth}px`,
+      //   height: "80px",
+      // }}
     >
       <CustomContainer className="tw-py-[20px] tw-flex tw-justify-between">
         <div>{/* breadcrumb here */}</div>
