@@ -154,3 +154,28 @@ export function convertEnumValue(enumValue: string | undefined): boolean {
   }
   return true;
 }
+
+export function transformArrayBarChart(
+  array: any,
+  chartRange: "week" | "month" | "year"
+) {
+  if (array) {
+    if (chartRange === "month") {
+      return array.map((item: any) => ({
+        time: item.month,
+        sales: item.totalIncome,
+      }));
+    } else if (chartRange === "week") {
+      return array.map((item: any) => ({
+        time: item.dayName,
+        sales: item.totalIncome,
+      }));
+    } else {
+      return array.map((item: any) => ({
+        time: item.year,
+        sales: item.totalIncome,
+      }));
+    }
+  }
+  return;
+}

@@ -32,11 +32,6 @@ export const STAFF_SITEMAPS = [
     img: "product",
   },
   {
-    name: "Manage Employee",
-    path: "/employee",
-    img: "employee",
-  },
-  {
     name: "Transaction",
     path: "/transaction",
     img: "transaction",

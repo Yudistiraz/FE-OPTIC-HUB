@@ -1,7 +1,7 @@
 "use client";
 import "@/app/globals.css";
 import DefaultLayout from "./default-layout";
-import toast, { ToastBar, Toaster } from "react-hot-toast";
+import { ToastBar, Toaster } from "react-hot-toast";
 
 export default function RootLayout({
   children,
@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="tw-flex tw-flex-col tw-min-h-screen">
+    <div className="tw-flex tw-flex-col tw-min-h-screen tw-max-w-screen-2xl">
       <DefaultLayout>{children}</DefaultLayout>
       <Toaster
         position="top-right"
@@ -59,7 +59,7 @@ export default function RootLayout({
           </ToastBar>
         )}
       </Toaster>
-      ;{/* <Toaster position="top-center"  /> */}
+      ;
     </div>
   );
 }
