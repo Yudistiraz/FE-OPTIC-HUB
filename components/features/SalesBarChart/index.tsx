@@ -44,7 +44,7 @@ const SalesBarChart = () => {
   };
 
   return (
-    <div className="tw-w-full tw-p-4 tw-bg-gray-100 tw-rounded-md tw-flex tw-flex-col tw-gap-8">
+    <div className="tw-w-full tw-p-4 tw-bg-white tw-rounded-md tw-flex tw-flex-col tw-gap-8">
       <div className="tw-flex tw-w-full tw-items-center">
         <Typography variant="display4" className="tw-uppercase">
           Sales Report
