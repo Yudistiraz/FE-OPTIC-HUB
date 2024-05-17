@@ -40,7 +40,7 @@ export default function Home() {
     <div className="tw-flex tw-flex-col tw-gap-8">
       <SalesBarChart />
 
-      <div className="tw-w-full tw-p-4 tw-bg-gray-100 tw-rounded-md tw-flex tw-flex-col tw-gap-8">
+      <div className="tw-w-full tw-p-4 tw-bg-white tw-rounded-md tw-flex tw-flex-col tw-gap-8">
         <Typography variant="display4" className="tw-uppercase">
           Best seller item
         </Typography>
