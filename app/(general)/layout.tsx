@@ -2,15 +2,46 @@
 import "@/app/globals.css";
 import DefaultLayout from "./default-layout";
 import { ToastBar, Toaster } from "react-hot-toast";
+import { Fragment } from "react";
+import Head from "next/head";
+import Header from "@/components/ui/Header";
+import { useScreenSize } from "@/context/MediaQuery";
+import CustomDrawer from "@/components/ui/Drawer";
+import SidebarMenu from "@/components/ui/SidebarMenu";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { isMobileScreen } = useScreenSize();
   return (
-    <div className="tw-flex tw-min-h-screen tw-bg-gray-200 ">
-      <DefaultLayout>{children}</DefaultLayout>
+    <Fragment>
+      <div className="tw-relative tw-flex tw-flex-col tw-min-h-screen tw-bg-gray-200">
+        <Head>
+          <title>Burn 83</title>
+          <meta
+            name="description"
+            content="Book your schedule on time with Burn 83!"
+          />
+        </Head>
+
+        <Header />
+
+        {!isMobileScreen && (
+          <CustomDrawer
+            variant="permanent"
+            drawerPaperClass="tw-bg-primary-500 tw-w-72 no-scrollbar"
+            containerClass="tw-w-full tw-px-2"
+          >
+            <SidebarMenu />
+          </CustomDrawer>
+        )}
+
+        <div className="tw-pt-32 tw-mb-8">
+          <div className="tw-flex tw-grow tw-px-4 lg:tw-pl-72">{children}</div>
+        </div>
+      </div>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -59,6 +90,6 @@ export default function RootLayout({
           </ToastBar>
         )}
       </Toaster>
-    </div>
+    </Fragment>
   );
 }
