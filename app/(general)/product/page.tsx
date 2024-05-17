@@ -23,6 +23,7 @@ import {
 } from "@/utils/function";
 import { STATUS_OPTIONS } from "@/utils/constants";
 import { useScreenSize } from "@/context/MediaQuery";
+import ComponentCard from "@/components/layout/ComponentCard";
 
 export default function Product() {
   const router = useRouter();
@@ -195,7 +196,7 @@ export default function Product() {
   ];
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
         <Typography variant="h2">Product</Typography>
 
@@ -209,7 +210,7 @@ export default function Product() {
         </CustomButton>
       </div>
 
-      <div className="tw-w-full tw-bg-white tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-p-4">
+      <ComponentCard>
         <div className="tw-w-full tw-flex tw-items-center tw-gap-8">
           <div className="tw-w-1/4">
             <CustomSearchbar
@@ -291,7 +292,7 @@ export default function Product() {
             totalPage={totalPages}
           />
         )}
-      </div>
+      </ComponentCard>
 
       <CustomDialog open={openDialog} independent maxWidth="xs">
         <ConfirmationDialog

@@ -5,8 +5,6 @@ import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
 import { gethelperText } from "@/utils/function";
-
-import { useRouter } from "next/navigation";
 import { changePasswordScheme } from "@/utils/yup";
 
 const ChangePasswordForm = () => {

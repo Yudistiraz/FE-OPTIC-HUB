@@ -19,6 +19,7 @@ import { useMutation, useQuery } from "react-query";
 import { deleteEmployee, getAllEmployee } from "@/services/admin/v1/employee";
 import { checkPageValidity } from "@/utils/function";
 import { signOut, useSession } from "next-auth/react";
+import ComponentCard from "@/components/layout/ComponentCard";
 
 export default function Employee() {
   const router = useRouter();
@@ -194,7 +195,7 @@ export default function Employee() {
   ];
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
         <Typography variant="h2">Employee</Typography>
 
@@ -208,81 +209,82 @@ export default function Employee() {
         </CustomButton>
       </div>
 
-      <div className="tw-w-full tw-flex tw-items-center tw-gap-8">
-        <div className="tw-w-1/3">
-          <CustomSearchbar
-            fullWidth
-            search={search}
-            debounce
-            setSearch={(text: string) => {
-              setSearch(text);
-            }}
-          />
-        </div>
+      <ComponentCard>
+        <div className="tw-w-full tw-flex tw-items-center tw-gap-8">
+          <div className="tw-w-1/3">
+            <CustomSearchbar
+              fullWidth
+              search={search}
+              debounce
+              setSearch={(text: string) => {
+                setSearch(text);
+              }}
+            />
+          </div>
 
-        <div className="tw-w-1/3">
-          <CustomDropdown
-            fullWidth
-            label="FILTER BY ROLE"
-            name="PurchaseOptions"
-            options={EMPLOYEE_OPTIONS}
-            value={additionalParams.role || ""}
-            placeholder="Filter by Role"
-            allOption="All Role"
-            onChange={(e) => {
-              setAdditionalParams((prevState) => ({
-                ...prevState,
-                role: e.value,
-              }));
-            }}
-          />
-        </div>
+          <div className="tw-w-1/3">
+            <CustomDropdown
+              fullWidth
+              label="FILTER BY ROLE"
+              name="PurchaseOptions"
+              options={EMPLOYEE_OPTIONS}
+              value={additionalParams.role || ""}
+              placeholder="Filter by Role"
+              allOption="All Role"
+              onChange={(e) => {
+                setAdditionalParams((prevState) => ({
+                  ...prevState,
+                  role: e.value,
+                }));
+              }}
+            />
+          </div>
 
-        <div className="tw-w-1/3">
-          <CustomDropdown
-            fullWidth
-            label="FILTER BY STATUS"
-            name="PurchaseOptions"
-            options={STATUS_OPTIONS}
-            value={additionalParams.status || ""}
-            placeholder="Filter by Status"
-            allOption="All Status"
-            onChange={(e) => {
-              setAdditionalParams((prevState) => ({
-                ...prevState,
-                status: e.value,
-              }));
-            }}
-          />
+          <div className="tw-w-1/3">
+            <CustomDropdown
+              fullWidth
+              label="FILTER BY STATUS"
+              name="PurchaseOptions"
+              options={STATUS_OPTIONS}
+              value={additionalParams.status || ""}
+              placeholder="Filter by Status"
+              allOption="All Status"
+              onChange={(e) => {
+                setAdditionalParams((prevState) => ({
+                  ...prevState,
+                  status: e.value,
+                }));
+              }}
+            />
+          </div>
         </div>
-      </div>
-
-      <CustomDataTable
-        columns={employeeColumn}
-        rows={employeeQuery?.data}
-        limit={10}
-        disableColumnResize={true}
-        disableColumnMenu={true}
-        onRowClick={(item: any, data: any) => {
-          const cell = data.target.getAttribute("data-colindex");
-          const target = data.target;
-          if (
-            cell !== "5" &&
-            !(target instanceof SVGElement) &&
-            target.tagName.toLowerCase() !== "path" &&
-            target.id !== "deleteWrapper" &&
-            target.id !== "deleteButton"
-          ) {
-            router.push(`/employee/${item?.row?.id}`);
-          }
-        }}
-        onPageChange={(param: number) => {
-          setPage(param);
-        }}
-        page={page}
-        totalPage={totalPages}
-        getRowId={(row: any) => row?.name}
-      />
+        <CustomDataTable
+          columns={employeeColumn}
+          rows={employeeQuery?.data}
+          limit={10}
+          disableColumnResize={true}
+          disableColumnMenu={true}
+          onRowClick={(item: any, data: any) => {
+            const cell = data.target.getAttribute("data-colindex");
+            const target = data.target;
+            if (
+              cell !== "5" &&
+              !(target instanceof SVGElement) &&
+              target.tagName.toLowerCase() !== "path" &&
+              target.id !== "deleteWrapper" &&
+              target.id !== "deleteButton"
+            ) {
+              router.push(`/employee/${item?.row?.id}`);
+            }
+          }}
+          onPageChange={(param: number) => {
+            setPage(param);
+          }}
+          page={page}
+          totalPage={totalPages}
+          getRowId={(row: any) => row?.name}
+        />
+      </ComponentCard>
 
       <CustomDialog open={openDialog} independent maxWidth="xs">
         <ConfirmationDialog

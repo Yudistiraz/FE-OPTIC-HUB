@@ -1,5 +1,6 @@
 "use client";
 import TransactionForm from "@/components/form/TransactionForm";
+import ComponentCard from "@/components/layout/ComponentCard";
 import { getTransactionById } from "@/services/admin/v1/transaction";
 import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
@@ -17,13 +18,15 @@ export default function TransactionDetail({
     refetchOnWindowFocus: false,
   });
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <Typography variant="h2">Transaction : {params.id}</Typography>
-      <TransactionForm
-        isLoading={transactionDetailQuery.isLoading}
-        transactionData={transactionDetailQuery.data}
-        isEdit
-      />
+      <ComponentCard>
+        <TransactionForm
+          isLoading={transactionDetailQuery.isLoading}
+          transactionData={transactionDetailQuery.data}
+          isEdit
+        />
+      </ComponentCard>
     </div>
   );
 }

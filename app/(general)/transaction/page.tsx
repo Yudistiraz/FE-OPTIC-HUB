@@ -19,6 +19,7 @@ import { getThousandSeparator } from "@/utils/function";
 import { TRANSACTION_STATUS_OPTIONS } from "@/utils/constants";
 import { getAllTransaction } from "@/services/admin/v1/transaction";
 import CustomDatePicker from "@/components/ui/DatePicker";
+import ComponentCard from "@/components/layout/ComponentCard";
 
 export default function Product() {
   const router = useRouter();
@@ -122,7 +123,7 @@ export default function Product() {
   }, [additionalParams]);
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
         <Typography variant="h2">Transaction</Typography>
 
@@ -136,7 +137,7 @@ export default function Product() {
         </CustomButton>
       </div>
 
-      <div className="tw-w-full tw-bg-white tw-rounded-md tw-flex tw-flex-col tw-gap-6 tw-p-4">
+      <ComponentCard>
         <div className="tw-w-full tw-flex lg:tw-flex-row tw-flex-col tw-items-center tw-gap-2">
           <div className="tw-w-full lg:tw-w-1/4">
             <CustomSearchbar
@@ -220,7 +221,7 @@ export default function Product() {
           page={page}
           totalPage={totalPages}
         />
-      </div>
+      </ComponentCard>
     </div>
   );
 }
