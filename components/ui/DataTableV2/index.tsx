@@ -3,6 +3,7 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 import { PaginationItem } from "@mui/material";
 import MuiPagination from "@mui/material/Pagination";
 import { DataGrid } from "@mui/x-data-grid";
+import { Fragment } from "react";
 
 const CustomDataTable = (props: any) => {
   const {
@@ -18,34 +19,33 @@ const CustomDataTable = (props: any) => {
     ...otherProps
   } = props;
   return (
-    <>
-      <div className="tw-max-w-full">
-        <DataGrid
-          {...otherProps}
-          loading={isLoading}
-          columns={columns}
-          rows={rows || []}
-          onRowClick={onRowClick}
-          onPaginationModelChange={onPageChange}
-          hideFooter
-          hideFooterPagination
-          hideFooterSelectedRowCount
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "" : "tw-bg-[#F6F6F6]"
-          }
-          sx={{
-            ".MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-            "& .MuiDataGrid-row:hover": {
-              cursor: "pointer",
-            },
-            height: "100%",
-          }}
-          autoHeight={true}
-          disableExtendRowFullWidth={true}
-        />
-      </div>
+    <Fragment>
+      <DataGrid
+        {...otherProps}
+        loading={isLoading}
+        columns={columns}
+        rows={rows || []}
+        onRowClick={onRowClick}
+        onPaginationModelChange={onPageChange}
+        hideFooter
+        hideFooterPagination
+        hideFooterSelectedRowCount
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? "" : "tw-bg-[#F6F6F6]"
+        }
+        sx={{
+          ".MuiDataGrid-cell:focus": {
+            outline: "none",
+          },
+          "& .MuiDataGrid-row:hover": {
+            cursor: "pointer",
+          },
+          height: "100%",
+          maxWidth: "100%",
+        }}
+        autoHeight={true}
+        disableExtendRowFullWidth={true}
+      />
 
       {!hidePagination && (
         <div className="tw-mt-2">
@@ -77,7 +77,7 @@ const CustomDataTable = (props: any) => {
           />
         </div>
       )}
-    </>
+    </Fragment>
   );
 };
 
