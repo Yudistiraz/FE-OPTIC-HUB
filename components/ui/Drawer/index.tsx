@@ -54,10 +54,12 @@ const CustomDrawer = ({
       PaperProps={{ style: paperStyle, variant: "blue" }} // Add the PaperProps with custom style
     >
       <ContainerWrapper className={`tw-h-full ${containerClass}`}>
-        <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
-          <Typography variant="h2">{title}</Typography>
-          {/* {onClose && <DialogCloseIcon onClick={onClose} />} */}
-        </div>
+        {title.length > 0 && (
+          <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
+            <Typography variant="h2">{title}</Typography>
+            {/* {onClose && <DialogCloseIcon onClick={onClose} />} */}
+          </div>
+        )}
         {children}
       </ContainerWrapper>
     </Drawer>
