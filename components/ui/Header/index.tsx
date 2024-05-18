@@ -4,14 +4,8 @@ import { AppBar, IconButton, MenuItem, Typography, Menu } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
-import CustomContainer from "@/components/ui/Container";
-
-const drawerWidth = 270;
-
 const Header = () => {
   const session = useSession();
-
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -32,18 +26,9 @@ const Header = () => {
   };
 
   return (
-    <AppBar
-      className="tw-bg-white tw-shadow-none tw-border tw-border-b-gray-300 tw-p-0"
-      // sx={{
-      //   width: `calc(100% - ${drawerWidth}px)`,
-      //   ml: `${drawerWidth}px`,
-      //   height: "80px",
-      // }}
-    >
-      <CustomContainer className="tw-py-[20px] tw-flex tw-justify-between">
-        <div>{/* breadcrumb here */}</div>
-
-        <div className="tw-flex tw-gap-4 tw-items-center">
+    <AppBar className="tw-bg-white tw-shadow-none tw-border tw-border-b-gray-300 tw-m-0">
+      <div className="tw-flex tw-w-full tw-px-4 tw-py-4 tw-shadow-md">
+        <div className="tw-flex tw-gap-4 tw-items-center tw-ml-auto">
           {session?.data && (
             <div>
               <Typography
@@ -83,7 +68,7 @@ const Header = () => {
             </Menu>
           </div>
         </div>
-      </CustomContainer>
+      </div>
     </AppBar>
   );
 };
