@@ -19,11 +19,8 @@ export default function RootLayout({
     <Fragment>
       <div className="tw-relative tw-flex tw-flex-col tw-min-h-screen tw-bg-gray-200">
         <Head>
-          <title>Burn 83</title>
-          <meta
-            name="description"
-            content="Book your schedule on time with Burn 83!"
-          />
+          <title>Optic Hub</title>
+          <meta name="Optic Hub" content="Optic Hub" />
         </Head>
 
         <Header />
@@ -32,7 +29,7 @@ export default function RootLayout({
           <CustomDrawer
             variant="permanent"
             drawerPaperClass="tw-bg-primary-500 tw-w-72 no-scrollbar"
-            containerClass="tw-w-full tw-px-2"
+            containerClass="tw-w-full tw-px-2 tw-pt-0"
           >
             <SidebarMenu />
           </CustomDrawer>
