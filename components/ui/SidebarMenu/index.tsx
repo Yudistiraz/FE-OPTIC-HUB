@@ -8,6 +8,8 @@ import ImageLoader from "@/components/ui/ImageLoader";
 import { OWNER_SITEMAPS, STAFF_SITEMAPS } from "@/utils/constants";
 
 import { isSideBarActive } from "@/utils/function";
+import { useScreenSize } from "@/context/MediaQuery";
+import { useUserState } from "@/context/User";
 
 interface MenuProps {
   name?: string;
@@ -23,6 +25,8 @@ interface NavigationMenuProps {
 function SidebarMenu() {
   const router = useRouter();
   const pathname = usePathname();
+  const { isMobileScreen } = useScreenSize();
+  const { setSideBarOpen } = useUserState();
 
   const { data: session } = useSession();
 
@@ -30,6 +34,9 @@ function SidebarMenu() {
 
   const onMenuClick = (url: string) => {
     router.push(url);
+    if (isMobileScreen) {
+      setSideBarOpen(false);
+    }
   };
 
   const NavItem: React.FC<MenuProps> = ({ children, path }) => {
@@ -101,7 +108,17 @@ function SidebarMenu() {
 
   return (
     <div className="tw-w-full">
-      logo
+      <div className="tw-w-full tw-flex tw-justify-center">
+        <div className="tw-w-32 tw-h-32 tw-flex-none">
+          <ImageLoader
+            isFlat
+            priority
+            src="/assets/logo/optic-hub-logo-putih.svg"
+            alt="optic-hub-logo"
+          />
+        </div>
+      </div>
+
       <NavigationMenu
         menus={role === "staff" ? STAFF_SITEMAPS : OWNER_SITEMAPS}
       />
