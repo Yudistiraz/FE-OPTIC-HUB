@@ -1,5 +1,6 @@
 "use client";
 import ProductForm from "@/components/form/ProductForm";
+import ComponentCard from "@/components/layout/ComponentCard";
 import { getProductById } from "@/services/admin/v1/product";
 
 import { Typography } from "@mui/material";
@@ -16,15 +17,17 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
   });
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <Typography variant="h2">
         Product : {productDetailQuery?.data?.name}
       </Typography>
-      <ProductForm
-        isEdit
-        data={productDetailQuery.data}
-        isLoading={productDetailQuery.isLoading}
-      />
+      <ComponentCard>
+        <ProductForm
+          isEdit
+          data={productDetailQuery.data}
+          isLoading={productDetailQuery.isLoading}
+        />
+      </ComponentCard>
     </div>
   );
 }

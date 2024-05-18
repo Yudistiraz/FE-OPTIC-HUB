@@ -1,9 +1,11 @@
 "use client";
 
 import SalesBarChart from "@/components/features/SalesBarChart";
+import ComponentCard from "@/components/layout/ComponentCard";
 import CustomDataTable from "@/components/ui/DataTableV2";
 import { getBestSellerItem } from "@/services/admin/v1/dashboard";
 import { Skeleton, Typography } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { useQuery } from "react-query";
 
 export default function Home() {
@@ -37,10 +39,12 @@ export default function Home() {
   ];
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-8">
-      <SalesBarChart />
+    <div className="tw-flex tw-flex-col tw-gap-8 tw-w-full">
+      <ComponentCard>
+        <SalesBarChart />
+      </ComponentCard>
 
-      <div className="tw-w-full tw-p-4 tw-bg-gray-100 tw-rounded-md tw-flex tw-flex-col tw-gap-8">
+      <ComponentCard>
         <Typography variant="display4" className="tw-uppercase">
           Best seller item
         </Typography>
@@ -58,7 +62,7 @@ export default function Home() {
             hidePagination
           />
         )}
-      </div>
+      </ComponentCard>
     </div>
   );
 }

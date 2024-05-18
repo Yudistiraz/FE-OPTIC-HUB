@@ -1,5 +1,6 @@
 "use client";
 import EmployeeForm from "@/components/form/EmployeeForm";
+import ComponentCard from "@/components/layout/ComponentCard";
 import { getEmployeeById } from "@/services/admin/v1/employee";
 import { Typography } from "@mui/material";
 import { Fragment } from "react";
@@ -14,15 +15,17 @@ export default function EmployeeDetail({ params }: { params: { id: string } }) {
     },
   });
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <Typography variant="h2">
         Employee : {employeeDetailQuery?.data?.name}
       </Typography>
-      <EmployeeForm
-        isEdit
-        data={employeeDetailQuery?.data}
-        isLoading={employeeDetailQuery.isLoading}
-      />
+      <ComponentCard>
+        <EmployeeForm
+          isEdit
+          data={employeeDetailQuery?.data}
+          isLoading={employeeDetailQuery.isLoading}
+        />
+      </ComponentCard>
     </div>
   );
 }

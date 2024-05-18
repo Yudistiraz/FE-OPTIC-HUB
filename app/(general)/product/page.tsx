@@ -22,9 +22,12 @@ import {
   getThousandSeparator,
 } from "@/utils/function";
 import { STATUS_OPTIONS } from "@/utils/constants";
+import { useScreenSize } from "@/context/MediaQuery";
+import ComponentCard from "@/components/layout/ComponentCard";
 
 export default function Product() {
   const router = useRouter();
+  const { isMobileScreen } = useScreenSize();
   const {
     openDialog,
     setOpenDialog,
@@ -119,7 +122,7 @@ export default function Product() {
     {
       field: "category",
       headerName: "Category",
-      width: 250,
+      minWidth: 250,
       sortable: false,
       renderCell: (data: any) => {
         return <div className="tw-capitalize">{data?.row?.category?.name}</div>;
@@ -129,7 +132,7 @@ export default function Product() {
     {
       field: "price",
       headerName: "Price",
-      width: 250,
+      minWidth: 250,
       sortable: false,
       renderCell: (data: any) => {
         return `Rp. ${getThousandSeparator(data?.row?.price)}`;
@@ -139,7 +142,7 @@ export default function Product() {
     {
       field: "qty",
       headerName: "In Stock",
-      width: 150,
+      minWidth: 150,
       sortable: false,
       renderCell: (data: any) => {
         return data?.row?.quantity;
@@ -149,7 +152,7 @@ export default function Product() {
     {
       field: "active",
       headerName: "Status",
-      width: 150,
+      minWidth: 150,
       sortable: false,
       renderCell: (data: any) => {
         return (
@@ -193,7 +196,7 @@ export default function Product() {
   ];
 
   return (
-    <div className="tw-flex tw-flex-col tw-gap-6">
+    <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
         <Typography variant="h2">Product</Typography>
 
@@ -207,87 +210,89 @@ export default function Product() {
         </CustomButton>
       </div>
 
-      <div className="tw-w-full tw-flex tw-items-center tw-gap-8">
-        <div className="tw-w-1/4">
-          <CustomSearchbar
-            fullWidth
-            search={search}
-            debounce
-            setSearch={(text: string) => {
-              setSearch(text);
-            }}
-          />
+      <ComponentCard>
+        <div className="tw-w-full tw-flex tw-items-center tw-gap-8">
+          <div className="tw-w-1/4">
+            <CustomSearchbar
+              fullWidth
+              search={search}
+              debounce
+              setSearch={(text: string) => {
+                setSearch(text);
+              }}
+            />
+          </div>
+
+          <div className="tw-w-1/3">
+            <CustomDropdown
+              fullWidth
+              label="FILTER BY CATEGORY"
+              name="categoryOptions"
+              options={convertDataToDropdownOptions(
+                productCategoryQuery.data,
+                "name",
+                "id"
+              )}
+              value={additionalParams.categoryId || ""}
+              placeholder="Filter by Category"
+              allOption="All Category"
+              disabled={productCategoryQuery.isLoading}
+              onChange={(e) => {
+                setAdditionalParams((prevState) => ({
+                  ...prevState,
+                  categoryId: e.value,
+                }));
+              }}
+            />
+          </div>
+
+          <div className="tw-w-1/3">
+            <CustomDropdown
+              fullWidth
+              label="FILTER BY STATUS"
+              name="PurchaseOptions"
+              options={STATUS_OPTIONS}
+              value={additionalParams.status || ""}
+              placeholder="Filter by Status"
+              allOption="All Status"
+              onChange={(e) => {
+                setAdditionalParams((prevState) => ({
+                  ...prevState,
+                  status: e.value,
+                }));
+              }}
+            />
+          </div>
         </div>
 
-        <div className="tw-w-1/3">
-          <CustomDropdown
-            fullWidth
-            label="FILTER BY CATEGORY"
-            name="categoryOptions"
-            options={convertDataToDropdownOptions(
-              productCategoryQuery.data,
-              "name",
-              "id"
-            )}
-            value={additionalParams.categoryId || ""}
-            placeholder="Filter by Category"
-            allOption="All Category"
-            disabled={productCategoryQuery.isLoading}
-            onChange={(e) => {
-              setAdditionalParams((prevState) => ({
-                ...prevState,
-                categoryId: e.value,
-              }));
+        {!productsQuery.isLoading && !productCategoryQuery.isLoading && (
+          <CustomDataTable
+            columns={productColumn}
+            rows={productsQuery.data}
+            limit={10}
+            disableColumnResize={true}
+            disableColumnMenu={true}
+            onRowClick={(item: any, data: any) => {
+              const cell = data.target.getAttribute("data-colindex");
+              const target = data.target;
+              if (
+                cell !== "5" &&
+                !(target instanceof SVGElement) &&
+                target.tagName.toLowerCase() !== "path" &&
+                target.id !== "deleteWrapper" &&
+                target.id !== "deleteButton"
+              ) {
+                router.push(`/product/${item?.row?.id}`);
+              }
             }}
-          />
-        </div>
-
-        <div className="tw-w-1/3">
-          <CustomDropdown
-            fullWidth
-            label="FILTER BY STATUS"
-            name="PurchaseOptions"
-            options={STATUS_OPTIONS}
-            value={additionalParams.status || ""}
-            placeholder="Filter by Status"
-            allOption="All Status"
-            onChange={(e) => {
-              setAdditionalParams((prevState) => ({
-                ...prevState,
-                status: e.value,
-              }));
+            onPageChange={(param: number) => {
+              setPage(param);
             }}
+            page={page}
+            totalPage={totalPages}
           />
-        </div>
-      </div>
-
-      {!productsQuery.isLoading && !productCategoryQuery.isLoading && (
-        <CustomDataTable
-          columns={productColumn}
-          rows={productsQuery.data}
-          limit={10}
-          disableColumnResize={true}
-          disableColumnMenu={true}
-          onRowClick={(item: any, data: any) => {
-            const cell = data.target.getAttribute("data-colindex");
-            const target = data.target;
-            if (
-              cell !== "5" &&
-              !(target instanceof SVGElement) &&
-              target.tagName.toLowerCase() !== "path" &&
-              target.id !== "deleteWrapper" &&
-              target.id !== "deleteButton"
-            ) {
-              router.push(`/product/${item?.row?.id}`);
-            }
-          }}
-          onPageChange={(param: number) => {
-            setPage(param);
-          }}
-          page={page}
-          totalPage={totalPages}
-        />
-      )}
+        )}
+      </ComponentCard>
 
       <CustomDialog open={openDialog} independent maxWidth="xs">
         <ConfirmationDialog

@@ -15,11 +15,13 @@ const UserContext = createContext<
       dialogTitle: string;
       dialogMessage: string;
       selectedId: string;
+      sideBarOpen: boolean;
       setOpenDialog: (openDialog: boolean) => void;
       setDialogType: (dialogType: "confirmation" | "success" | "alert") => void;
       setDialogTitle: (dialogTitle: string) => void;
       setDialogMessage: (dialogMessage: string) => void;
       setSelectedId: (dialogTitle: string) => void;
+      setSideBarOpen: (sideBarOpen: boolean) => void;
       resetDialogText: () => void;
     }
   | undefined
@@ -46,7 +48,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [dialogTitle, setDialogTitle] = useState<string>("Error");
   const [dialogMessage, setDialogMessage] = useState<string>("");
   const [selectedId, setSelectedId] = useState<string>("");
-
+  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
   const resetDialogText = () => {
     setDialogTitle("Error");
     setDialogType("alert");
@@ -61,12 +63,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         dialogType,
         setDialogType,
         dialogTitle,
+        sideBarOpen,
         setDialogTitle,
         resetDialogText,
         dialogMessage,
         setDialogMessage,
         selectedId,
         setSelectedId,
+        setSideBarOpen,
       }}
     >
       {children}

@@ -163,15 +163,15 @@ const TransactionForm = ({
   // }, [formik.values]);
 
   return (
-    <div>
+    <Fragment>
       {isLoading ? (
         <LoadingSkeletonForm isTransactionForm />
       ) : (
         <form
           onSubmit={formik.handleSubmit}
-          className="tw-w-4/5 lg:tw-w-1/2 tw-flex tw-flex-col tw-gap-4"
+          className="tw-w-3/4 lg:tw-w-1/2 tw-flex tw-flex-col tw-gap-4"
         >
-          <FormLayout>
+          <div className="tw-flex tw-flex-col tw-gap-6">
             {isEdit && (
               <CustomTextField
                 label="ID"
@@ -180,7 +180,7 @@ const TransactionForm = ({
               />
             )}
 
-            <div className="tw-flex tw-gap-6">
+            <div className="tw-flex tw-gap-6 ">
               <CustomTextField
                 label="Admin ID"
                 placeholder="Input Admin ID"
@@ -334,7 +334,7 @@ const TransactionForm = ({
               value={formik.values.withPrescription}
               disabled={isEdit}
             />
-          </FormLayout>
+          </div>
 
           {formik.values.withPrescription && (
             <div>
@@ -540,7 +540,7 @@ const TransactionForm = ({
           </div>
         </form>
       )}
-    </div>
+    </Fragment>
   );
 };
 
