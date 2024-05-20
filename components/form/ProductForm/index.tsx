@@ -74,15 +74,10 @@ const ProductForm = ({
           (error as any)?.response?.data?.message || "Error Adding Product";
         console.log(errorMessage);
 
-        // toast.error(errorMessage);
+        toast.error(errorMessage);
       } else {
         toast.error("Error Adding Product");
       }
-      // console.log(error);
-
-      // // const errorMessage =
-      // //   (error as any)?.response?.data?.message || "Error Adding Product";
-      // toast.error("Error Adding Product");
     },
   });
 

@@ -2,14 +2,15 @@ import { useCustomFormik } from "@/hooks/formik";
 import { loginSchema } from "@/utils/yup";
 import { Typography } from "@mui/material";
 import React from "react";
-import CustomTextField from "../../ui/TextField";
-import CustomButton from "../../ui/Button";
-import FormLayout from "../../ui/FormLayout";
+import CustomTextField from "@/components/ui/TextField";
+import CustomButton from "@/components/ui/Button";
+import FormLayout from "@/components/ui/FormLayout";
 import { gethelperText } from "@/utils/function";
 import { signIn } from "next-auth/react";
 import { adminSignIn } from "@/services/admin/v1/auth";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 const Signinform = () => {
   const signInMutation = useMutation({
@@ -29,31 +30,19 @@ const Signinform = () => {
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {};
-        console.log(errorResponse);
+        toast.error(errorResponse?.message);
       }
     },
   });
 
   const formik = useCustomFormik({
     initialValues: {
-      // name: "admin@mail.com",
       email: "admin@mail.com",
       password: "admin",
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      // console.log(values);
       signInMutation.mutate({ ...values });
-
-      // await signIn("credentials", {
-      //   id: "123456",
-      //   name: "yudis",
-      //   role: "staff",
-      //   token: "asdadasdasas",
-      //   email: "aaaa@example.com",
-      //   redirect: true,
-      //   callbackUrl: "/",
-      // });
     },
   });
 
