@@ -9,8 +9,6 @@ interface ImageLoaderProps {
   className?: string;
   priority?: boolean;
   isFlat?: boolean;
-  objectFit?: string;
-  layout?: string;
 }
 
 function ImageLoader({
@@ -21,8 +19,6 @@ function ImageLoader({
   className = "",
   isFlat = false,
   priority = false,
-  objectFit = "cover",
-  layout = "contain",
 }: ImageLoaderProps) {
   const sizes = width === 0 && height === 0 ? "100vw" : "";
   const defaultClass = isFlat ? "" : "!tw-rounded-xl";
@@ -35,9 +31,7 @@ function ImageLoader({
       width={width}
       height={height}
       sizes={sizes}
-      objectFit={objectFit}
       className={`!tw-w-[100%] !tw-h-[100%] ${defaultClass} ${className}`}
-      layout={layout}
     />
   );
 }
