@@ -36,9 +36,9 @@ const ImageUpload = ({
 
   return (
     <div
-      className={`tw-w-40 tw-h-40 tw-object-cover tw-relative ${
+      className={`tw-w-40 tw-h-40 tw-rounded-md tw-overflow-hidden tw-relative ${
         !imageUrl
-          ? "tw-bg-gray-400 tw-rounded-md tw-group tw-cursor-pointer"
+          ? "tw-bg-gray-400 tw-rounded-md tw-group tw-cursor-pointer tw-overflow-hidden"
           : ""
       }`}
     >
@@ -60,7 +60,13 @@ const ImageUpload = ({
 
       {imageUrl && (
         <Fragment>
-          <ImageLoader src={imageUrl} layout={"fill"} />
+          <ImageLoader
+            alt="item-img"
+            className="tw-object-cover"
+            src={imageUrl}
+            priority
+            isFlat
+          />
           {onEdit ? (
             <Fragment>
               {!newImage ? (
