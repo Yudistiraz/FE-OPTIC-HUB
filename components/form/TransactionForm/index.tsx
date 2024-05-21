@@ -1,10 +1,9 @@
 import { useCustomFormik } from "@/hooks/formik";
 import { addTransactionScheme } from "@/utils/yup";
 
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
-import FormLayout from "@/components/ui/FormLayout";
 import {
   addProductToArray,
   calculateTotalPrice,
@@ -31,6 +30,7 @@ import {
 } from "@/services/admin/v1/transaction";
 import toast from "react-hot-toast";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
+import { AxiosError } from "axios";
 
 interface TransactionFormProps {
   isLoading?: boolean;
@@ -61,9 +61,10 @@ const TransactionForm = ({
       router.push("/transaction");
     },
     onError: (error) => {
-      const errorMessage =
-        (error as any)?.response?.data?.message || "Error Adding Transaction";
-      toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {};
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
@@ -74,9 +75,10 @@ const TransactionForm = ({
       router.push("/transaction");
     },
     onError: (error) => {
-      const errorMessage =
-        (error as any)?.response?.data?.message || "Error Updating Transaction";
-      toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {};
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
@@ -157,10 +159,6 @@ const TransactionForm = ({
       updateOrderItems(editedItem, formikArray)
     );
   };
-
-  // useEffect(() => {
-  //   console.log(formik.values);
-  // }, [formik.values]);
 
   return (
     <Fragment>

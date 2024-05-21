@@ -16,7 +16,13 @@ export default function AuthLayout({
     <div className="tw-w-screen tw-h-[100svh] lg:tw-h-screen tw-flex">
       <div className="tw-w-1/2 tw-bg-[#457DFF] tw-flex tw-justify-center tw-items-center">
         <div className="tw-w-1/3">
-          <ImageLoader src="/logo-big.png" />
+          <ImageLoader
+            alt="logo-img"
+            className="tw-object-cover"
+            src="/assets/logo/optic-hub-logo-putih.svg"
+            priority
+            isFlat
+          />
         </div>
       </div>
       {children}

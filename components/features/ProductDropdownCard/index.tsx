@@ -37,7 +37,10 @@ export default function ProductDropdownCard({
     >
       <div className="tw-h-24 !tw-w-24 tw-bg-black-300 tw-rounded-md tw-flex-none tw-overflow-hidden">
         <ImageLoader
-          src="https://www.firstbenefits.org/wp-content/uploads/2017/10/placeholder.png"
+          alt="item-img"
+          className="tw-object-cover"
+          src={data?.imageUrl}
+          priority
           isFlat
         />
       </div>

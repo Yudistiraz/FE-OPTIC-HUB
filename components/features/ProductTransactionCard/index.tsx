@@ -1,3 +1,4 @@
+import ImageLoader from "@/components/ui/ImageLoader";
 import {
   getThousandSeparator,
   updateOrderItemQuantity,
@@ -22,8 +23,14 @@ export default function ProductTransactionCard({
 }: ProductTransactionCardProps) {
   return (
     <div className="tw-w-full tw-h-44 tw-bg-white tw-rounded-md tw-p-2 tw-flex tw-items-center tw-gap-2">
-      <div className="tw-w-40 tw-h-40 tw-bg-black-400 tw-rounded-md tw-flex-none">
-        a
+      <div className="tw-w-40 tw-h-40 tw-bg-black-400 tw-rounded-md tw-flex-none tw-overflow-hidden">
+        <ImageLoader
+          alt="product-img"
+          className="tw-object-cover"
+          src={data?.imageUrl}
+          priority
+          isFlat
+        />
       </div>
       <div className="tw-h-full tw-flex-grow tw-py-2 tw-flex-col tw-flex tw-gap-2">
         <div className="tw-flex tw-items-center tw-h-fit">
