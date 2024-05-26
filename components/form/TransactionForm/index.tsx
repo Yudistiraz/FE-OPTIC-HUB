@@ -524,7 +524,7 @@ const TransactionForm = ({
               className="tw-w-1/4"
               variant="secondary"
               onClick={() => {
-                router.push("/product");
+                router.push("/transaction");
               }}
               disabled={transactionAddMutation.isLoading}
             >
