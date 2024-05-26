@@ -42,6 +42,7 @@ export const addEmployeeSchema = Yup.object({
   email: Yup.string().required("Email Required"),
   password: Yup.string().required("Password Required"),
   role: Yup.string().required("Role Required"),
+  nik: Yup.string().required("NIK Required"),
 });
 
 export const updateEmployeeSchema = Yup.object({
@@ -50,6 +51,7 @@ export const updateEmployeeSchema = Yup.object({
   phone_number: Yup.string().required("Phone Number Required"),
   email: Yup.string().required("Email Required"),
   role: Yup.string().required("Role Required"),
+  nik: Yup.string().required("NIK Required"),
 });
 
 export const addProductScheme = Yup.object({

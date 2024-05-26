@@ -10,6 +10,7 @@ export type TEmployee = {
   phone_number: string;
   status: string;
   role: string;
+  nik: string;
 };
 
 export type TProduct = {
