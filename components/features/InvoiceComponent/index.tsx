@@ -94,7 +94,7 @@ const InvoiceComponent = forwardRef<HTMLDivElement, InvoiceComponentProps>(
                 variant="subtitle2Reg"
                 className="tw-uppercase tw-col-span-2 tw-ml-auto"
               >
-                Rp.{getThousandSeparator(product?.price)}
+                Rp.{getThousandSeparator(product?.qty * product?.price)}
               </Typography>
             </div>
           ))}
