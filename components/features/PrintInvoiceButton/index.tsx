@@ -1,7 +1,7 @@
 import CustomButton from "@/components/ui/Button";
 import React, { Fragment, useRef } from "react";
 import ReactToPrint from "react-to-print";
-import InvoiceComponent from "../InvoiceComponent";
+import InvoiceComponent from "@/components/features/InvoiceComponent";
 import { TTransaction } from "@/utils/models";
 
 interface PrintInvoiceButtonProps {
