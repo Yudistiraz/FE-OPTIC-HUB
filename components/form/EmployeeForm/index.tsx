@@ -24,6 +24,8 @@ import {
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 interface EmployeeFormProps {
   isLoading?: boolean;
@@ -52,44 +54,49 @@ const EmployeeForm = ({
   const employeeAddMutation = useMutation({
     mutationFn: addEmployee,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Employee Successfully Added");
       router.push("/employee");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {};
+        console.log(errorResponse?.message);
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
   const employeeUpdateMutation = useMutation({
     mutationFn: updateEmployee,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Employee Successfully Updated");
       router.push("/employee");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {
+          message: "Error Updating Employee",
+        };
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
   const employeeDeleteMutation = useMutation({
     mutationFn: deleteEmployee,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Employee Successfully Deleted");
       setOpenDialog(false);
       resetDialogText();
-      if (data) {
-        if (data.id === session?.data?.user?.id) {
-          signOut();
-        } else {
-          router.push("/employee");
-        }
-      }
+      router.push("/employee");
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {
+          message: "Error Deleting Employee",
+        };
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
@@ -103,6 +110,7 @@ const EmployeeForm = ({
       password: "",
       role: data?.role || "staff",
       status: convertEnumValue(data?.status),
+      nik: data?.nik || "",
     },
     validationSchema: isEdit ? updateEmployeeSchema : addEmployeeSchema,
     onSubmit: async (values) => {
@@ -114,6 +122,7 @@ const EmployeeForm = ({
         password: values.password,
         status: isEdit && values.status === false ? "inactive" : "active",
         role: values.role,
+        nik: values.nik,
       };
 
       if (isEdit) {
@@ -178,6 +187,7 @@ const EmployeeForm = ({
                 formik.errors.dob as string
               )}
               error={formik.touched.dob && !!formik.errors.dob}
+              disableFuture
             />
 
             <CustomTextField
@@ -192,6 +202,17 @@ const EmployeeForm = ({
                 formik.touched.phone_number && !!formik.errors.phone_number
               }
               {...formik.getFieldProps("phone_number")}
+            />
+
+            <CustomTextField
+              label="NIK"
+              placeholder="Input Employee NIK"
+              helperText={gethelperText(
+                formik.touched.nik as boolean,
+                formik.errors.nik as string
+              )}
+              error={formik.touched.nik && !!formik.errors.nik}
+              {...formik.getFieldProps("nik")}
             />
 
             <CustomTextField
@@ -269,7 +290,7 @@ const EmployeeForm = ({
               >
                 Cancel
               </CustomButton>
-              {isEdit && (
+              {isEdit && data?.id !== session?.data?.user?.id && (
                 <CustomButton
                   className="tw-w-1/4"
                   variant="redButton"
