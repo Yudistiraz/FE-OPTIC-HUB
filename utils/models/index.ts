@@ -63,9 +63,9 @@ export type TTransaction = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   deletedAt?: Date | string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string;
+  // customerName: string;
+  // customerPhone: string;
+  // customerEmail: string;
   totalItem: number;
   status: string;
   paymentMethod: string;
@@ -77,4 +77,5 @@ export type TTransaction = {
   orderItem?: OrderItem[];
   prescription?: Prescription;
   withPrescription: boolean;
+  userName: string;
 };
