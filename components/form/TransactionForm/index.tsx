@@ -31,6 +31,7 @@ import {
 import toast from "react-hot-toast";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
 import { AxiosError } from "axios";
+import PrintInvoiceButton from "@/components/features/PrintInvoiceButton";
 
 interface TransactionFormProps {
   isLoading?: boolean;
@@ -62,7 +63,9 @@ const TransactionForm = ({
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        const errorResponse = error?.response?.data || {};
+        const errorResponse = error?.response?.data || {
+          message: "Error Adding Transacation",
+        };
         toast.error(errorResponse?.message);
       }
     },
@@ -148,7 +151,7 @@ const TransactionForm = ({
     formik.setFieldValue("orderItem", formikArray);
   };
 
-  const onDeleteProduct = (productData: any) => {
+  const onDeleteProduct = (productData: TProduct[]) => {
     formik.setFieldValue("orderItem", productData);
   };
 
@@ -501,15 +504,7 @@ const TransactionForm = ({
           <div className="tw-w-full tw-flex tw-gap-4 ">
             {isEdit ? (
               <Fragment>
-                <CustomButton
-                  type="button"
-                  className="tw-w-1/4"
-                  onClick={() => {
-                    console.log("print gan");
-                  }}
-                >
-                  Print Invoice
-                </CustomButton>
+                <PrintInvoiceButton data={transactionData} />
                 {transactionData?.status === "onGoing" && (
                   <CustomButton type="submit" className="tw-w-1/4">
                     Save
