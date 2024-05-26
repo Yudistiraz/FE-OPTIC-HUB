@@ -185,6 +185,6 @@ export function isUrl(value: string): string {
     new URL(value);
     return value;
   } catch (_) {
-    return "";
+    return "/assets/blank.png";
   }
 }
