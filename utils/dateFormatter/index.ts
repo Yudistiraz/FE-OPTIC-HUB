@@ -11,7 +11,7 @@ export function checkDateValidity(d: Dayjs | Date) {
   return dayjs(d).isValid();
 }
 
-export function formateDate1(date: Date | string | null): string {
+export function formateDate1(date: Date | string | null | undefined): string {
   if (!date) {
     return "-";
   } else {
