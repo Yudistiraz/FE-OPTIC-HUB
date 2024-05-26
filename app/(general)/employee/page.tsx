@@ -282,7 +282,6 @@ export default function Employee() {
           }}
           page={page}
           totalPage={totalPages}
-          getRowId={(row: any) => row?.name}
         />
       </ComponentCard>
 
