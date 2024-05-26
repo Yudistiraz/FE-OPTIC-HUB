@@ -263,6 +263,9 @@ const EmployeeForm = ({
                   employeeAddMutation.isLoading ||
                   employeeUpdateMutation.isLoading
                 }
+                onClick={() => {
+                  router.push("/employee");
+                }}
               >
                 Cancel
               </CustomButton>
