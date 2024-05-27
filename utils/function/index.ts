@@ -179,3 +179,12 @@ export function transformArrayBarChart(
   }
   return;
 }
+
+export function isUrl(value: string): string {
+  try {
+    new URL(value);
+    return value;
+  } catch (_) {
+    return "/assets/blank.png";
+  }
+}

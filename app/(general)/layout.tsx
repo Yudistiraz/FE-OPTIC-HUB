@@ -1,6 +1,5 @@
 "use client";
 import "@/app/globals.css";
-import DefaultLayout from "./default-layout";
 import { ToastBar, Toaster } from "react-hot-toast";
 import { Fragment } from "react";
 import Head from "next/head";
@@ -36,7 +35,9 @@ export default function RootLayout({
         )}
 
         <div className="tw-pt-32 tw-mb-8">
-          <div className="tw-flex tw-grow tw-px-4 lg:tw-pl-72">{children}</div>
+          <div className="tw-flex tw-flex-col tw-grow tw-px-4 lg:tw-pl-72">
+            {children}
+          </div>
         </div>
       </div>
       <Toaster

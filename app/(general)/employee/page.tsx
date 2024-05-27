@@ -20,6 +20,8 @@ import { deleteEmployee, getAllEmployee } from "@/services/admin/v1/employee";
 import { checkPageValidity } from "@/utils/function";
 import { signOut, useSession } from "next-auth/react";
 import ComponentCard from "@/components/layout/ComponentCard";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export default function Employee() {
   const router = useRouter();
@@ -64,20 +66,18 @@ export default function Employee() {
   const employeeDeleteMutation = useMutation({
     mutationFn: deleteEmployee,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Employee Successfully Deleted");
       setOpenDialog(false);
       resetDialogText();
-      if (selectedId) {
-        if (selectedId === session?.data?.user?.id) {
-          signOut();
-        } else {
-          employeeQuery.refetch();
-        }
-      }
+      employeeQuery.refetch();
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {
+          message: "Error Deleting Employee",
+        };
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
@@ -282,7 +282,6 @@ export default function Employee() {
           }}
           page={page}
           totalPage={totalPages}
-          getRowId={(row: any) => row?.name}
         />
       </ComponentCard>
 

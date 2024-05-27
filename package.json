@@ -28,6 +28,7 @@
     "react-hot-toast": "^2.4.1",
     "react-number-format": "^5.3.4",
     "react-query": "^3.39.3",
+    "react-to-print": "^2.15.1",
     "tailwind": "^4.0.0",
     "yup": "^1.4.0"
   },

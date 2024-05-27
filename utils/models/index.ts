@@ -10,6 +10,7 @@ export type TEmployee = {
   phone_number: string;
   status: string;
   role: string;
+  nik: string;
 };
 
 export type TProduct = {
@@ -62,9 +63,9 @@ export type TTransaction = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   deletedAt?: Date | string;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string;
+  // customerName: string;
+  // customerPhone: string;
+  // customerEmail: string;
   totalItem: number;
   status: string;
   paymentMethod: string;
@@ -72,8 +73,9 @@ export type TTransaction = {
   tax: number;
   totalPrice: number;
   imageUrl: string;
-  transactionDate: Date | string;
+  transactionDate: string;
   orderItem?: OrderItem[];
   prescription?: Prescription;
   withPrescription: boolean;
+  userName: string;
 };

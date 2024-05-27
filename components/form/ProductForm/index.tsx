@@ -88,9 +88,12 @@ const ProductForm = ({
       router.push("/product");
     },
     onError: (error) => {
-      const errorMessage =
-        (error as any)?.response?.data?.message || "Error Updating Product";
-      toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {
+          message: "Error Updating Product",
+        };
+        toast.error(errorResponse?.message);
+      }
     },
   });
 
@@ -103,9 +106,12 @@ const ProductForm = ({
       router.push("/product");
     },
     onError: (error) => {
-      const errorMessage =
-        (error as any)?.response?.data?.message || "Error Deleting Product";
-      toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {
+          message: "Error Deleting Product",
+        };
+        toast.error(errorResponse?.message);
+      }
     },
   });
 

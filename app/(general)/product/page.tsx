@@ -22,12 +22,12 @@ import {
   getThousandSeparator,
 } from "@/utils/function";
 import { STATUS_OPTIONS } from "@/utils/constants";
-import { useScreenSize } from "@/context/MediaQuery";
 import ComponentCard from "@/components/layout/ComponentCard";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 export default function Product() {
   const router = useRouter();
-  const { isMobileScreen } = useScreenSize();
   const {
     openDialog,
     setOpenDialog,
@@ -77,15 +77,19 @@ export default function Product() {
   const productDeleteMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: async () => {
-      // toast.success("Success Added Admin");
+      toast.success("Product Successfully Deleted");
       setOpenDialog(false);
       resetDialogText();
       setSelectedId("");
       productsQuery.refetch();
     },
     onError: (error) => {
-      const errorMessage = (error as any)?.response?.data?.message || "Error";
-      // toast.error(errorMessage);
+      if (error instanceof AxiosError) {
+        const errorResponse = error?.response?.data || {
+          message: "Error Deleting Product",
+        };
+        toast.error(errorResponse?.message);
+      }
     },
   });
 

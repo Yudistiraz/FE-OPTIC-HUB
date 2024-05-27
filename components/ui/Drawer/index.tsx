@@ -52,6 +52,7 @@ const CustomDrawer = ({
       open={open}
       onClose={() => onClose?.()}
       PaperProps={{ style: paperStyle, variant: "blue" }} // Add the PaperProps with custom style
+      disableScrollLock
     >
       <ContainerWrapper className={`tw-h-full ${containerClass}`}>
         {title.length > 0 && (

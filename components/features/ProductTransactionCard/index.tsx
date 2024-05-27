@@ -1,6 +1,7 @@
 import ImageLoader from "@/components/ui/ImageLoader";
 import {
   getThousandSeparator,
+  isUrl,
   updateOrderItemQuantity,
 } from "@/utils/function";
 import { OrderItem } from "@/utils/models";
@@ -27,7 +28,7 @@ export default function ProductTransactionCard({
         <ImageLoader
           alt="product-img"
           className="tw-object-cover"
-          src={data?.imageUrl}
+          src={isUrl(data?.imageUrl)}
           priority
           isFlat
         />
