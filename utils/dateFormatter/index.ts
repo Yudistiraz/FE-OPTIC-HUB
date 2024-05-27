@@ -18,3 +18,11 @@ export function formateDate1(date: Date | string | null | undefined): string {
     return dayjs.utc(date).local().format("DD-MM-YYYY");
   }
 }
+
+export function formateDate2(date: Date | string | null | undefined): string {
+  if (!date) {
+    return "-";
+  } else {
+    return dayjs.utc(date).local().format("YYYY-MM-DD");
+  }
+}
