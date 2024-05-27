@@ -38,20 +38,32 @@ export const loginSchema = Yup.object({
 export const addEmployeeSchema = Yup.object({
   name: Yup.string().required("Name Required"),
   dob: Yup.mixed().required("Date of Birth Required"),
-  phone_number: Yup.string().required("Phone Number Required"),
+  phone_number: Yup.string()
+    .required("Phone Number Required")
+    .min(10, "Phone Number Length At Least Must Be 10 Character")
+    .max(12, "Phone Number Length Shouldn't Be Above 12 Character"),
   email: Yup.string().required("Email Required"),
   password: Yup.string().required("Password Required"),
   role: Yup.string().required("Role Required"),
-  nik: Yup.string().required("NIK Required"),
+  nik: Yup.string()
+    .required("NIK Required")
+    .min(16, "NIK Length Must Be 16 Character")
+    .max(16, "NIK Length Must Be 16 Character"),
 });
 
 export const updateEmployeeSchema = Yup.object({
   name: Yup.string().required("Name Required"),
   dob: Yup.mixed().required("Date of Birth Required"),
-  phone_number: Yup.string().required("Phone Number Required"),
+  phone_number: Yup.string()
+    .required("Phone Number Required")
+    .min(10, "Phone Number Length At Least Must Be 10 Character")
+    .max(12, "Phone Number Length Shouldn't Be Above 12 Character"),
   email: Yup.string().required("Email Required"),
   role: Yup.string().required("Role Required"),
-  nik: Yup.string().required("NIK Required"),
+  nik: Yup.string()
+    .required("NIK Required")
+    .min(16, "NIK Length Must Be 16 Character")
+    .max(16, "NIK Length Must Be 16 Character"),
 });
 
 export const addProductScheme = Yup.object({
