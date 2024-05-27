@@ -73,7 +73,7 @@ export type TTransaction = {
   tax: number;
   totalPrice: number;
   imageUrl: string;
-  transactionDate: Date | string;
+  transactionDate: string;
   orderItem?: OrderItem[];
   prescription?: Prescription;
   withPrescription: boolean;
