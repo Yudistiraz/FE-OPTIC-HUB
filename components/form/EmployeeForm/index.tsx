@@ -14,7 +14,7 @@ import { TEmployee } from "@/utils/models";
 import { useUserState } from "@/context/User";
 import CustomDialog from "@/components/ui/Dialog";
 import ConfirmationDialog from "@/components/features/ConfirmationDialog";
-import { formateDate1 } from "@/utils/dateFormatter";
+import { formateDate2 } from "@/utils/dateFormatter";
 import { useMutation } from "react-query";
 import {
   addEmployee,
@@ -117,7 +117,7 @@ const EmployeeForm = ({
       const payload = {
         name: values.name,
         email: values.email,
-        dob: formateDate1(values.dob),
+        dob: formateDate2(values.dob),
         phone_number: values.phone_number,
         password: values.password,
         status: isEdit && values.status === false ? "inactive" : "active",
