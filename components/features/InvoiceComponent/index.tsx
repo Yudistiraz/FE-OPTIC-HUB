@@ -1,7 +1,6 @@
 import React, { forwardRef } from "react";
 import { Typography } from "@mui/material";
 import { OrderItem, TTransaction } from "@/utils/models";
-import { formateDate1 } from "@/utils/dateFormatter";
 import { getThousandSeparator } from "@/utils/function";
 
 interface InvoiceComponentProps {
@@ -37,7 +36,7 @@ const InvoiceComponent = forwardRef<HTMLDivElement, InvoiceComponentProps>(
               variant="subtitle2Reg"
               className="tw-uppercase tw-col-span-1"
             >
-              {formateDate1(data?.createdAt) || ""}
+              {data?.transactionDate || ""}
             </Typography>
             <Typography
               variant="subtitle2Reg"
