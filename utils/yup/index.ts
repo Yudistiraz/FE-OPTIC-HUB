@@ -41,7 +41,8 @@ export const addEmployeeSchema = Yup.object({
   phone_number: Yup.string()
     .required("Phone Number Required")
     .min(10, "Phone Number Length At Least Must Be 10 Character")
-    .max(12, "Phone Number Length Shouldn't Be Above 12 Character"),
+    .max(12, "Phone Number Length Shouldn't Be Above 12 Character")
+    .matches(/^8\d*$/, "Phone Number Must Start With 8"),
   email: Yup.string().required("Email Required"),
   password: Yup.string().required("Password Required"),
   role: Yup.string().required("Role Required"),
@@ -57,7 +58,8 @@ export const updateEmployeeSchema = Yup.object({
   phone_number: Yup.string()
     .required("Phone Number Required")
     .min(10, "Phone Number Length At Least Must Be 10 Character")
-    .max(12, "Phone Number Length Shouldn't Be Above 12 Character"),
+    .max(12, "Phone Number Length Shouldn't Be Above 12 Character")
+    .matches(/^8\d*$/, "Phone Number Must Start With 8"),
   email: Yup.string().required("Email Required"),
   role: Yup.string().required("Role Required"),
   nik: Yup.string()

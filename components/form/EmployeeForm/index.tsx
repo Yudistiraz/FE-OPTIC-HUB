@@ -5,7 +5,11 @@ import React from "react";
 import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
-import { convertEnumValue, gethelperText } from "@/utils/function";
+import {
+  convertEnumValue,
+  gethelperText,
+  verifyNumber,
+} from "@/utils/function";
 import CustomDatePicker from "@/components/ui/DatePicker";
 import CustomDropdown from "@/components/ui/Select";
 import { EMPLOYEE_OPTIONS } from "@/utils/constants";
@@ -193,7 +197,7 @@ const EmployeeForm = ({
             <CustomTextField
               label="Phone Number"
               placeholder="Input Phone Number"
-              startAdornment={<div className="">+62</div>}
+              startAdornment={<div className="tw-text-black-500">+62</div>}
               helperText={gethelperText(
                 formik.touched.phone_number as boolean,
                 formik.errors.phone_number as string
@@ -201,7 +205,13 @@ const EmployeeForm = ({
               error={
                 formik.touched.phone_number && !!formik.errors.phone_number
               }
-              {...formik.getFieldProps("phone_number")}
+              name="phone_number"
+              value={formik.values.phone_number}
+              onChange={(event) => {
+                if (verifyNumber(event)) {
+                  formik.setFieldValue("phone_number", event.target.value);
+                }
+              }}
             />
 
             <CustomTextField
@@ -212,7 +222,13 @@ const EmployeeForm = ({
                 formik.errors.nik as string
               )}
               error={formik.touched.nik && !!formik.errors.nik}
-              {...formik.getFieldProps("nik")}
+              name="nik"
+              value={formik.values.nik}
+              onChange={(event) => {
+                if (verifyNumber(event)) {
+                  formik.setFieldValue("nik", event.target.value);
+                }
+              }}
             />
 
             <CustomTextField
