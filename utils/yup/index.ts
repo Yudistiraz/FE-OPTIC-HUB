@@ -87,4 +87,10 @@ export const addTransactionScheme = Yup.object({
 export const changePasswordScheme = Yup.object({
   oldPassword: Yup.string().required("Old Password Required"),
   newPassword: Yup.string().required("New Password Required"),
+  confirmPassword: Yup.string()
+    .required("Confirmation Password is required")
+    .oneOf(
+      [Yup.ref("newPassword")],
+      "Confirm Password must match with Password"
+    ),
 });
