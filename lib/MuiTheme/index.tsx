@@ -164,7 +164,7 @@ export const theme = createTheme({
               color: "#fff",
             },
             ":disabled": {
-              backgroundColor: "#3D69CF !important",
+              backgroundColor: "#77A0FF !important",
               color: "#fff",
             },
           },
