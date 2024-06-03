@@ -188,3 +188,14 @@ export function isUrl(value: string): string {
     return "/assets/blank.png";
   }
 }
+
+export function verifyNumber(
+  event: React.ChangeEvent<HTMLInputElement>
+): boolean {
+  const ALPHA_NUMERIC_DASH_REGEX = /^[0-9\b]+$/;
+  const value = event.target.value;
+  if (value !== "" && !ALPHA_NUMERIC_DASH_REGEX.test(value)) {
+    return false;
+  }
+  return true;
+}

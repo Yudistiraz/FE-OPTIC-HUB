@@ -123,6 +123,17 @@ export const TRANSACTION_STATUS_OPTIONS = [
   },
 ];
 
+export const CREATE_TRANSACTION_STATUS_OPTIONS = [
+  {
+    label: "Completed",
+    value: "complete",
+  },
+  {
+    label: "Ongoing",
+    value: "onGoing",
+  },
+];
+
 export const PAYMENT_METHOD_OPTIONS = [
   {
     label: "Cash",

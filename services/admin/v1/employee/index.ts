@@ -31,6 +31,11 @@ export const deleteEmployee = async (id: string) => {
   return fetcher.delete("/user/" + id);
 };
 
+export const updatePasswordEmployee = async (data: any) => {
+  const fetcher = await api();
+  return fetcher.patch("/user/change-password/" + data.id, data.data);
+};
+
 // export const getAdminByID = async (id: string) => {
 //   const fetcher = await api();
 //   return fetcher.get(ADMIN_V1 + "/admins/" + id);

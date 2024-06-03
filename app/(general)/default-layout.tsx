@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import CustomContainer from "@/components/ui/Container";
 import CustomDrawer from "@/components/ui/Drawer";
 import Header from "@/components/ui/Header";
 import SidebarMenu from "@/components/ui/SidebarMenu";
