@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Divider, Typography } from "@mui/material";
 import {
+  CREATE_TRANSACTION_STATUS_OPTIONS,
   PAYMENT_METHOD_OPTIONS,
   TRANSACTION_STATUS_OPTIONS,
 } from "@/utils/constants";
@@ -489,7 +490,11 @@ const TransactionForm = ({
             fullWidth
             label="TRANSACTION STATUS"
             name="transactionStatus"
-            options={TRANSACTION_STATUS_OPTIONS}
+            options={
+              isEdit
+                ? TRANSACTION_STATUS_OPTIONS
+                : CREATE_TRANSACTION_STATUS_OPTIONS
+            }
             value={formik.values.status}
             placeholder="Choose Transaction Status"
             onChange={(e) => {
