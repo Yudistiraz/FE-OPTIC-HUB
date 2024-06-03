@@ -30,3 +30,8 @@ export const deleteProduct = async (id: string) => {
   const fetcher = await api();
   return fetcher.delete("/products/" + id);
 };
+
+export const getLowStockProduct = async () => {
+  const fetcher = await api();
+  return fetcher.get("/products/stock");
+};
