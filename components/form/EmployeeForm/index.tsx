@@ -22,7 +22,7 @@ import {
   updateEmployee,
 } from "@/services/admin/v1/employee";
 import { useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
