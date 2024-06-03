@@ -75,6 +75,11 @@ const InvoiceComponent = forwardRef<HTMLDivElement, InvoiceComponentProps>(
               {data?.id || ""}
             </Typography>
           </div>
+          <div className="tw-w-full tw-flex tw-justify-end">
+            <Typography variant="subtitle2" className="tw-uppercase">
+              {data?.status}
+            </Typography>
+          </div>
         </div>
 
         <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
