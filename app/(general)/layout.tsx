@@ -27,8 +27,8 @@ export default function RootLayout({
         {!isMobileScreen && (
           <CustomDrawer
             variant="permanent"
-            drawerPaperClass="tw-bg-primary-500 tw-w-72 no-scrollbar"
-            containerClass="tw-w-full tw-px-2 tw-pt-0"
+            drawerPaperClass="tw-bg-primary-500 tw-w-[270px] no-scrollbar"
+            containerClass="tw-px-2 tw-pt-0"
           >
             <SidebarMenu />
           </CustomDrawer>
