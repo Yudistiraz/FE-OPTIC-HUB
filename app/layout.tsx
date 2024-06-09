@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import TanstackProvider from "@/components/providers/TanstackProvider";
 import { UserProvider } from "@/context/User";
 import { ScreenSizeProvider } from "@/context/MediaQuery";
+import { LanguageProvider } from "@/context/Language";
 const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
   variable: "--font-nunito",
@@ -35,7 +36,9 @@ export default async function RootLayout({
           <TanstackProvider>
             <UserProvider>
               <ScreenSizeProvider>
-                <ThemeProvider theme={theme}>{children}</ThemeProvider>
+                <LanguageProvider>
+                  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+                </LanguageProvider>
               </ScreenSizeProvider>
             </UserProvider>
           </TanstackProvider>
