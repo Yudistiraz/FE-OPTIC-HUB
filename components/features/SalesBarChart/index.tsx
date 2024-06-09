@@ -1,4 +1,6 @@
+"use client";
 import CustomButton from "@/components/ui/Button";
+import { useLanguage } from "@/context/Language";
 import { getDashboardSalesReports } from "@/services/admin/v1/dashboard";
 import { getThousandSeparator, transformArrayBarChart } from "@/utils/function";
 import { Skeleton, Typography } from "@mui/material";
@@ -8,6 +10,7 @@ import { useQuery } from "react-query";
 
 const SalesBarChart = () => {
   const [range, SetRange] = useState("");
+  const { translations } = useLanguage();
   const {
     data: salesData,
     isLoading: salesDataIsLoading,
@@ -22,7 +25,7 @@ const SalesBarChart = () => {
       if (range === "month") {
         dataSet = transformArrayBarChart(res?.data, "month");
       } else if (range === "year") {
-        dataSet = transformArrayBarChart(res?.data, "year");
+        dataSet = transformArrayBarChart(res?.data?.yearlyData, "year");
       } else {
         dataSet = transformArrayBarChart(res?.data, "week");
       }
@@ -47,7 +50,7 @@ const SalesBarChart = () => {
     <div className="tw-w-full tw-flex tw-flex-col tw-gap-8">
       <div className="tw-flex tw-w-full tw-items-center">
         <Typography variant="display4" className="tw-uppercase">
-          Sales Report
+          {translations?.Dashboard?.GraphSalesHeader}
         </Typography>
         <div className="tw-flex tw-gap-4 tw-ml-auto">
           <CustomButton
@@ -56,7 +59,7 @@ const SalesBarChart = () => {
               SetRange("");
             }}
           >
-            Weekly
+            {translations?.Dashboard?.GraphOptions?.weekly}
           </CustomButton>
           <CustomButton
             disabled={range === "month" && true}
@@ -64,7 +67,7 @@ const SalesBarChart = () => {
               SetRange("month");
             }}
           >
-            Monthly
+            {translations?.Dashboard?.GraphOptions?.monthly}
           </CustomButton>
           <CustomButton
             disabled={range === "year" && true}
@@ -72,7 +75,7 @@ const SalesBarChart = () => {
               SetRange("year");
             }}
           >
-            Yearly
+            {translations?.Dashboard?.GraphOptions?.yearly}
           </CustomButton>
         </div>
       </div>
