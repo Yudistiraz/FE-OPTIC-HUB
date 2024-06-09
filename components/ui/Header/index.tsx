@@ -6,11 +6,13 @@ import { AppBar, IconButton, MenuItem, Typography, Menu } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { Fragment, useState } from "react";
 import { useUserState } from "@/context/User";
-import CustomDrawer from "../Drawer";
-import SidebarMenu from "../SidebarMenu";
+import CustomDrawer from "@/components/ui/Drawer";
+import SidebarMenu from "@/components/ui/SidebarMenu";
+import { useLanguage } from "@/context/Language";
 
 const Header = () => {
   const session = useSession();
+  const { language, setLanguage, translations } = useLanguage();
   const { isMobileScreen, isSmallScreen } = useScreenSize();
   const { sideBarOpen, setSideBarOpen } = useUserState();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -79,7 +81,53 @@ const Header = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  {translations?.headerNavbar?.logOut}
+                </MenuItem>
+                <MenuItem disableTouchRipple>
+                  <div className="tw-flex tw-gap-2 tw-justify-between">
+                    <IconButton
+                      className="tw-w-8 tw-h-8"
+                      disabled={language === "en"}
+                      onClick={() => {
+                        if (language !== "en") {
+                          setLanguage("en");
+                        }
+                      }}
+                    >
+                      <Typography
+                        variant="subtitle1"
+                        className={`${
+                          language === "en"
+                            ? "tw-text-primary-500"
+                            : "tw-text-primary-700"
+                        }`}
+                      >
+                        EN
+                      </Typography>
+                    </IconButton>
+                    <IconButton
+                      className="tw-w-8 tw-h-8"
+                      disabled={language === "id"}
+                      onClick={() => {
+                        if (language !== "id") {
+                          setLanguage("id");
+                        }
+                      }}
+                    >
+                      <Typography
+                        variant="subtitle1"
+                        className={`${
+                          language === "id"
+                            ? "tw-text-primary-500"
+                            : "tw-text-primary-700"
+                        }`}
+                      >
+                        ID
+                      </Typography>
+                    </IconButton>
+                  </div>
+                </MenuItem>
               </Menu>
             </div>
           </div>
