@@ -10,6 +10,7 @@ import { OWNER_SITEMAPS, STAFF_SITEMAPS } from "@/utils/constants";
 import { isSideBarActive } from "@/utils/function";
 import { useScreenSize } from "@/context/MediaQuery";
 import { useUserState } from "@/context/User";
+import { useLanguage } from "@/context/Language";
 
 interface MenuProps {
   name?: string;
@@ -23,6 +24,7 @@ interface NavigationMenuProps {
 }
 
 function SidebarMenu() {
+  const { translations } = useLanguage();
   const router = useRouter();
   const pathname = usePathname();
   const { isMobileScreen } = useScreenSize();
@@ -120,7 +122,11 @@ function SidebarMenu() {
       </div>
 
       <NavigationMenu
-        menus={role === "staff" ? STAFF_SITEMAPS : OWNER_SITEMAPS}
+        menus={
+          role === "staff"
+            ? translations?.siteMaps?.staff
+            : translations?.siteMaps?.owner
+        }
       />
       <Divider
         className="tw-my-4"
@@ -149,7 +155,7 @@ function SidebarMenu() {
             component="span"
             className="tw-text-white group-hover:tw-mx-4 tw-duration-100"
           >
-            Buat Transaksi
+            {translations?.siteMaps?.createTransaction}
           </Typography>
         </NavItem>
       </div>
