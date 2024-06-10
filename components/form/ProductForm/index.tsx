@@ -76,13 +76,10 @@ const ProductForm = ({
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        const errorMessage =
-          (error as any)?.response?.data?.message || "Error Adding Product";
-        console.log(errorMessage);
-
-        toast.error(errorMessage);
-      } else {
-        toast.error("Error Adding Product");
+        const errorResponse = error?.response?.data || {
+          message: `${translations?.toast?.error?.create} ${translations?.productPage?.item}`,
+        };
+        toast.error(errorResponse?.message);
       }
     },
   });
