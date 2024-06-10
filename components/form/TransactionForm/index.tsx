@@ -33,6 +33,7 @@ import toast from "react-hot-toast";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
 import { AxiosError } from "axios";
 import PrintInvoiceButton from "@/components/features/PrintInvoiceButton";
+import { useLanguage } from "@/context/Language";
 
 interface TransactionFormProps {
   isLoading?: boolean;
@@ -55,17 +56,19 @@ const TransactionForm = ({
 }: TransactionFormProps) => {
   const router = useRouter();
   const session = useSession();
-
+  const { translations } = useLanguage();
   const transactionAddMutation = useMutation({
     mutationFn: addTransaction,
     onSuccess: async () => {
-      toast.success("Transaction Successfully Added");
+      toast.success(
+        `${translations?.toast?.success?.create} ${translations?.transactionPage?.item}`
+      );
       router.push("/transaction");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Adding Transacation",
+          message: `${translations?.toast?.error?.create} ${translations?.transactionPage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -75,12 +78,16 @@ const TransactionForm = ({
   const transactionUpdateMutation = useMutation({
     mutationFn: updateTransaction,
     onSuccess: async () => {
-      toast.success("Transaction Successfully Updated");
+      toast.success(
+        `${translations?.toast?.success?.update} ${translations?.transactionPage?.item}`
+      );
       router.push("/transaction");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        const errorResponse = error?.response?.data || {};
+        const errorResponse = error?.response?.data || {
+          message: `${translations?.toast?.error?.update} ${translations?.transactionPage?.item}`,
+        };
         toast.error(errorResponse?.message);
       }
     },
@@ -184,8 +191,7 @@ const TransactionForm = ({
 
             <div className="tw-flex tw-gap-6 ">
               <CustomTextField
-                label="Admin ID"
-                placeholder="Input Admin ID"
+                label={translations?.form?.transactionForm?.employeeId?.label}
                 disabled
                 helperText={gethelperText(
                   formik.touched.userId as boolean,
@@ -196,8 +202,7 @@ const TransactionForm = ({
               />
 
               <CustomTextField
-                label="Admin Name"
-                placeholder="Input Admin Name"
+                label={translations?.form?.transactionForm?.employeeName?.label}
                 disabled
                 helperText={gethelperText(
                   formik.touched.userName as boolean,
@@ -209,7 +214,9 @@ const TransactionForm = ({
             </div>
 
             <div className="tw-w-full tw-flex tw-items-center tw-gap-4">
-              <Typography variant="subtitle1">Customer's Detail</Typography>
+              <Typography variant="subtitle1">
+                {translations?.form?.transactionForm?.customerDetail?.label}
+              </Typography>
               <Divider
                 flexItem
                 className="tw-my-4 tw-flex-grow"
@@ -222,8 +229,10 @@ const TransactionForm = ({
             </div>
 
             <CustomTextField
-              label="Customer's Name"
-              placeholder="Input Customer's Name Name"
+              label={translations?.form?.transactionForm?.customerName?.label}
+              placeholder={
+                translations?.form?.transactionForm?.customerName?.placeHolder
+              }
               helperText={gethelperText(
                 formik.touched.customerName as boolean,
                 formik.errors.customerName as string
@@ -237,8 +246,13 @@ const TransactionForm = ({
 
             <div className="tw-flex tw-gap-6 tw-items-start">
               <CustomTextField
-                label="Customer's Phone Number"
-                placeholder="Input Customer's Phone Number"
+                label={
+                  translations?.form?.transactionForm?.customerPhone?.label
+                }
+                placeholder={
+                  translations?.form?.transactionForm?.customerPhone
+                    ?.placeHolder
+                }
                 startAdornment={<div className="">+62</div>}
                 helperText={gethelperText(
                   formik.touched.customerPhone as boolean,
@@ -252,8 +266,13 @@ const TransactionForm = ({
               />
 
               <CustomTextField
-                label="Customer's Email"
-                placeholder="Input Customer's Email"
+                label={
+                  translations?.form?.transactionForm?.customerEmail?.label
+                }
+                placeholder={
+                  translations?.form?.transactionForm?.customerEmail
+                    ?.placeHolder
+                }
                 helperText={gethelperText(
                   formik.touched.customerEmail as boolean,
                   formik.errors.customerEmail as string
@@ -268,7 +287,9 @@ const TransactionForm = ({
             </div>
 
             <div className="tw-w-full tw-flex tw-items-center tw-gap-4">
-              <Typography variant="subtitle1">Transaction's Detail</Typography>
+              <Typography variant="subtitle1">
+                {translations?.form?.transactionForm?.transactionDetail?.label}
+              </Typography>
               <Divider
                 flexItem
                 className="tw-my-4 tw-flex-grow"
@@ -282,11 +303,13 @@ const TransactionForm = ({
 
             <CustomDropdown
               fullWidth
-              label="PAYMENT METHOD"
+              label={translations?.form?.transactionForm?.paymentMethod?.label}
+              placeholder={
+                translations?.form?.transactionForm?.paymentMethod?.placeHolder
+              }
               name="paymentMethod"
               options={PAYMENT_METHOD_OPTIONS}
               value={formik.values.paymentMethod}
-              placeholder="Choose Product Category"
               onChange={(e) => {
                 formik.setFieldValue("paymentMethod", e.value);
               }}
@@ -328,7 +351,9 @@ const TransactionForm = ({
             />
 
             <CustomCheckbox
-              label="With Prescriptions?"
+              label={
+                translations?.form?.transactionForm?.withPrescription?.label
+              }
               name="withPrescription"
               onChange={(value) => {
                 formik.setFieldValue("withPrescription", value);
@@ -476,7 +501,9 @@ const TransactionForm = ({
           )}
 
           <div className="tw-flex tw-gap-2">
-            <Typography variant="h1">Total Cost : </Typography>
+            <Typography variant="h1">
+              {translations?.form?.transactionForm?.totalCost?.label} :
+            </Typography>
             <Typography variant="h1" className="tw-text-red-500">
               Rp.{" "}
               {getThousandSeparator(
@@ -488,15 +515,17 @@ const TransactionForm = ({
           <CustomDropdown
             classNamees="tw-mb-4"
             fullWidth
-            label="TRANSACTION STATUS"
+            label={translations?.form?.transactionForm?.status?.label}
+            placeholder={
+              translations?.form?.transactionForm?.status?.placeHolder
+            }
             name="transactionStatus"
             options={
               isEdit
-                ? TRANSACTION_STATUS_OPTIONS
-                : CREATE_TRANSACTION_STATUS_OPTIONS
+                ? translations?.dropdownOptions?.transactionStatusOptions
+                : translations?.dropdownOptions?.createTransactionStatusOptions
             }
             value={formik.values.status}
-            placeholder="Choose Transaction Status"
             onChange={(e) => {
               formik.setFieldValue("status", e.value);
             }}
@@ -512,7 +541,7 @@ const TransactionForm = ({
                 <PrintInvoiceButton data={transactionData} />
                 {transactionData?.status === "onGoing" && (
                   <CustomButton type="submit" className="tw-w-1/4">
-                    Save
+                    {translations?.button?.update}
                   </CustomButton>
                 )}
               </Fragment>
@@ -522,7 +551,7 @@ const TransactionForm = ({
                 className="tw-w-1/4"
                 disabled={transactionAddMutation.isLoading}
               >
-                Add
+                {translations?.button?.add}
               </CustomButton>
             )}
             <CustomButton
@@ -533,7 +562,7 @@ const TransactionForm = ({
               }}
               disabled={transactionAddMutation.isLoading}
             >
-              Cancel
+              {translations?.button?.cancel}
             </CustomButton>
           </div>
         </form>
