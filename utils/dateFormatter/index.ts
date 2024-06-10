@@ -11,7 +11,9 @@ export function checkDateValidity(d: Dayjs | Date) {
   return dayjs(d).isValid();
 }
 
-export function formateDate1(date: Date | string | null | undefined): string {
+export function formateDate1(
+  date: Date | Dayjs | string | null | undefined
+): string {
   if (!date) {
     return "-";
   } else {
@@ -19,9 +21,31 @@ export function formateDate1(date: Date | string | null | undefined): string {
   }
 }
 
-export function formateDate2(date: Date | string | null | undefined): string {
+export function formateDate2(
+  date: Date | Dayjs | string | null | undefined
+): string {
   if (!date) {
     return "-";
+  } else {
+    return dayjs.utc(date).local().format("YYYY-MM-DD");
+  }
+}
+
+export function formateDate3(
+  date: Date | Dayjs | string | null | undefined
+): string {
+  if (!date) {
+    return "-";
+  } else {
+    return dayjs.utc(date).local().format("DD MMMM YYYY HH:mm");
+  }
+}
+
+export function formatDateParameter(
+  date: Date | Dayjs | string | null | undefined
+): string {
+  if (!date) {
+    return "";
   } else {
     return dayjs.utc(date).local().format("YYYY-MM-DD");
   }
