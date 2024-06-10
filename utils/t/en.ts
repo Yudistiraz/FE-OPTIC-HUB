@@ -65,6 +65,7 @@ export const t = {
     cancel: "Cancel",
     yes: "YES",
     no: "NO",
+    updatePassword: "Update Password",
   },
   dropdownOptions: {
     allStatus: "All Status",
@@ -174,6 +175,20 @@ export const t = {
         placeHolder: "Input Employee Status",
       },
     },
+    changePasswordForm: {
+      old: {
+        label: "OLD PASSWORD",
+        placeHolder: "Input Old Password",
+      },
+      new: {
+        label: "NEW PASSWORD",
+        placeHolder: "Input New Password",
+      },
+      confirmation: {
+        label: "CONFIRMATION PASSWORD",
+        placeHolder: "Input Confirmation Password",
+      },
+    },
   },
 
   Dashboard: {
@@ -217,5 +232,9 @@ export const t = {
       c4: "ROLE",
       c5: "STATUS",
     },
+  },
+  settingPage: {
+    header: "Settings",
+    itemPassword: "Password",
   },
 };

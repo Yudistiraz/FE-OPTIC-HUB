@@ -65,6 +65,7 @@ export const t = {
     cancel: "Batal",
     yes: "YA",
     no: "TIDAK",
+    updatePassword: "Ubah Password",
   },
   dropdownOptions: {
     allStatus: "Semua Status",
@@ -174,6 +175,20 @@ export const t = {
         placeHolder: "Masukkan Status Produk",
       },
     },
+    changePasswordForm: {
+      old: {
+        label: "PASSWORD LAMA",
+        placeHolder: "Masukkan Password Lama",
+      },
+      new: {
+        label: "PASSWORD BARU",
+        placeHolder: "Masukkan Password Baru",
+      },
+      confirmation: {
+        label: "PASSWORD KONFIRMASI",
+        placeHolder: "Masukkan Password Konfirmasi",
+      },
+    },
   },
 
   Dashboard: {
@@ -217,5 +232,9 @@ export const t = {
       c4: "JABATAN",
       c5: "STATUS",
     },
+  },
+  settingPage: {
+    header: "Pengaturan",
+    itemPassword: "Password",
   },
 };

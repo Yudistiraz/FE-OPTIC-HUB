@@ -12,8 +12,10 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
+import { useLanguage } from "@/context/Language";
 
 const ChangePasswordForm = () => {
+  const { translations } = useLanguage();
   const router = useRouter();
   const { data: session } = useSession();
   let id = session?.user.id;
@@ -21,13 +23,15 @@ const ChangePasswordForm = () => {
   const employeeUpdatePasswordMutation = useMutation({
     mutationFn: updatePasswordEmployee,
     onSuccess: async () => {
-      toast.success("Password Successfully Updated");
+      toast.success(
+        `${translations?.toast?.success?.create} ${translations?.settingPage?.itemPassword}`
+      );
       router.push("/");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Updating Password",
+          message: `${translations?.toast?.error?.update} ${translations?.settingPage?.itemPassword}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -57,8 +61,10 @@ const ChangePasswordForm = () => {
         <form className="tw-w-3/4 lg:tw-w-1/3" onSubmit={formik.handleSubmit}>
           <FormLayout>
             <CustomTextField
-              label="Old Password"
-              placeholder="Input Old Password"
+              label={translations?.form?.changePasswordForm?.old?.label}
+              placeholder={
+                translations?.form?.changePasswordForm?.old?.placeHolder
+              }
               password
               helperText={gethelperText(
                 formik.touched.oldPassword as boolean,
@@ -68,8 +74,10 @@ const ChangePasswordForm = () => {
               {...formik.getFieldProps("oldPassword")}
             />
             <CustomTextField
-              label="New Password"
-              placeholder="Input New Password"
+              label={translations?.form?.changePasswordForm?.new?.label}
+              placeholder={
+                translations?.form?.changePasswordForm?.new?.placeHolder
+              }
               password
               helperText={gethelperText(
                 formik.touched.newPassword as boolean,
@@ -79,8 +87,13 @@ const ChangePasswordForm = () => {
               {...formik.getFieldProps("newPassword")}
             />
             <CustomTextField
-              label="Confirm New Password"
-              placeholder="Input Confirm New Password"
+              label={
+                translations?.form?.changePasswordForm?.confirmation?.label
+              }
+              placeholder={
+                translations?.form?.changePasswordForm?.confirmation
+                  ?.placeHolder
+              }
               password
               helperText={gethelperText(
                 formik.touched.confirmPassword as boolean,
@@ -94,8 +107,8 @@ const ChangePasswordForm = () => {
             />
 
             <div className="tw-flex tw-gap-4 tw-w-full tw-mt-2">
-              <CustomButton type="submit" className="tw-w-fit">
-                Update Password
+              <CustomButton type="submit" className="tw-w-fit tw-uppercase">
+                {translations?.button?.updatePassword}
               </CustomButton>
               <CustomButton
                 className="tw-w-1/4"
@@ -104,7 +117,7 @@ const ChangePasswordForm = () => {
                   router.push("/");
                 }}
               >
-                Cancel
+                {translations?.button?.cancel}
               </CustomButton>
             </div>
           </FormLayout>
