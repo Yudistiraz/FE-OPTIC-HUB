@@ -4,6 +4,7 @@ import React, { Fragment } from "react";
 import ProductTransactionCard from "../ProductTransactionCard";
 import { deleteProductFromArray } from "@/utils/function";
 import { OrderItem } from "@/utils/models";
+import { useLanguage } from "@/context/Language";
 
 interface ProductOverviewProps {
   productData: OrderItem[];
@@ -22,6 +23,7 @@ export default function ProductOverview({
   helperText = "",
   disabled = false,
 }: ProductOverviewProps) {
+  const { translations } = useLanguage();
   return (
     <div className="tw-w-full tw-min-h-48 tw-bg-gray-200 tw-rounded-md tw-overflow-hidden tw-p-2 tw-flex tw-gap-2 tw-flex-col">
       {productData?.length > 0 ? (
@@ -46,7 +48,7 @@ export default function ProductOverview({
         <div className="tw-w-full tw-min-h-40 tw-flex tw-flex-col tw-gap-2 tw-items-center tw-justify-center">
           <SentimentVeryDissatisfied className="tw-text-gray-400" />
           <Typography variant="subtitle1Reg" className="tw-text-gray-400">
-            There's No Product on This Transaction
+            {translations?.ProductOverview?.zeroMessage}
           </Typography>
         </div>
       )}
