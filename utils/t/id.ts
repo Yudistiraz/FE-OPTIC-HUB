@@ -1,3 +1,5 @@
+import ProductSearchBar from "@/components/features/ProductSearchBar";
+
 export const t = {
   siteMaps: {
     staff: [
@@ -34,7 +36,7 @@ export const t = {
         img: "product",
       },
       {
-        name: "Manajemen Pekerja",
+        name: "Manajemen Pegawai",
         path: "/employee",
         img: "employee",
       },
@@ -57,6 +59,9 @@ export const t = {
     byStatus: "STATUS",
     byCategory: "KATEGORI",
     byRole: "JABATAN",
+    byTransactionStatus: "STATUS TRANSAKSI",
+    byStartDate: "TANGGAL AWAL",
+    byEndDate: "TANGGAL AKHIR",
   },
   button: {
     add: "Tambah",
@@ -66,6 +71,7 @@ export const t = {
     yes: "YA",
     no: "TIDAK",
     updatePassword: "Ubah Password",
+    printIvoice: "Cetak Invoice",
   },
   dropdownOptions: {
     allStatus: "Semua Status",
@@ -91,6 +97,30 @@ export const t = {
       },
     ],
     allRole: "Semua Jabatan",
+    transactionStatusOptions: [
+      {
+        label: "Selesai",
+        value: "complete",
+      },
+      {
+        label: "Diproses",
+        value: "onGoing",
+      },
+      {
+        label: "Dibatalkan",
+        value: "cancel",
+      },
+    ],
+    createTransactionStatusOptions: [
+      {
+        label: "Selesai",
+        value: "complete",
+      },
+      {
+        label: "Diproses",
+        value: "onGoing",
+      },
+    ],
   },
   toast: {
     error: {
@@ -105,7 +135,7 @@ export const t = {
     },
   },
   headerNavbar: {
-    logOut: "Logout",
+    logOut: "Keluar",
   },
   badgeText: {
     active: "Aktif",
@@ -139,40 +169,40 @@ export const t = {
     },
     employeeForm: {
       name: {
-        label: "NAMA PEKERJA",
-        placeHolder: "Masukkan Nama Pekerja",
+        label: "NAMA PEGAWAI",
+        placeHolder: "Masukkan Nama Pegawai",
       },
       dob: {
-        label: "TANGGAL LAHIR PEKERJA",
-        placeHolder: "Masukkan Tanggal Lahir Pekerja",
+        label: "TANGGAL LAHIR PEGAWAI",
+        placeHolder: "Masukkan Tanggal Lahir Pegawai",
       },
       phoneNumber: {
-        label: "NO. HANDPHONE PEKERJA",
-        placeHolder: "Masukkan No. Handphone Pekerja",
+        label: "NO. TELEPON PEGAWAI",
+        placeHolder: "Masukkan No. Telepon Pegawai",
       },
       nik: {
-        label: "NIK PEKERJA",
-        placeHolder: "Masukkan NIK Pekerja",
+        label: "NIK PEGAWAI",
+        placeHolder: "Masukkan NIK Pegawai",
       },
       email: {
-        label: "EMAIL PEKERJA",
-        placeHolder: "Masukkan Email Pekerja",
+        label: "EMAIL PEGAWAI",
+        placeHolder: "Masukkan Email Pegawai",
       },
       password: {
-        label: "PASSWORD PEKERJA",
-        placeHolder: "Masukkan Password Pekerja",
+        label: "PASSWORD PEGAWAI",
+        placeHolder: "Masukkan Password Pegawai",
       },
       newPassword: {
-        label: "PASSWORD BARU PEKERJA",
-        placeHolder: "Masukkan Password Baru Pekerja",
+        label: "PASSWORD BARU PEGAWAI",
+        placeHolder: "Masukkan Password Baru Pegawai",
       },
       role: {
-        label: "JABATAN PEKERJA",
-        placeHolder: "Masukkan Jabatan Pekerja",
+        label: "JABATAN PEGAWAI",
+        placeHolder: "Masukkan Jabatan Pegawai",
       },
       status: {
-        label: "STATUS PEKERJA",
-        placeHolder: "Masukkan Status Produk",
+        label: "STATUS PEGAWAI",
+        placeHolder: "Masukkan Status Pegawai",
       },
     },
     changePasswordForm: {
@@ -189,6 +219,50 @@ export const t = {
         placeHolder: "Masukkan Password Konfirmasi",
       },
     },
+    transactionForm: {
+      employeeId: {
+        label: "ID PEGAWAI",
+      },
+      employeeName: {
+        label: "NAMA PEGAWAI",
+      },
+      customerDetail: {
+        label: "Detail Pelanggan",
+      },
+      customerName: {
+        label: "NAMA PELANGGAN",
+        placeHolder: "Masukkan Nama Pelanggan",
+      },
+      customerEmail: {
+        label: "EMAIL PELANGGAN",
+        placeHolder: "Masukkan Email Pelanggan",
+      },
+      customerPhone: {
+        label: "NO. TELEPON PELANGGAN",
+        placeHolder: "Masukkan No. Telepon Pelanggan",
+      },
+      transactionDetail: {
+        label: "Detail Transaksi",
+      },
+      paymentMethod: {
+        label: "METODE PEMBAYARAN",
+        placeHolder: "Pilih Metode Pembayaran",
+      },
+      withPrescription: {
+        label: "DENGAN PRESKRIPSI DOKTER?",
+      },
+      totalCost: {
+        label: "Total Harga",
+      },
+      status: {
+        label: "STATUS TRANSAKSI",
+        placeHolder: "Pilih Status Transaksi",
+      },
+    },
+  },
+  ProductSearchBar: "Cari Produk",
+  ProductOverview: {
+    zeroMessage: "Tidak Ada Produk Dalam Transaksi Ini",
   },
 
   Dashboard: {
@@ -222,13 +296,13 @@ export const t = {
     },
   },
   EmployeePage: {
-    item: "Pekerja",
-    header: "Manajemen Pekerja",
-    createHeader: "Tambah Pekerja",
+    item: "Pegawai",
+    header: "Manajemen Pegawai",
+    createHeader: "Tambah Pegawai",
     employeeTable: {
-      c1: "NAMA PEKERJA",
+      c1: "NAMA PEGAWAI",
       c2: "EMAIL",
-      c3: "NO. HANDPHONE",
+      c3: "NO. TELEPON",
       c4: "JABATAN",
       c5: "STATUS",
     },
@@ -236,5 +310,18 @@ export const t = {
   settingPage: {
     header: "Pengaturan",
     itemPassword: "Password",
+  },
+  transactionPage: {
+    item: "Transaksi",
+    header: "Manajemen Transaksi",
+    createHeader: "Tambah Transaksi",
+    transactionTable: {
+      c1: "NAMA PEGAWAI",
+      c2: "NAMA PELANGGAN",
+      c3: "METODE PEMBAYARAN",
+      c4: "STATUS",
+      c5: "TOTAL TRANSAKSI",
+      c6: "TANGGAL TRANSAKSI",
+    },
   },
 };

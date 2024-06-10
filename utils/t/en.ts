@@ -57,6 +57,9 @@ export const t = {
     byStatus: "STATUS",
     byCategory: "CATEGORY",
     byRole: "ROLE",
+    byTransactionStatus: "TRANSACTION STATUS",
+    byStartDate: "START DATE",
+    byEndDate: "END DATE",
   },
   button: {
     add: "Add",
@@ -66,6 +69,7 @@ export const t = {
     yes: "YES",
     no: "NO",
     updatePassword: "Update Password",
+    printIvoice: "Print Invoice",
   },
   dropdownOptions: {
     allStatus: "All Status",
@@ -91,6 +95,20 @@ export const t = {
       },
     ],
     allRole: "All Role",
+    transactionStatusOptions: [
+      {
+        label: "Completed",
+        value: "complete",
+      },
+      {
+        label: "Ongoing",
+        value: "onGoing",
+      },
+      {
+        label: "Canceled",
+        value: "cancel",
+      },
+    ],
   },
   toast: {
     error: {
@@ -189,6 +207,50 @@ export const t = {
         placeHolder: "Input Confirmation Password",
       },
     },
+    transactionForm: {
+      employeeId: {
+        label: "EMPLOYEE ID",
+      },
+      employeeName: {
+        label: "EMPLOYEE NAME",
+      },
+      customerDetail: {
+        label: "Customer's Detail",
+      },
+      customerName: {
+        label: "CUSTOMER NAME",
+        placeHolder: "Input Customer Name",
+      },
+      customerEmail: {
+        label: "CUSTOMER EMAIL",
+        placeHolder: "Input Customer Email",
+      },
+      customerPhone: {
+        label: "CUSTOMER PHONE NUMBER",
+        placeHolder: "Input Customer Phone Number",
+      },
+      transactionDetail: {
+        label: "Transaction's Detail",
+      },
+      paymentMethod: {
+        label: "PAYMENT METHOD",
+        placeHolder: "Choose Payment Method",
+      },
+      withPrescription: {
+        label: "WITH PRESCRIPTIONS?",
+      },
+      totalCost: {
+        label: "Total Cost",
+      },
+      status: {
+        label: "TRANSACTION STATUS",
+        placeHolder: "Choose Transaction Status",
+      },
+    },
+  },
+  ProductSearchBar: "Search Product",
+  ProductOverview: {
+    zeroMessage: "There's No Product on This Transaction",
   },
 
   Dashboard: {
@@ -236,5 +298,18 @@ export const t = {
   settingPage: {
     header: "Settings",
     itemPassword: "Password",
+  },
+  transactionPage: {
+    item: "Transaction",
+    header: "Manage Transaction",
+    createHeader: "Add Transaction",
+    transactionTable: {
+      c1: "EMPLOYEE NAME",
+      c2: "CUSTOMER NAME",
+      c3: "PAYMENT METHOD",
+      c4: "STATUS",
+      c5: "TOTAL TRANSACTION",
+      c6: "TRANSACTION DATE",
+    },
   },
 };
