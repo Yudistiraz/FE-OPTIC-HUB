@@ -22,8 +22,10 @@ import { signOut, useSession } from "next-auth/react";
 import ComponentCard from "@/components/layout/ComponentCard";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { useLanguage } from "@/context/Language";
 
 export default function Employee() {
+  const { translations } = useLanguage();
   const router = useRouter();
   const {
     openDialog,
@@ -66,7 +68,9 @@ export default function Employee() {
   const employeeDeleteMutation = useMutation({
     mutationFn: deleteEmployee,
     onSuccess: async () => {
-      toast.success("Employee Successfully Deleted");
+      toast.success(
+        `${translations?.toast?.success?.delete} ${translations?.EmployeePage?.item}`
+      );
       setOpenDialog(false);
       resetDialogText();
       employeeQuery.refetch();
@@ -74,7 +78,7 @@ export default function Employee() {
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Deleting Employee",
+          message: `${translations?.toast?.error?.delete} ${translations?.EmployeePage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -84,7 +88,7 @@ export default function Employee() {
   const onDeleteClick = (name: string, id: string) => {
     resetDialogText();
     setSelectedId(id);
-    setDialogTitle(`Are you sure you want to Delete ${name} Employee?`);
+    setDialogTitle(`${translations?.dialogBox?.deleteConfirmation} ${name}?`);
     setOpenDialog(true);
   };
 
@@ -102,7 +106,7 @@ export default function Employee() {
   const employeeColumn = [
     {
       field: "name",
-      headerName: "NAME",
+      headerName: translations?.EmployeePage?.employeeTable?.c1,
       flex: 1,
       minWidth: 150,
       sortable: false,
@@ -113,7 +117,7 @@ export default function Employee() {
     },
     {
       field: "email",
-      headerName: "EMAIL",
+      headerName: translations?.EmployeePage?.employeeTable?.c2,
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
@@ -123,7 +127,7 @@ export default function Employee() {
     },
     {
       field: "phoneNumber",
-      headerName: "PHONE NUMBER",
+      headerName: translations?.EmployeePage?.employeeTable?.c3,
       width: 250,
       sortable: false,
       renderCell: (data: any) => {
@@ -133,13 +137,15 @@ export default function Employee() {
     },
     {
       field: "role",
-      headerName: "Role",
+      headerName: translations?.EmployeePage?.employeeTable?.c4,
       width: 100,
       sortable: false,
       renderCell: (data: any) => {
         return (
           <div className="tw-flex tw-items-center tw-h-full tw-capitalize">
-            {data?.row?.role}
+            {data?.row?.role === "staff"
+              ? translations?.dropdownOptions.roleOptions[0].label
+              : translations?.dropdownOptions.roleOptions[1].label}
           </div>
         );
       },
@@ -147,7 +153,7 @@ export default function Employee() {
     },
     {
       field: "status",
-      headerName: "STATUS",
+      headerName: translations?.EmployeePage?.employeeTable?.c5,
       width: 150,
       sortable: false,
       renderCell: (data: any) => {
@@ -155,8 +161,6 @@ export default function Employee() {
           <div className="tw-flex tw-items-center tw-h-full">
             <CustomBadge
               status={data?.row?.status === "active" ? true : false}
-              trueLabel="Active"
-              falseLabel="Inactive"
             />
           </div>
         );
@@ -197,15 +201,18 @@ export default function Employee() {
   return (
     <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
-        <Typography variant="h2">Employee</Typography>
+        <Typography variant="h2">
+          {translations?.EmployeePage?.header}
+        </Typography>
 
         <CustomButton
-          className="tw-w-[165px] tw-ml-auto"
+          className="tw-w-[165px] tw-ml-auto tw-uppercase"
           onClick={() => {
             router.push("/employee/add");
           }}
         >
-          Add Employee
+          {`${translations?.button?.add} 
+          ${translations?.EmployeePage?.item}`}
         </CustomButton>
       </div>
 
@@ -225,12 +232,12 @@ export default function Employee() {
           <div className="tw-w-1/3">
             <CustomDropdown
               fullWidth
-              label="FILTER BY ROLE"
-              name="PurchaseOptions"
-              options={EMPLOYEE_OPTIONS}
+              label={`${translations?.filter?.main} ${translations?.filter?.byRole}`}
+              name="employeeRole"
+              options={translations?.dropdownOptions?.roleOptions}
               value={additionalParams.role || ""}
               placeholder="Filter by Role"
-              allOption="All Role"
+              allOption={translations?.dropdownOptions?.allRole}
               onChange={(e) => {
                 setAdditionalParams((prevState) => ({
                   ...prevState,
@@ -243,12 +250,12 @@ export default function Employee() {
           <div className="tw-w-1/3">
             <CustomDropdown
               fullWidth
-              label="FILTER BY STATUS"
-              name="PurchaseOptions"
-              options={STATUS_OPTIONS}
+              label={`${translations?.filter?.main} ${translations?.filter?.byStatus}`}
+              name="employeeStatus"
+              options={translations?.dropdownOptions?.statusOptions}
               value={additionalParams.status || ""}
-              placeholder="Filter by Status"
-              allOption="All Status"
+              placeholder={`${translations?.filter?.main} ${translations?.filter?.byStatus}`}
+              allOption={translations?.dropdownOptions?.allStatus}
               onChange={(e) => {
                 setAdditionalParams((prevState) => ({
                   ...prevState,
@@ -289,8 +296,8 @@ export default function Employee() {
         <ConfirmationDialog
           title={dialogTitle}
           description={dialogMessage}
-          applyText={"YES"}
-          cancelText={"NO"}
+          applyText={translations?.button?.yes}
+          cancelText={translations?.button?.no}
           type={"confirmation"}
           onCancel={onPopUpCancel}
           onApply={onPopUpApply}
