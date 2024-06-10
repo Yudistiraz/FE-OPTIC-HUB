@@ -21,7 +21,6 @@ import {
   convertDataToDropdownOptions,
   getThousandSeparator,
 } from "@/utils/function";
-import { STATUS_OPTIONS } from "@/utils/constants";
 import ComponentCard from "@/components/layout/ComponentCard";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -230,8 +229,6 @@ export default function Product() {
               setSearch={(text: string) => {
                 setSearch(text);
               }}
-              label={translations?.searchBar}
-              placeHolder={translations?.searchBar}
             />
           </div>
 
