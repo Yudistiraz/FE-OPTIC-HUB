@@ -1,18 +1,15 @@
+"use client";
 import { Search } from "@mui/icons-material";
 import React, { Fragment, useState } from "react";
 
 import useDebounce from "@/hooks/debounce";
 
 import CustomTextField from "@/components/ui/TextField";
-import {
-  CircularProgress,
-  LinearProgress,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { CircularProgress, Paper } from "@mui/material";
 import ProductDropdownCard from "../ProductDropdownCard";
 import { TProduct } from "@/utils/models";
 import { isItemInArray } from "@/utils/function";
+import { useLanguage } from "@/context/Language";
 
 interface ProductSearchBarProps {
   search: string;
@@ -34,8 +31,8 @@ export default function ProductSearchBar({
   search,
   setSearch,
   debounce = false,
-  label = "Search Product",
-  placeHolder = "Search Product",
+  label = "",
+  placeHolder = "",
   fullWidth = false,
   error = false,
   helperText = "",
@@ -45,6 +42,7 @@ export default function ProductSearchBar({
   onProductDropdownClick = (data: TProduct) => {},
   isLoading = false,
 }: ProductSearchBarProps) {
+  const { translations } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
 
   useDebounce(searchTerm, 500, () => {
@@ -65,10 +63,10 @@ export default function ProductSearchBar({
     <div className={`tw-relative ${fullWidth ? "tw-w-full" : "tw-w-[510px]"}`}>
       <CustomTextField
         className="tw-w-full"
-        label={label}
+        label={label || translations?.ProductSearchBar}
         name="productSearch"
         value={debounce ? searchTerm : search}
-        placeholder={placeHolder}
+        placeholder={placeHolder || translations?.ProductSearchBar}
         onChange={(e) => {
           if (debounce) {
             handleInputChange(e);
