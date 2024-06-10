@@ -56,6 +56,7 @@ export const t = {
     main: "FILTER BY",
     byStatus: "STATUS",
     byCategory: "CATEGORY",
+    byRole: "ROLE",
   },
   button: {
     add: "Add",
@@ -78,6 +79,17 @@ export const t = {
       },
     ],
     allCategory: "All Category",
+    roleOptions: [
+      {
+        label: "Owner",
+        value: "owner",
+      },
+      {
+        label: "Staff",
+        value: "staff",
+      },
+    ],
+    allRole: "All Role",
   },
   toast: {
     error: {
@@ -124,6 +136,44 @@ export const t = {
         placeHolder: "Input Product Status",
       },
     },
+    employeeForm: {
+      name: {
+        label: "EMPLOYEE NAME",
+        placeHolder: "Input Employee Name",
+      },
+      dob: {
+        label: "EMPLOYEE DOB",
+        placeHolder: "Input Employee DOB",
+      },
+      phoneNumber: {
+        label: "EMPLOYEE PHONE NUMBER",
+        placeHolder: "Input Employee Phone Number",
+      },
+      nik: {
+        label: "EMPLOYEE NIK NUMBER",
+        placeHolder: "Input Employee NIK Number",
+      },
+      email: {
+        label: "EMPLOYEE EMAIL",
+        placeHolder: "Input Employee Email",
+      },
+      password: {
+        label: "EMPLOYEE PASSWORD",
+        placeHolder: "Input Employee Password",
+      },
+      newPassword: {
+        label: "EMPLOYEE NEW PASSWORD",
+        placeHolder: "Input Employee New Password",
+      },
+      role: {
+        label: "EMPLOYEE ROLE",
+        placeHolder: "Input Employee Role",
+      },
+      status: {
+        label: "EMPLOYEE STATUS",
+        placeHolder: "Input Employee Status",
+      },
+    },
   },
 
   Dashboard: {
@@ -153,6 +203,18 @@ export const t = {
       c2: "CATEGORY",
       c3: "PRICE",
       c4: "STOCK",
+      c5: "STATUS",
+    },
+  },
+  EmployeePage: {
+    item: "Employee",
+    header: "Manage Employee",
+    createHeader: "Add Employee",
+    employeeTable: {
+      c1: "EMPLOYEE NAME",
+      c2: "EMAIL",
+      c3: "PHONE NUMBER",
+      c4: "ROLE",
       c5: "STATUS",
     },
   },

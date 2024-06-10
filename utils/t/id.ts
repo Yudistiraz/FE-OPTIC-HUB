@@ -56,6 +56,7 @@ export const t = {
     main: "FILTER BERDASARKAN",
     byStatus: "STATUS",
     byCategory: "KATEGORI",
+    byRole: "JABATAN",
   },
   button: {
     add: "Tambah",
@@ -78,6 +79,17 @@ export const t = {
       },
     ],
     allCategory: "Semua Kategori",
+    roleOptions: [
+      {
+        label: "Pemilik",
+        value: "owner",
+      },
+      {
+        label: "Staff",
+        value: "staff",
+      },
+    ],
+    allRole: "Semua Jabatan",
   },
   toast: {
     error: {
@@ -124,6 +136,44 @@ export const t = {
         placeHolder: "Masukkan Status Produk",
       },
     },
+    employeeForm: {
+      name: {
+        label: "NAMA PEKERJA",
+        placeHolder: "Masukkan Nama Pekerja",
+      },
+      dob: {
+        label: "TANGGAL LAHIR PEKERJA",
+        placeHolder: "Masukkan Tanggal Lahir Pekerja",
+      },
+      phoneNumber: {
+        label: "NO. HANDPHONE PEKERJA",
+        placeHolder: "Masukkan No. Handphone Pekerja",
+      },
+      nik: {
+        label: "NIK PEKERJA",
+        placeHolder: "Masukkan NIK Pekerja",
+      },
+      email: {
+        label: "EMAIL PEKERJA",
+        placeHolder: "Masukkan Email Pekerja",
+      },
+      password: {
+        label: "PASSWORD PEKERJA",
+        placeHolder: "Masukkan Password Pekerja",
+      },
+      newPassword: {
+        label: "PASSWORD BARU PEKERJA",
+        placeHolder: "Masukkan Password Baru Pekerja",
+      },
+      role: {
+        label: "JABATAN PEKERJA",
+        placeHolder: "Masukkan Jabatan Pekerja",
+      },
+      status: {
+        label: "STATUS PEKERJA",
+        placeHolder: "Masukkan Status Produk",
+      },
+    },
   },
 
   Dashboard: {
@@ -153,6 +203,18 @@ export const t = {
       c2: "KATEGORI",
       c3: "HARGA",
       c4: "STOK TERSISA",
+      c5: "STATUS",
+    },
+  },
+  EmployeePage: {
+    item: "Pekerja",
+    header: "Manajemen Pekerja",
+    createHeader: "Tambah Pekerja",
+    employeeTable: {
+      c1: "NAMA PEKERJA",
+      c2: "EMAIL",
+      c3: "NO. HANDPHONE",
+      c4: "JABATAN",
       c5: "STATUS",
     },
   },
