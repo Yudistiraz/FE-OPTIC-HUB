@@ -1,12 +1,14 @@
 "use client";
 import TransactionForm from "@/components/form/TransactionForm";
 import ComponentCard from "@/components/layout/ComponentCard";
+import { useLanguage } from "@/context/Language";
 import { getAllProduct } from "@/services/admin/v1/product";
 import { Typography } from "@mui/material";
 import { useState } from "react";
 import { useQuery } from "react-query";
 
 export default function addTransaction() {
+  const { translations } = useLanguage();
   const [productSearch, setProductSearch] = useState("");
   const { data, isLoading } = useQuery(
     ["products", productSearch],
@@ -25,7 +27,9 @@ export default function addTransaction() {
   );
   return (
     <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
-      <Typography variant="h2">Add Transaction</Typography>
+      <Typography variant="h2">
+        {translations?.transactionPage?.createHeader}
+      </Typography>
       <ComponentCard>
         <TransactionForm
           setProductSearch={setProductSearch}
