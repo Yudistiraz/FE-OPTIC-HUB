@@ -62,8 +62,8 @@ export const t = {
     update: "Perbarui",
     delete: "Hapus",
     cancel: "Batal",
-    yes: "Ya",
-    no: "Tidak",
+    yes: "YA",
+    no: "TIDAK",
   },
   dropdownOptions: {
     allStatus: "Semua Status",
@@ -101,6 +101,30 @@ export const t = {
   dialogBox: {
     deleteConfirmation: "Apakah Anda Yakin Ingin Menghapus",
   },
+  form: {
+    productForm: {
+      name: {
+        label: "NAMA PRODUK",
+        placeHolder: "Masukkan Nama Produk",
+      },
+      price: {
+        label: "HARGA PRODUK",
+        placeHolder: "Masukkan Harga Produk",
+      },
+      stock: {
+        label: "STOK PRODUK",
+        placeHolder: "Masukkan Stok Produk",
+      },
+      category: {
+        label: "KATEGORI PRODUK",
+        placeHolder: "Pilih Kategori Produk",
+      },
+      status: {
+        label: "STATUS PRODUK",
+        placeHolder: "Masukkan Status Produk",
+      },
+    },
+  },
 
   Dashboard: {
     GraphSalesHeader: "Grafik Penjualan",
@@ -123,6 +147,7 @@ export const t = {
   productPage: {
     item: "Produk",
     header: "Manajemen Produk",
+    createHeader: "Tambah Produk",
     productTable: {
       c1: "NAMA PRODUK",
       c2: "KATEGORI",

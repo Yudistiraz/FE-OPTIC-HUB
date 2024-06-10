@@ -62,8 +62,8 @@ export const t = {
     update: "Update",
     delete: "Delete",
     cancel: "Cancel",
-    yes: "Yes",
-    no: "No",
+    yes: "YES",
+    no: "NO",
   },
   dropdownOptions: {
     allStatus: "All Status",
@@ -101,6 +101,30 @@ export const t = {
   dialogBox: {
     deleteConfirmation: "Are You Sure Want to Delete",
   },
+  form: {
+    productForm: {
+      name: {
+        label: "PRODUCT NAME",
+        placeHolder: "Input Product Name",
+      },
+      price: {
+        label: "PRODUCT PRICE",
+        placeHolder: "Input Product Price",
+      },
+      stock: {
+        label: "PRODUCT STOCK",
+        placeHolder: "Input Product Stock",
+      },
+      category: {
+        label: "PRODUCT CATEGORY",
+        placeHolder: "Choose Product Category",
+      },
+      status: {
+        label: "PRODUCT STATUS",
+        placeHolder: "Input Product Status",
+      },
+    },
+  },
 
   Dashboard: {
     GraphSalesHeader: "Sales Graph",
@@ -123,6 +147,7 @@ export const t = {
   productPage: {
     item: "Product",
     header: "Manage Product",
+    createHeader: "Create Product",
     productTable: {
       c1: "PRODUCT NAME",
       c2: "CATEGORY",
