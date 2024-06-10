@@ -12,7 +12,6 @@ import {
 } from "@/utils/function";
 import CustomDatePicker from "@/components/ui/DatePicker";
 import CustomDropdown from "@/components/ui/Select";
-import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "@/components/ui/Switch";
 import { TEmployee } from "@/utils/models";
 import { useUserState } from "@/context/User";
