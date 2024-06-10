@@ -1,3 +1,4 @@
+import { useLanguage } from "@/context/Language";
 import { FormHelperText, Switch, Typography } from "@mui/material";
 import { useState } from "react";
 
@@ -18,15 +19,15 @@ function CustomSwitch({
   name,
   onChange,
   disabled = false,
-  activeText = "Active",
-  inactiveText = "Inactive",
+  activeText = "",
+  inactiveText = "",
   className = "",
   helperText = "",
   value = false,
   ...rest
 }: CustomSwitchProps) {
   const [checked, SetChecked] = useState(value);
-
+  const { translations } = useLanguage();
   return (
     <div className="tw-w-full">
       {label && (
@@ -53,7 +54,9 @@ function CustomSwitch({
           {...rest}
         />
         <Typography variant="labelSmall">
-          {checked ? activeText : inactiveText}
+          {checked
+            ? activeText || translations?.badgeText?.active
+            : inactiveText || translations?.badgeText?.inactive}
         </Typography>
       </div>
 
