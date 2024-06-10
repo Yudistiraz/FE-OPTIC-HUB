@@ -1,25 +1,3 @@
-export const SITEMAPS = [
-  {
-    name: "Home",
-    path: "/",
-  },
-  {
-    name: "My Account",
-    path: "/profile",
-  },
-];
-
-export const MOBILE_SITEMAPS = [
-  {
-    name: "Cart",
-    path: "/shopping-cart",
-  },
-  {
-    name: "Notification",
-    path: "/notification",
-  },
-];
-
 export const STAFF_SITEMAPS = [
   {
     name: "Dashboard",
