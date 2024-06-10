@@ -1,3 +1,4 @@
+import { useLanguage } from "@/context/Language";
 import { Typography } from "@mui/material";
 import React, { Fragment } from "react";
 
@@ -18,6 +19,7 @@ export default function CustomBadge({
   falseColor = "tw-bg-gray-700",
   textClasses = "",
 }: CustomBadgeProps) {
+  const { translations } = useLanguage();
   return (
     <Fragment>
       <div
@@ -29,7 +31,9 @@ export default function CustomBadge({
           variant="customBadgeText"
           className={`${textClasses} tw-text-white`}
         >
-          {status ? trueLabel || "Active" : falseLabel || "Inactive"}
+          {status
+            ? trueLabel || translations?.badgeText?.active
+            : falseLabel || translations?.badgeText?.inactive}
         </Typography>
       </div>
     </Fragment>
