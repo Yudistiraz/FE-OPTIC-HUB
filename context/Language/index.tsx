@@ -9,7 +9,7 @@ import React, {
 import { t as en } from "@/utils/t/en";
 import { t as id } from "@/utils/t/id";
 
-type Translations = typeof en;
+type Translations = typeof id;
 
 interface LanguageContextProps {
   language: string;
