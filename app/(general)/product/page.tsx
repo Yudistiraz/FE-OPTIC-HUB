@@ -310,8 +310,8 @@ export default function Product() {
         <ConfirmationDialog
           title={dialogTitle}
           description={dialogMessage}
-          applyText={"YES"}
-          cancelText={"NO"}
+          applyText={translations?.button?.yes}
+          cancelText={translations?.button?.no}
           type={"confirmation"}
           onCancel={onPopUpCancel}
           onApply={onPopUpApply}
