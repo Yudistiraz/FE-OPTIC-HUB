@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import useDebounce from "@/hooks/debounce";
 
 import CustomTextField from "../TextField";
+import { useLanguage } from "@/context/Language";
 
 interface SearchBarProps {
   search: string;
@@ -20,14 +21,14 @@ export default function CustomSearchbar({
   search,
   setSearch,
   debounce = false,
-  label = "Search",
-  placeHolder = "Search",
+  label = "",
+  placeHolder = "",
   fullWidth = false,
   error = false,
   helperText = "",
 }: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState("");
-
+  const { translations } = useLanguage();
   useDebounce(searchTerm, 500, () => {
     setSearch(searchTerm);
   });
@@ -41,10 +42,10 @@ export default function CustomSearchbar({
     <>
       <CustomTextField
         className={`${fullWidth ? "tw-w-full" : "tw-w-[510px]"}`}
-        label={label}
+        label={label || translations?.searchBar}
         name="search"
         value={debounce ? searchTerm : search}
-        placeholder={placeHolder}
+        placeholder={placeHolder || translations?.searchBar}
         onChange={(e) => {
           if (debounce) {
             handleInputChange(e);
