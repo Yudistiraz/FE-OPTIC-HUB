@@ -109,6 +109,16 @@ export const t = {
         value: "cancel",
       },
     ],
+    createTransactionStatusOptions: [
+      {
+        label: "Completed",
+        value: "complete",
+      },
+      {
+        label: "Ongoing",
+        value: "onGoing",
+      },
+    ],
   },
   toast: {
     error: {
