@@ -70,6 +70,7 @@ export const t = {
     no: "NO",
     updatePassword: "Update Password",
     printIvoice: "Print Invoice",
+    signIn: "Sign In",
   },
   dropdownOptions: {
     allStatus: "All Status",
@@ -321,5 +322,8 @@ export const t = {
       c5: "TOTAL TRANSACTION",
       c6: "TRANSACTION DATE",
     },
+  },
+  signInPage: {
+    header: "Sign In To Your Account",
   },
 };

@@ -11,8 +11,10 @@ import { adminSignIn } from "@/services/admin/v1/auth";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { useLanguage } from "@/context/Language";
 
 const Signinform = () => {
+  const { translations } = useLanguage();
   const signInMutation = useMutation({
     mutationFn: adminSignIn,
     onSuccess: async (data) => {
@@ -50,7 +52,7 @@ const Signinform = () => {
     <div>
       <form onSubmit={formik.handleSubmit} className="!tw-w-full">
         <Typography variant="display2" className="tw-uppercase">
-          SIGN IN TO YOUR ACCOUNT
+          {translations?.signInPage?.header}
         </Typography>
         <FormLayout>
           <CustomTextField
@@ -81,7 +83,7 @@ const Signinform = () => {
             className="!tw-mt-4"
             disabled={signInMutation.isLoading}
           >
-            Sign In
+            {translations?.button?.signIn}
           </CustomButton>
         </FormLayout>
       </form>

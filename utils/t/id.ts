@@ -1,5 +1,3 @@
-import ProductSearchBar from "@/components/features/ProductSearchBar";
-
 export const t = {
   siteMaps: {
     staff: [
@@ -72,6 +70,7 @@ export const t = {
     no: "TIDAK",
     updatePassword: "Ubah Password",
     printIvoice: "Cetak Invoice",
+    signIn: "Masuk",
   },
   dropdownOptions: {
     allStatus: "Semua Status",
@@ -323,5 +322,8 @@ export const t = {
       c5: "TOTAL TRANSAKSI",
       c6: "TANGGAL TRANSAKSI",
     },
+  },
+  signInPage: {
+    header: "Masuk Ke Akun Anda",
   },
 };
