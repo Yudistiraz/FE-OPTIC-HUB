@@ -267,10 +267,10 @@ export const t = {
   validation: {
     signIn: {
       email: {
-        v1: "Format Email Tidak Sesuai",
-        v2: "Email Harus Diisi",
+        v1: "Email is Invalid",
+        v2: "Email is Required",
       },
-      password: "Password Harus Diisi",
+      password: "Password is Required",
     },
   },
 
