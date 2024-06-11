@@ -564,7 +564,8 @@ export const theme = createTheme({
       color: "black",
     },
     helperText: {
-      margin: "3px 14px",
+      margin: "3px 0px",
+      fontStyle: "italic",
       fontSize: "12px",
       fontWeight: 400,
       lineHeight: "18px",
