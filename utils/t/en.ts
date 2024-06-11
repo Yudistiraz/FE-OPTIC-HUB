@@ -360,6 +360,8 @@ export const t = {
   settingPage: {
     header: "Settings",
     itemPassword: "Password",
+    languageHeader: "Application Language",
+    passWorHeader: "Account Password",
   },
   transactionPage: {
     item: "Transaction",

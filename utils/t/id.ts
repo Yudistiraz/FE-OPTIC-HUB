@@ -360,6 +360,8 @@ export const t = {
   settingPage: {
     header: "Pengaturan",
     itemPassword: "Password",
+    languageHeader: "Bahasa Aplikasi",
+    passWorHeader: "Password Akun",
   },
   transactionPage: {
     item: "Transaksi",
