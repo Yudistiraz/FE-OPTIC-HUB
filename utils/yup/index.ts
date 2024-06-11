@@ -26,6 +26,43 @@ export const yupAddProductScheme = (messages: Translations) => {
   });
 };
 
+export const yupAddEmployeeScheme = (messages: Translations) => {
+  return Yup.object({
+    name: Yup.string().required(messages.validation.employee?.name),
+    dob: Yup.mixed().required(messages.validation.employee?.dob),
+    phone_number: Yup.string()
+      .required(messages.validation.employee?.phone_number?.v1)
+      .min(10, messages.validation.employee?.phone_number?.v2)
+      .max(12, messages.validation.employee?.phone_number?.v3)
+      .matches(/^8\d*$/, messages.validation.employee?.phone_number?.v4),
+    email: Yup.string().required(messages.validation.employee?.email),
+    password: Yup.string().required(messages.validation.employee?.password),
+    role: Yup.string().required(messages.validation.employee?.role),
+    nik: Yup.string()
+      .required(messages.validation.employee?.nik?.v1)
+      .min(16, messages.validation.employee?.nik?.v2)
+      .max(16, messages.validation.employee?.nik?.v2),
+  });
+};
+
+export const yupUpdateEmployeeScheme = (messages: Translations) => {
+  return Yup.object({
+    name: Yup.string().required(messages.validation.employee?.name),
+    dob: Yup.mixed().required(messages.validation.employee?.dob),
+    phone_number: Yup.string()
+      .required(messages.validation.employee?.phone_number?.v1)
+      .min(10, messages.validation.employee?.phone_number?.v2)
+      .max(12, messages.validation.employee?.phone_number?.v3)
+      .matches(/^8\d*$/, messages.validation.employee?.phone_number?.v4),
+    email: Yup.string().required(messages.validation.employee?.email),
+    role: Yup.string().required(messages.validation.employee?.role),
+    nik: Yup.string()
+      .required(messages.validation.employee?.nik?.v1)
+      .min(16, messages.validation.employee?.nik?.v2)
+      .max(16, messages.validation.employee?.nik?.v2),
+  });
+};
+
 export const addEmployeeSchema = Yup.object({
   name: Yup.string().required("Name Required"),
   dob: Yup.mixed().required("Date of Birth Required"),

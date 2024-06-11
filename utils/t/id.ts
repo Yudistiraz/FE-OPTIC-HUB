@@ -279,6 +279,23 @@ export const t = {
       price: "Harga Produk Harus Diisi",
       quantity: "Stok Produk Harus Diisi",
     },
+    employee: {
+      name: "Nama Pegawai Harus Diisi",
+      dob: "Nama Pegawai Harus Diisi",
+      phone_number: {
+        v1: "No. Telepon Pegawai Harus Diisi",
+        v2: "No. Telepon Pegawai Minimal 10 Angka",
+        v3: "No. Telepon Pegawai Maksimal 12 Angka",
+        v4: "No. Telepon Pegawai Harus Diawali Angka 8",
+      },
+      email: "Email Pegawai Harus Diisi",
+      password: "Password Pegawai Harus Diisi",
+      role: "Jabatan Pegawai Harus Diisi",
+      nik: {
+        v1: "No. NIK Pegawai Harus Diisi",
+        v2: "No. NIK Pegawai Harus 16 Angka",
+      },
+    },
   },
 
   Dashboard: {

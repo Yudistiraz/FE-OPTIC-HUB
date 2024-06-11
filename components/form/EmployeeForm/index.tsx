@@ -1,5 +1,5 @@
 import { useCustomFormik } from "@/hooks/formik";
-import { addEmployeeSchema, updateEmployeeSchema } from "@/utils/yup";
+import { yupAddEmployeeScheme, yupUpdateEmployeeScheme } from "@/utils/yup";
 
 import React from "react";
 import CustomTextField from "@/components/ui/TextField";
@@ -51,6 +51,9 @@ const EmployeeForm = ({
     setDialogTitle,
   } = useUserState();
   const { translations } = useLanguage();
+  const employeeSchema = isEdit
+    ? yupUpdateEmployeeScheme(translations)
+    : yupAddEmployeeScheme(translations);
   const session = useSession();
 
   const router = useRouter();
@@ -97,6 +100,8 @@ const EmployeeForm = ({
       toast.success(
         `${translations?.toast?.success?.delete} ${translations?.EmployeePage?.item}`
       );
+      setOpenDialog(false);
+      resetDialogText();
       router.push("/employee");
     },
     onError: (error) => {
@@ -121,7 +126,7 @@ const EmployeeForm = ({
       status: convertEnumValue(data?.status),
       nik: data?.nik || "",
     },
-    validationSchema: isEdit ? updateEmployeeSchema : addEmployeeSchema,
+    validationSchema: employeeSchema,
     onSubmit: async (values) => {
       const payload = {
         name: values.name,

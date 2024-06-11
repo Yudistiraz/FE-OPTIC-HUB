@@ -279,6 +279,23 @@ export const t = {
       price: "Product Price is Required",
       quantity: "Product Stock is Required",
     },
+    employee: {
+      name: "Employee Name is Required",
+      dob: "Employee Date of Birth is Required",
+      phone_number: {
+        v1: "Employee Phone Number is Required",
+        v2: "Employee Phone Number Must Be At Least 10 Characters",
+        v3: "Employee Phone Number Maximum is 12 Characters",
+        v4: "Employee Phone Number Must Be Begins With 8",
+      },
+      email: "Employee Email is Required",
+      password: "Employee Password is Required",
+      role: "Employee Role is Required",
+      nik: {
+        v1: "Employee NIK is Required",
+        v2: "Employee NIK Must Be 16 Characters",
+      },
+    },
   },
 
   Dashboard: {
