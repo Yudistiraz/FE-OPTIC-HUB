@@ -264,6 +264,16 @@ export const t = {
     zeroMessage: "There's No Product on This Transaction",
   },
 
+  validation: {
+    signIn: {
+      email: {
+        v1: "Format Email Tidak Sesuai",
+        v2: "Email Harus Diisi",
+      },
+      password: "Password Harus Diisi",
+    },
+  },
+
   Dashboard: {
     GraphSalesHeader: "Sales Graph",
     BestSellerHeader: "Best Seller Product",

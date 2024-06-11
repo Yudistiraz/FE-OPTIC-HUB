@@ -1,39 +1,20 @@
-// import dayjs from 'dayjs'
+import { Translations } from "@/context/Language";
 import * as Yup from "yup";
-
-// Yup.addMethod(Yup.object, 'dayjs', function method(message) {
-//   return this.test('dayjs', message, function validate(value) {
-//     if (!value) {
-//       return true
-//     }
-//     return dayjs.isDayjs(value)
-//   })
-// })
-
 const emailRules = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-// const numericOnlyWithPrefix = /^(\d+|\+\d+)$/ // only number or starts with +
-const numericOnly = /^\d+$/; // only numbers
 
-const passwordRules =
-  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>?]).{8,}$/;
-// min 8 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.
-
-const passwordMsg =
-  "Password format: At least 1 Uppercase, 1 LowerCase, 1 Numeric, 1 Symbol, 8 Characters";
-
-// used as shared schema
-const basicSchema = {
+export const basicSchema = (messages: Translations) => ({
   email: Yup.string()
-    .email("Invalid email address")
-    .matches(emailRules, "Invalid email address")
-    .required("Required"),
-};
-
-export const loginSchema = Yup.object({
-  ...basicSchema,
-  password: Yup.string().required("Required"),
-  // .matches(passwordRules, passwordMsg),
+    .email(messages.validation.signIn.email.v1)
+    .matches(emailRules, messages.validation.signIn.email.v1)
+    .required(messages.validation.signIn.email.v2),
 });
+
+export const yupLoginSchema = (messages: Translations) => {
+  return Yup.object({
+    ...basicSchema(messages),
+    password: Yup.string().required(messages.validation.signIn?.password),
+  });
+};
 
 export const addEmployeeSchema = Yup.object({
   name: Yup.string().required("Name Required"),

@@ -1,5 +1,4 @@
 import { useCustomFormik } from "@/hooks/formik";
-import { loginSchema } from "@/utils/yup";
 import { Typography } from "@mui/material";
 import React from "react";
 import CustomTextField from "@/components/ui/TextField";
@@ -12,9 +11,11 @@ import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useLanguage } from "@/context/Language";
+import { yupLoginSchema } from "@/utils/yup";
 
 const Signinform = () => {
   const { translations } = useLanguage();
+  const loginSchema = yupLoginSchema(translations);
   const signInMutation = useMutation({
     mutationFn: adminSignIn,
     onSuccess: async (data) => {
