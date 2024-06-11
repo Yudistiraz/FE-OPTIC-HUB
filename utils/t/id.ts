@@ -304,6 +304,15 @@ export const t = {
         v2: "Password Konfirmasi Harus Sama Dengan Password Baru",
       },
     },
+    transaction: {
+      userId: "ID Pegawai Harus Diisi",
+      userName: "Nama Pegawai Harus Diisi",
+      customerName: "Nama Pelanggan Harus Diisi",
+      customerPhone: "No. Telepon Pelanggan Harus Diisi",
+      customerEmail: "Email Pelanggan Harus Diisi",
+      paymentMethod: "Metode Pembayaran Harus Diisi",
+      orderItem: "Produk Harus Diisi",
+    },
   },
 
   Dashboard: {

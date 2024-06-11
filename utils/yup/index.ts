@@ -80,6 +80,24 @@ export const yupChangePasswordScheme = (messages: Translations) => {
   });
 };
 
+export const yupAddTransactionScheme = (messages: Translations) => {
+  return Yup.object({
+    userId: Yup.string().required(messages.validation.transaction?.userId),
+    userName: Yup.string().required(messages.validation.transaction?.userName),
+    customerName: Yup.string().required(
+      messages.validation.transaction?.customerName
+    ),
+    customerPhone: Yup.string().required(
+      messages.validation.transaction?.customerPhone
+    ),
+    customerEmail: Yup.string(),
+    paymentMethod: Yup.string().required(
+      messages.validation.transaction?.paymentMethod
+    ),
+    orderItem: Yup.array().min(1, messages.validation.transaction?.orderItem),
+  });
+};
+
 export const addTransactionScheme = Yup.object({
   userId: Yup.string().required("User ID Required"),
   userName: Yup.string().required("User Name Required"),
@@ -88,15 +106,4 @@ export const addTransactionScheme = Yup.object({
   customerEmail: Yup.string(),
   paymentMethod: Yup.string().required("Payment Method Required"),
   orderItem: Yup.array().min(1, "Item Required"),
-});
-
-export const changePasswordScheme = Yup.object({
-  oldPassword: Yup.string().required("Old Password Required"),
-  newPassword: Yup.string().required("New Password Required"),
-  confirmPassword: Yup.string()
-    .required("Confirmation Password is required")
-    .oneOf(
-      [Yup.ref("newPassword")],
-      "Confirm Password must match with Password"
-    ),
 });

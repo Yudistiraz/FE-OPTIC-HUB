@@ -304,6 +304,15 @@ export const t = {
         v2: "Confirm Password must match with New Password",
       },
     },
+    transaction: {
+      userId: "Employee ID is Required",
+      userName: "Employee Name is Required",
+      customerName: "Customer Name is Required",
+      customerPhone: "Customer Phone is Required",
+      customerEmail: "Customer Email is Required",
+      paymentMethod: "Payment Method is Required",
+      orderItem: "Item is Required",
+    },
   },
 
   Dashboard: {

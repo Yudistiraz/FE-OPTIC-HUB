@@ -1,5 +1,5 @@
 import { useCustomFormik } from "@/hooks/formik";
-import { addTransactionScheme } from "@/utils/yup";
+import { yupAddTransactionScheme } from "@/utils/yup";
 
 import React, { Fragment } from "react";
 import CustomTextField from "@/components/ui/TextField";
@@ -16,14 +16,10 @@ import { useMutation } from "react-query";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Divider, Typography } from "@mui/material";
-import {
-  CREATE_TRANSACTION_STATUS_OPTIONS,
-  PAYMENT_METHOD_OPTIONS,
-  TRANSACTION_STATUS_OPTIONS,
-} from "@/utils/constants";
-import CustomCheckbox from "../../ui/Checkbox";
-import ProductSearchBar from "../../features/ProductSearchBar";
-import ProductOverview from "../../features/ProductOverview";
+import { PAYMENT_METHOD_OPTIONS } from "@/utils/constants";
+import CustomCheckbox from "@/components/ui/Checkbox";
+import ProductSearchBar from "@/components/features/ProductSearchBar";
+import ProductOverview from "@/components/features/ProductOverview";
 import { OrderItem, TProduct, TTransaction } from "@/utils/models";
 import {
   addTransaction,
@@ -57,6 +53,7 @@ const TransactionForm = ({
   const router = useRouter();
   const session = useSession();
   const { translations } = useLanguage();
+  const transactionScheme = yupAddTransactionScheme(translations);
   const transactionAddMutation = useMutation({
     mutationFn: addTransaction,
     onSuccess: async () => {
@@ -116,7 +113,7 @@ const TransactionForm = ({
       orderItem: transactionData?.orderItem || [],
       withPrescription: transactionData?.withPrescription || false,
     },
-    validationSchema: addTransactionScheme,
+    validationSchema: transactionScheme,
     onSubmit: async (values) => {
       const payload = {
         userId: values.userId,
