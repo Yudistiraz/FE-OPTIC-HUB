@@ -16,6 +16,16 @@ export const yupLoginSchema = (messages: Translations) => {
   });
 };
 
+export const yupAddProductScheme = (messages: Translations) => {
+  return Yup.object({
+    name: Yup.string().required(messages.validation.product?.name),
+    categoryId: Yup.string().required(messages.validation.product?.categoryId),
+    imageUrl: Yup.string().required(messages.validation.product?.imageUrl),
+    price: Yup.mixed().required(messages.validation.product?.price),
+    quantity: Yup.number().required(messages.validation.product?.quantity),
+  });
+};
+
 export const addEmployeeSchema = Yup.object({
   name: Yup.string().required("Name Required"),
   dob: Yup.mixed().required("Date of Birth Required"),
@@ -52,7 +62,7 @@ export const updateEmployeeSchema = Yup.object({
 export const addProductScheme = Yup.object({
   name: Yup.string().required("Proudct Name Required"),
   categoryId: Yup.string().required("Product Category Required"),
-  // image_url: Yup.string().required("Product Image Required"),
+  imageUrl: Yup.string().required("Product Image Required"),
   price: Yup.mixed().required("Proudct Price Required"),
   quantity: Yup.number().required("Proudct Stock Required"),
 });

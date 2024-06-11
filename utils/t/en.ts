@@ -272,6 +272,13 @@ export const t = {
       },
       password: "Password is Required",
     },
+    product: {
+      name: "Product Name is Required",
+      categoryId: "Product Category is Required",
+      imageUrl: "Product Image is Required",
+      price: "Product Price is Required",
+      quantity: "Product Stock is Required",
+    },
   },
 
   Dashboard: {

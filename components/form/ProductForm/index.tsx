@@ -1,6 +1,6 @@
 "use client";
 import { useCustomFormik } from "@/hooks/formik";
-import { addProductScheme } from "@/utils/yup";
+import { yupAddProductScheme } from "@/utils/yup";
 
 import React from "react";
 import CustomTextField from "@/components/ui/TextField";
@@ -55,7 +55,7 @@ const ProductForm = ({
   } = useUserState();
 
   const { translations } = useLanguage();
-
+  const productScheme = yupAddProductScheme(translations);
   const router = useRouter();
 
   const productCategoryQuery = useQuery({
@@ -151,7 +151,7 @@ const ProductForm = ({
       imageUrl: data?.imageUrl || "",
       newImage: null,
     },
-    validationSchema: addProductScheme,
+    validationSchema: productScheme,
     onSubmit: async (values) => {
       const payload = {
         name: values.name,
@@ -225,6 +225,11 @@ const ProductForm = ({
               onImageClear={onImageClear}
               newImage={formik?.values?.newImage}
               onEdit={isEdit ? true : false}
+              helperText={gethelperText(
+                formik.touched.imageUrl as boolean,
+                formik.errors.imageUrl as string
+              )}
+              error={formik.touched.imageUrl && !!formik.errors.imageUrl}
             />
 
             <CustomTextField

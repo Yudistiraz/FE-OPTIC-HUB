@@ -272,6 +272,13 @@ export const t = {
       },
       password: "Password Harus Diisi",
     },
+    product: {
+      name: "Nama Produk Harus Diisi",
+      categoryId: "Kategori Produk Harus Diisi",
+      imageUrl: "Gambar Produk Harus Diisi",
+      price: "Harga Produk Harus Diisi",
+      quantity: "Stok Produk Harus Diisi",
+    },
   },
 
   Dashboard: {
