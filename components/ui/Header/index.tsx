@@ -81,9 +81,6 @@ const Header = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleLogout}>
-                  {translations?.headerNavbar?.logOut}
-                </MenuItem>
                 <MenuItem disableTouchRipple>
                   <div className="tw-flex tw-gap-2 tw-justify-between">
                     <IconButton
@@ -127,6 +124,9 @@ const Header = () => {
                       </Typography>
                     </IconButton>
                   </div>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  {translations?.headerNavbar?.logOut}
                 </MenuItem>
               </Menu>
             </div>
