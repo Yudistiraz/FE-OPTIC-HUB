@@ -63,46 +63,22 @@ export const yupUpdateEmployeeScheme = (messages: Translations) => {
   });
 };
 
-export const addEmployeeSchema = Yup.object({
-  name: Yup.string().required("Name Required"),
-  dob: Yup.mixed().required("Date of Birth Required"),
-  phone_number: Yup.string()
-    .required("Phone Number Required")
-    .min(10, "Phone Number Length At Least Must Be 10 Character")
-    .max(12, "Phone Number Length Shouldn't Be Above 12 Character")
-    .matches(/^8\d*$/, "Phone Number Must Start With 8"),
-  email: Yup.string().required("Email Required"),
-  password: Yup.string().required("Password Required"),
-  role: Yup.string().required("Role Required"),
-  nik: Yup.string()
-    .required("NIK Required")
-    .min(16, "NIK Length Must Be 16 Character")
-    .max(16, "NIK Length Must Be 16 Character"),
-});
-
-export const updateEmployeeSchema = Yup.object({
-  name: Yup.string().required("Name Required"),
-  dob: Yup.mixed().required("Date of Birth Required"),
-  phone_number: Yup.string()
-    .required("Phone Number Required")
-    .min(10, "Phone Number Length At Least Must Be 10 Character")
-    .max(12, "Phone Number Length Shouldn't Be Above 12 Character")
-    .matches(/^8\d*$/, "Phone Number Must Start With 8"),
-  email: Yup.string().required("Email Required"),
-  role: Yup.string().required("Role Required"),
-  nik: Yup.string()
-    .required("NIK Required")
-    .min(16, "NIK Length Must Be 16 Character")
-    .max(16, "NIK Length Must Be 16 Character"),
-});
-
-export const addProductScheme = Yup.object({
-  name: Yup.string().required("Proudct Name Required"),
-  categoryId: Yup.string().required("Product Category Required"),
-  imageUrl: Yup.string().required("Product Image Required"),
-  price: Yup.mixed().required("Proudct Price Required"),
-  quantity: Yup.number().required("Proudct Stock Required"),
-});
+export const yupChangePasswordScheme = (messages: Translations) => {
+  return Yup.object({
+    oldPassword: Yup.string().required(
+      messages.validation.changePassword?.oldPassword
+    ),
+    newPassword: Yup.string().required(
+      messages.validation.changePassword?.newPassword
+    ),
+    confirmPassword: Yup.string()
+      .required(messages.validation.changePassword?.confirmPassword?.v1)
+      .oneOf(
+        [Yup.ref("newPassword")],
+        messages.validation.changePassword?.confirmPassword?.v2
+      ),
+  });
+};
 
 export const addTransactionScheme = Yup.object({
   userId: Yup.string().required("User ID Required"),

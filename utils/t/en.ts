@@ -296,6 +296,14 @@ export const t = {
         v2: "Employee NIK Must Be 16 Characters",
       },
     },
+    changePassword: {
+      oldPassword: "Old Password is Required",
+      newPassword: "New Password is Required",
+      confirmPassword: {
+        v1: "Confirmation Password is Required",
+        v2: "Confirm Password must match with New Password",
+      },
+    },
   },
 
   Dashboard: {

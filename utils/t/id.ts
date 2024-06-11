@@ -296,6 +296,14 @@ export const t = {
         v2: "No. NIK Pegawai Harus 16 Angka",
       },
     },
+    changePassword: {
+      oldPassword: "Password Lama Harus Diisi",
+      newPassword: "Password Baru Harus Diisi",
+      confirmPassword: {
+        v1: "Password Konfirmasi Harus Diisi",
+        v2: "Password Konfirmasi Harus Sama Dengan Password Baru",
+      },
+    },
   },
 
   Dashboard: {

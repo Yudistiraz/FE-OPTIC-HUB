@@ -5,7 +5,7 @@ import CustomTextField from "@/components/ui/TextField";
 import CustomButton from "@/components/ui/Button";
 import FormLayout from "@/components/ui/FormLayout";
 import { gethelperText } from "@/utils/function";
-import { changePasswordScheme } from "@/utils/yup";
+import { yupChangePasswordScheme } from "@/utils/yup";
 import { useMutation } from "react-query";
 import { updatePasswordEmployee } from "@/services/admin/v1/employee";
 import toast from "react-hot-toast";
@@ -16,6 +16,8 @@ import { useLanguage } from "@/context/Language";
 
 const ChangePasswordForm = () => {
   const { translations } = useLanguage();
+  const changePasswordScheme = yupChangePasswordScheme(translations);
+
   const router = useRouter();
   const { data: session } = useSession();
   let id = session?.user.id;
