@@ -101,6 +101,19 @@ export const TRANSACTION_STATUS_OPTIONS = [
   },
 ];
 
+export const LANGUAGE_OPTIONS = [
+  {
+    id: "id",
+    name: "Indonesia",
+    img: "/assets/icons/id.svg",
+  },
+  {
+    id: "en",
+    name: "English",
+    img: "/assets/icons/en.svg",
+  },
+];
+
 export const CREATE_TRANSACTION_STATUS_OPTIONS = [
   {
     label: "Completed",
