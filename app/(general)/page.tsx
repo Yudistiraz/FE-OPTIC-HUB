@@ -3,13 +3,15 @@
 import SalesBarChart from "@/components/features/SalesBarChart";
 import ComponentCard from "@/components/layout/ComponentCard";
 import CustomDataTable from "@/components/ui/DataTableV2";
+import { useLanguage } from "@/context/Language";
 import { getBestSellerItem } from "@/services/admin/v1/dashboard";
 import { getLowStockProduct } from "@/services/admin/v1/product";
 import { Skeleton, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+
 import { useQuery } from "react-query";
 
 export default function Home() {
+  const { translations } = useLanguage();
   const { data: bestSellerItem, isLoading: isBestSellerItemLoading } = useQuery(
     ["getBestSellerItem"],
     async () => {
@@ -37,14 +39,14 @@ export default function Home() {
   const bestSellerColumn = [
     {
       field: "name",
-      headerName: "ITEM NAME",
+      headerName: translations?.Dashboard?.BestSellerTable?.c1,
       flex: 1,
       sortable: false,
       readonly: true,
     },
     {
       field: "totalQty",
-      headerName: "TOTAL SOLD",
+      headerName: translations?.Dashboard?.BestSellerTable?.c2,
       flex: 1,
       sortable: false,
       readonly: true,
@@ -54,14 +56,14 @@ export default function Home() {
   const lowStockColumn = [
     {
       field: "name",
-      headerName: "ITEM NAME",
+      headerName: translations?.Dashboard?.LowStockTable?.c1,
       flex: 1,
       sortable: false,
       readonly: true,
     },
     {
       field: "quantity",
-      headerName: "STOCK LEFT",
+      headerName: translations?.Dashboard?.LowStockTable?.c2,
       flex: 1,
       sortable: false,
       readonly: true,
@@ -76,7 +78,7 @@ export default function Home() {
 
       <ComponentCard>
         <Typography variant="display4" className="tw-uppercase">
-          Best seller item
+          {translations?.Dashboard?.BestSellerHeader}
         </Typography>
 
         {isBestSellerItemLoading ? (
@@ -96,10 +98,10 @@ export default function Home() {
 
       <ComponentCard>
         <Typography variant="display4" className="tw-uppercase">
-          Low Stock Products
+          {translations?.Dashboard?.LowStockHeader}
         </Typography>
 
-        {isBestSellerItemLoading ? (
+        {isLowStockLoading ? (
           <Skeleton variant="rounded" className="tw-w-full tw-h-80" />
         ) : (
           <CustomDataTable

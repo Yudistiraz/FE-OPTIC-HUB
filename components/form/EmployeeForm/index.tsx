@@ -1,5 +1,5 @@
 import { useCustomFormik } from "@/hooks/formik";
-import { addEmployeeSchema, updateEmployeeSchema } from "@/utils/yup";
+import { yupAddEmployeeScheme, yupUpdateEmployeeScheme } from "@/utils/yup";
 
 import React from "react";
 import CustomTextField from "@/components/ui/TextField";
@@ -12,7 +12,6 @@ import {
 } from "@/utils/function";
 import CustomDatePicker from "@/components/ui/DatePicker";
 import CustomDropdown from "@/components/ui/Select";
-import { EMPLOYEE_OPTIONS } from "@/utils/constants";
 import CustomSwitch from "@/components/ui/Switch";
 import { TEmployee } from "@/utils/models";
 import { useUserState } from "@/context/User";
@@ -30,6 +29,7 @@ import { useSession } from "next-auth/react";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { useLanguage } from "@/context/Language";
 
 interface EmployeeFormProps {
   isLoading?: boolean;
@@ -50,7 +50,10 @@ const EmployeeForm = ({
     resetDialogText,
     setDialogTitle,
   } = useUserState();
-
+  const { translations } = useLanguage();
+  const employeeSchema = isEdit
+    ? yupUpdateEmployeeScheme(translations)
+    : yupAddEmployeeScheme(translations);
   const session = useSession();
 
   const router = useRouter();
@@ -58,13 +61,16 @@ const EmployeeForm = ({
   const employeeAddMutation = useMutation({
     mutationFn: addEmployee,
     onSuccess: async () => {
-      toast.success("Employee Successfully Added");
+      toast.success(
+        `${translations?.toast?.success?.create} ${translations?.EmployeePage?.item}`
+      );
       router.push("/employee");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        const errorResponse = error?.response?.data || {};
-        console.log(errorResponse?.message);
+        const errorResponse = error?.response?.data || {
+          message: `${translations?.toast?.error?.create} ${translations?.EmployeePage?.item}`,
+        };
         toast.error(errorResponse?.message);
       }
     },
@@ -73,13 +79,15 @@ const EmployeeForm = ({
   const employeeUpdateMutation = useMutation({
     mutationFn: updateEmployee,
     onSuccess: async () => {
-      toast.success("Employee Successfully Updated");
+      toast.success(
+        `${translations?.toast?.success?.update} ${translations?.EmployeePage?.item}`
+      );
       router.push("/employee");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Updating Employee",
+          message: `${translations?.toast?.error?.update} ${translations?.EmployeePage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -89,7 +97,9 @@ const EmployeeForm = ({
   const employeeDeleteMutation = useMutation({
     mutationFn: deleteEmployee,
     onSuccess: async () => {
-      toast.success("Employee Successfully Deleted");
+      toast.success(
+        `${translations?.toast?.success?.delete} ${translations?.EmployeePage?.item}`
+      );
       setOpenDialog(false);
       resetDialogText();
       router.push("/employee");
@@ -97,7 +107,7 @@ const EmployeeForm = ({
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Deleting Employee",
+          message: `${translations?.toast?.error?.delete} ${translations?.EmployeePage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -116,7 +126,7 @@ const EmployeeForm = ({
       status: convertEnumValue(data?.status),
       nik: data?.nik || "",
     },
-    validationSchema: isEdit ? updateEmployeeSchema : addEmployeeSchema,
+    validationSchema: employeeSchema,
     onSubmit: async (values) => {
       const payload = {
         name: values.name,
@@ -150,7 +160,9 @@ const EmployeeForm = ({
 
   const onDeleteClick = () => {
     resetDialogText();
-    setDialogTitle(`Are you sure you want to Delete ${data?.name} Employee?`);
+    setDialogTitle(
+      `${translations?.dialogBox?.deleteConfirmation} ${data?.name}?`
+    );
     setOpenDialog(true);
   };
 
@@ -169,8 +181,8 @@ const EmployeeForm = ({
               />
             )}
             <CustomTextField
-              label="Name"
-              placeholder="Input Name"
+              label={translations?.form?.employeeForm?.name?.label}
+              placeholder={translations?.form?.employeeForm?.name?.placeHolder}
               helperText={gethelperText(
                 formik.touched.name as boolean,
                 formik.errors.name as string
@@ -180,8 +192,8 @@ const EmployeeForm = ({
             />
 
             <CustomDatePicker
-              label="DATE OF BIRTH"
-              placeholder="Choose Date of Birth"
+              label={translations?.form?.employeeForm?.dob?.label}
+              placeholder={translations?.form?.employeeForm?.dob?.placeHolder}
               name="dob"
               format="DD MMMM YYYY"
               value={formik.values.dob}
@@ -195,8 +207,10 @@ const EmployeeForm = ({
             />
 
             <CustomTextField
-              label="Phone Number"
-              placeholder="Input Phone Number"
+              label={translations?.form?.employeeForm?.phoneNumber?.label}
+              placeholder={
+                translations?.form?.employeeForm?.phoneNumber?.placeHolder
+              }
               startAdornment={<div className="tw-text-black-500">+62</div>}
               helperText={gethelperText(
                 formik.touched.phone_number as boolean,
@@ -215,8 +229,8 @@ const EmployeeForm = ({
             />
 
             <CustomTextField
-              label="NIK"
-              placeholder="Input Employee NIK"
+              label={translations?.form?.employeeForm?.nik?.label}
+              placeholder={translations?.form?.employeeForm?.nik?.placeHolder}
               helperText={gethelperText(
                 formik.touched.nik as boolean,
                 formik.errors.nik as string
@@ -232,8 +246,8 @@ const EmployeeForm = ({
             />
 
             <CustomTextField
-              label="Email"
-              placeholder="Input Email"
+              label={translations?.form?.employeeForm?.email?.label}
+              placeholder={translations?.form?.employeeForm?.email?.placeHolder}
               helperText={gethelperText(
                 formik.touched.email as boolean,
                 formik.errors.email as string
@@ -243,8 +257,16 @@ const EmployeeForm = ({
             />
 
             <CustomTextField
-              label={isEdit ? "New Password" : "Password"}
-              placeholder={isEdit ? "Input New Password" : "Input Password"}
+              label={
+                isEdit
+                  ? translations?.form?.employeeForm?.newPassword?.label
+                  : translations?.form?.employeeForm?.password?.label
+              }
+              placeholder={
+                isEdit
+                  ? translations?.form?.employeeForm?.newPassword?.placeHolder
+                  : translations?.form?.employeeForm?.password?.placeHolder
+              }
               password
               helperText={gethelperText(
                 formik.touched.password as boolean,
@@ -256,11 +278,11 @@ const EmployeeForm = ({
 
             <CustomDropdown
               fullWidth
-              label="ROLE"
+              label={translations?.form?.employeeForm?.role?.label}
+              placeholder={translations?.form?.employeeForm?.role?.placeHolder}
               name="role"
-              options={EMPLOYEE_OPTIONS}
+              options={translations?.dropdownOptions?.roleOptions}
               value={formik.values.role}
-              placeholder="Choose Role"
               onChange={(e) => {
                 formik.setFieldValue("role", e.value);
               }}
@@ -273,7 +295,7 @@ const EmployeeForm = ({
 
             {isEdit && (
               <CustomSwitch
-                label="EMPLOYEE STATUS"
+                label={translations?.form?.employeeForm?.status?.label}
                 name="Status"
                 onChange={(value) => {
                   formik.setFieldValue("status", value);
@@ -291,7 +313,9 @@ const EmployeeForm = ({
                   employeeUpdateMutation.isLoading
                 }
               >
-                {isEdit ? "Update" : "Add"}
+                {isEdit
+                  ? translations?.button?.update
+                  : translations?.button?.add}
               </CustomButton>
               <CustomButton
                 className="tw-w-1/4"
@@ -304,7 +328,7 @@ const EmployeeForm = ({
                   router.push("/employee");
                 }}
               >
-                Cancel
+                {translations?.button?.cancel}
               </CustomButton>
               {isEdit && data?.id !== session?.data?.user?.id && (
                 <CustomButton
@@ -316,7 +340,7 @@ const EmployeeForm = ({
                     employeeUpdateMutation.isLoading
                   }
                 >
-                  Delete
+                  {translations?.button?.delete}
                 </CustomButton>
               )}
             </div>
@@ -328,8 +352,8 @@ const EmployeeForm = ({
         <ConfirmationDialog
           title={dialogTitle}
           description={dialogMessage}
-          applyText={"YES"}
-          cancelText={"NO"}
+          applyText={translations?.button?.yes}
+          cancelText={translations?.button?.no}
           type={"confirmation"}
           onCancel={onPopUpCancel}
           onApply={onPopUpApply}

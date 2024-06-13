@@ -170,14 +170,26 @@ export function transformArrayBarChart(
         time: item.dayName,
         sales: item.totalIncome,
       }));
-    } else {
-      return array.map((item: any) => ({
+    } else if (chartRange === "year") {
+      const yearlyArray = array.map((item: any) => ({
         time: item.year,
         sales: item.totalIncome,
       }));
+
+      // Menambahkan elemen baru jika jumlah elemen kurang dari 5
+      while (yearlyArray.length < 5) {
+        const lastItem = yearlyArray[yearlyArray.length - 1];
+        const newItem = {
+          time: (parseInt(lastItem.time) + 1).toString(),
+          sales: 0, // Nilai default untuk sales pada elemen baru
+        };
+        yearlyArray.push(newItem);
+      }
+
+      return yearlyArray;
     }
   }
-  return;
+  return [];
 }
 
 export function isUrl(value: string): string {

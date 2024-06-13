@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  important: true,
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -54,6 +55,7 @@ const config: Config = {
           400: "#2453C2", // pressed
           500: "#457DFF", // default state
           600: "#1A45AA",
+          700: "#8CAFFF", // default disabled state
         },
         light: {
           500: "#F3F8FB",

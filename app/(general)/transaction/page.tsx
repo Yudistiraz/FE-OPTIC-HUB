@@ -20,8 +20,11 @@ import { TRANSACTION_STATUS_OPTIONS } from "@/utils/constants";
 import { getAllTransaction } from "@/services/admin/v1/transaction";
 import CustomDatePicker from "@/components/ui/DatePicker";
 import ComponentCard from "@/components/layout/ComponentCard";
+import { useLanguage } from "@/context/Language";
+import { formatDateParameter, formateDate3 } from "@/utils/dateFormatter";
 
 export default function Product() {
+  const { translations } = useLanguage();
   const router = useRouter();
   const {
     page,
@@ -40,7 +43,9 @@ export default function Product() {
       const res = await getAllTransaction({
         keyword: search,
         page: page,
-        status: additionalParams.status,
+        status: additionalParams?.status,
+        startDate: additionalParams?.startDate,
+        endDate: additionalParams?.endDate,
         limit: 10,
       });
       setTotalPages(res?.data?.metadata?.totalPages || 1);
@@ -49,18 +54,21 @@ export default function Product() {
     refetchOnWindowFocus: true,
   });
 
+  useEffect(() => {
+    console.log(additionalParams);
+  }, [additionalParams]);
+
   const transactionColumn = [
     {
       field: "userName",
-      headerName: "Employee Name",
-      width: 250,
-
+      headerName: translations?.transactionPage?.transactionTable?.c1,
+      width: 200,
       sortable: false,
       readonly: true,
     },
     {
       field: "customerName",
-      headerName: "Customer Name",
+      headerName: translations?.transactionPage?.transactionTable?.c2,
       flex: 1,
       minWidth: 250,
       sortable: false,
@@ -71,17 +79,27 @@ export default function Product() {
     },
     {
       field: "paymentMethod",
-      headerName: "Payment Method",
-      width: 150,
+      headerName: translations?.transactionPage?.transactionTable?.c3,
+      width: 175,
       sortable: false,
       renderCell: (data: any) => {
-        return data?.row?.paymentMethod;
+        return <div className="tw-uppercase">{data?.row?.paymentMethod}</div>;
+      },
+      readonly: true,
+    },
+    {
+      field: "totalPrice",
+      headerName: translations?.transactionPage?.transactionTable?.c5,
+      width: 200,
+      sortable: false,
+      renderCell: (data: any) => {
+        return `Rp. ${getThousandSeparator(data?.row?.totalPrice)}`;
       },
       readonly: true,
     },
     {
       field: "isComplete",
-      headerName: "Status",
+      headerName: translations?.transactionPage?.transactionTable?.c4,
       width: 150,
       sortable: false,
       renderCell: (data: any) => {
@@ -91,14 +109,21 @@ export default function Product() {
               <CustomBadge
                 status={data?.row?.status === "complete" ? true : false}
                 falseLabel={
-                  data?.row?.status === "cancel" ? "Cancelled" : "Ongoing"
+                  data?.row?.status === "cancel"
+                    ? translations?.dropdownOptions?.transactionStatusOptions[2]
+                        ?.label
+                    : translations?.dropdownOptions?.transactionStatusOptions[1]
+                        ?.label
                 }
                 falseColor={
                   data?.row?.status === "cancel"
                     ? "tw-bg-danger-500"
                     : "tw-bg-gray-700"
                 }
-                trueLabel="Completed"
+                trueLabel={
+                  translations?.dropdownOptions?.transactionStatusOptions[0]
+                    ?.label
+                }
               />
             </div>
           </Fragment>
@@ -107,25 +132,23 @@ export default function Product() {
       readonly: true,
     },
     {
-      field: "totalPrice",
-      headerName: "Total Transaction",
-      width: 250,
+      field: "date",
+      headerName: translations?.transactionPage?.transactionTable?.c6,
+      width: 200,
       sortable: false,
       renderCell: (data: any) => {
-        return `Rp. ${getThousandSeparator(data?.row?.totalPrice)}`;
+        return formateDate3(data?.row?.transactionDate);
       },
       readonly: true,
     },
   ];
 
-  useEffect(() => {
-    console.log(additionalParams);
-  }, [additionalParams]);
-
   return (
     <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
-        <Typography variant="h2">Transaction</Typography>
+        <Typography variant="h2">
+          {translations?.transactionPage?.header}
+        </Typography>
 
         <CustomButton
           className="tw-w-fit tw-ml-auto"
@@ -133,7 +156,8 @@ export default function Product() {
             router.push("/transaction/add");
           }}
         >
-          Add Transaction
+          {`${translations?.button?.add} 
+          ${translations?.transactionPage?.item}`}
         </CustomButton>
       </div>
 
@@ -153,12 +177,12 @@ export default function Product() {
           <div className="tw-w-full lg:tw-w-1/4">
             <CustomDropdown
               fullWidth
-              label="FILTER BY TRANSACTION STATUS"
+              label={`${translations?.filter?.main} ${translations?.filter?.byTransactionStatus}`}
               name="PurchaseOptions"
               options={TRANSACTION_STATUS_OPTIONS}
               value={additionalParams.status || ""}
-              placeholder="Filter by Transaction Status"
-              allOption="All Status"
+              placeholder={`${translations?.filter?.main} ${translations?.filter?.byTransactionStatus}`}
+              allOption={translations?.dropdownOptions?.allStatus}
               onChange={(e) => {
                 setAdditionalParams((prevState) => ({
                   ...prevState,
@@ -170,15 +194,15 @@ export default function Product() {
 
           <div className="tw-w-full lg:tw-w-1/4">
             <CustomDatePicker
-              label="START DATE"
-              placeholder="Start Date"
+              label={`${translations?.filter?.main} ${translations?.filter?.byStartDate}`}
+              placeholder={translations?.filter?.byStartDate}
               name="startDate"
               format="DD MMMM YYYY"
               value={additionalParams.startDate}
               onDateChange={(value) => {
                 setAdditionalParams((prevState) => ({
                   ...prevState,
-                  startDate: value,
+                  startDate: formatDateParameter(value),
                 }));
               }}
               moreActions={["clear"]}
@@ -187,15 +211,15 @@ export default function Product() {
 
           <div className="tw-w-full lg:tw-w-1/4">
             <CustomDatePicker
-              label="END DATE"
-              placeholder="End Date"
+              label={`${translations?.filter?.main} ${translations?.filter?.byEndDate}`}
+              placeholder={translations?.filter?.byEndDate}
               name="endDate"
               format="DD MMMM YYYY"
               value={additionalParams.endDate}
               onDateChange={(value) => {
                 setAdditionalParams((prevState) => ({
                   ...prevState,
-                  endDate: value,
+                  endDate: formatDateParameter(value),
                 }));
               }}
               moreActions={["clear"]}

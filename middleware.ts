@@ -29,5 +29,5 @@ export async function middleware(request: NextRequest) {
 
 // Update the matcher configuration to include the /employee route
 export const config = {
-  matcher: ["/", "/employee/:path*"],
+  matcher: ["/", "/employee/:path*","/product/:path*","/setting/:path*","/transaction/:path*"],
 };

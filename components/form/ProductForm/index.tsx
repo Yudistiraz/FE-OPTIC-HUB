@@ -1,5 +1,6 @@
+"use client";
 import { useCustomFormik } from "@/hooks/formik";
-import { addProductScheme } from "@/utils/yup";
+import { yupAddProductScheme } from "@/utils/yup";
 
 import React from "react";
 import CustomTextField from "@/components/ui/TextField";
@@ -31,6 +32,7 @@ import { getAllProductCategory } from "@/services/admin/v1/productCategory";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import LoadingSkeletonForm from "../LoadingSkeletonForm";
+import { useLanguage } from "@/context/Language";
 
 interface ProductFormProps {
   isLoading?: boolean;
@@ -52,6 +54,8 @@ const ProductForm = ({
     setDialogTitle,
   } = useUserState();
 
+  const { translations } = useLanguage();
+  const productScheme = yupAddProductScheme(translations);
   const router = useRouter();
 
   const productCategoryQuery = useQuery({
@@ -65,18 +69,17 @@ const ProductForm = ({
   const productAddMutation = useMutation({
     mutationFn: addProduct,
     onSuccess: async () => {
-      toast.success("Product Successfully Added");
+      toast.success(
+        `${translations?.toast?.success?.create} ${translations?.productPage?.item}`
+      );
       router.push("/product");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        const errorMessage =
-          (error as any)?.response?.data?.message || "Error Adding Product";
-        console.log(errorMessage);
-
-        toast.error(errorMessage);
-      } else {
-        toast.error("Error Adding Product");
+        const errorResponse = error?.response?.data || {
+          message: `${translations?.toast?.error?.create} ${translations?.productPage?.item}`,
+        };
+        toast.error(errorResponse?.message);
       }
     },
   });
@@ -84,13 +87,15 @@ const ProductForm = ({
   const productUpdateMutation = useMutation({
     mutationFn: updateProduct,
     onSuccess: async () => {
-      toast.success("Product Successfully Updated");
+      toast.success(
+        `${translations?.toast?.success?.update} ${translations?.productPage?.item}`
+      );
       router.push("/product");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Updating Product",
+          message: `${translations?.toast?.error?.update} ${translations?.productPage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -100,7 +105,9 @@ const ProductForm = ({
   const productDeleteMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: async () => {
-      toast.success("Product Successfully Deleted");
+      toast.success(
+        `${translations?.toast?.success?.delete} ${translations?.productPage?.item}`
+      );
       setOpenDialog(false);
       resetDialogText();
       router.push("/product");
@@ -108,7 +115,7 @@ const ProductForm = ({
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Deleting Product",
+          message: `${translations?.toast?.error?.delete} ${translations?.productPage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -127,7 +134,9 @@ const ProductForm = ({
 
   const onDeleteClick = () => {
     resetDialogText();
-    setDialogTitle(`Are you sure you want to Delete ${data?.name} Product?`);
+    setDialogTitle(
+      `${translations?.dialogBox?.deleteConfirmation} ${data?.name}?`
+    );
     setOpenDialog(true);
   };
 
@@ -142,7 +151,7 @@ const ProductForm = ({
       imageUrl: data?.imageUrl || "",
       newImage: null,
     },
-    validationSchema: addProductScheme,
+    validationSchema: productScheme,
     onSubmit: async (values) => {
       const payload = {
         name: values.name,
@@ -216,11 +225,16 @@ const ProductForm = ({
               onImageClear={onImageClear}
               newImage={formik?.values?.newImage}
               onEdit={isEdit ? true : false}
+              helperText={gethelperText(
+                formik.touched.imageUrl as boolean,
+                formik.errors.imageUrl as string
+              )}
+              error={formik.touched.imageUrl && !!formik.errors.imageUrl}
             />
 
             <CustomTextField
-              label="Product Name"
-              placeholder="Input Product Name"
+              label={translations?.form?.productForm?.name?.label}
+              placeholder={translations?.form?.productForm?.name?.placeHolder}
               helperText={gethelperText(
                 formik.touched.name as boolean,
                 formik.errors.name as string
@@ -232,9 +246,9 @@ const ProductForm = ({
             <NumericFormat
               thousandSeparator=","
               customInput={CustomTextField}
-              label="Product Price"
+              label={translations?.form?.productForm?.price?.label}
+              placeholder={translations?.form?.productForm?.price?.placeHolder}
               type="text"
-              placeholder="Input Product Price"
               startAdornment={<div className="">Rp. </div>}
               helperText={gethelperText(
                 formik.touched.price as boolean,
@@ -245,9 +259,9 @@ const ProductForm = ({
             />
 
             <CustomTextField
-              label="Product Stock"
               type="number"
-              placeholder="Input Product Stock"
+              label={translations?.form?.productForm?.stock?.label}
+              placeholder={translations?.form?.productForm?.stock?.placeHolder}
               helperText={gethelperText(
                 formik.touched.quantity as boolean,
                 formik.errors.quantity as string
@@ -255,9 +269,13 @@ const ProductForm = ({
               error={formik.touched.quantity && !!formik.errors.quantity}
               {...formik.getFieldProps("quantity")}
             />
+
             <CustomDropdown
               fullWidth
-              label="PRODUCT CATEGORY"
+              label={translations?.form?.productForm?.category?.label}
+              placeholder={
+                translations?.form?.productForm?.category?.placeHolder
+              }
               name="categoryId"
               options={
                 convertDataToDropdownOptions(
@@ -268,7 +286,6 @@ const ProductForm = ({
               }
               disabled={productCategoryQuery.isLoading}
               value={formik.values.categoryId}
-              placeholder="Choose Product Category"
               onChange={(e) => {
                 formik.setFieldValue("categoryId", e.value);
               }}
@@ -278,9 +295,10 @@ const ProductForm = ({
               )}
               error={formik.touched.categoryId && !!formik.errors.categoryId}
             />
+
             {isEdit && (
               <CustomSwitch
-                label="PRODUCT STATUS"
+                label={translations?.form?.productForm?.status?.label}
                 name="Status"
                 onChange={(value) => {
                   formik.setFieldValue("status", value);
@@ -288,6 +306,7 @@ const ProductForm = ({
                 value={formik.values.status}
               />
             )}
+
             <div className="tw-flex tw-gap-4 tw-w-full">
               <CustomButton
                 type="submit"
@@ -297,7 +316,9 @@ const ProductForm = ({
                   productAddMutation.isLoading
                 }
               >
-                {isEdit ? "Update" : "Add"}
+                {isEdit
+                  ? translations?.button?.update
+                  : translations?.button?.add}
               </CustomButton>
               <CustomButton
                 className="tw-w-1/4"
@@ -310,7 +331,7 @@ const ProductForm = ({
                   productAddMutation.isLoading
                 }
               >
-                Cancel
+                {translations?.button?.cancel}
               </CustomButton>
               {isEdit && (
                 <CustomButton
@@ -319,7 +340,7 @@ const ProductForm = ({
                   onClick={onDeleteClick}
                   disabled={productUpdateMutation.isLoading}
                 >
-                  Delete
+                  {translations?.button?.delete}
                 </CustomButton>
               )}
             </div>
@@ -331,8 +352,8 @@ const ProductForm = ({
         <ConfirmationDialog
           title={dialogTitle}
           description={dialogMessage}
-          applyText={"YES"}
-          cancelText={"NO"}
+          applyText={translations?.button?.yes}
+          cancelText={translations?.button?.no}
           type={"confirmation"}
           onCancel={onPopUpCancel}
           onApply={onPopUpApply}

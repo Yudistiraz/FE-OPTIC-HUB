@@ -21,12 +21,13 @@ import {
   convertDataToDropdownOptions,
   getThousandSeparator,
 } from "@/utils/function";
-import { STATUS_OPTIONS } from "@/utils/constants";
 import ComponentCard from "@/components/layout/ComponentCard";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { useLanguage } from "@/context/Language";
 
 export default function Product() {
+  const { translations } = useLanguage();
   const router = useRouter();
   const {
     openDialog,
@@ -77,7 +78,9 @@ export default function Product() {
   const productDeleteMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: async () => {
-      toast.success("Product Successfully Deleted");
+      toast.success(
+        `${translations?.toast?.success?.delete} ${translations?.productPage?.item}`
+      );
       setOpenDialog(false);
       resetDialogText();
       setSelectedId("");
@@ -86,7 +89,7 @@ export default function Product() {
     onError: (error) => {
       if (error instanceof AxiosError) {
         const errorResponse = error?.response?.data || {
-          message: "Error Deleting Product",
+          message: `${translations?.toast?.error?.delete} ${translations?.productPage?.item}`,
         };
         toast.error(errorResponse?.message);
       }
@@ -96,7 +99,7 @@ export default function Product() {
   const onDeleteClick = (name: string, id: string) => {
     resetDialogText();
     setSelectedId(id);
-    setDialogTitle(`Are you sure you want to Delete ${name} Product?`);
+    setDialogTitle(`${translations?.dialogBox?.deleteConfirmation} ${name}?`);
     setOpenDialog(true);
   };
 
@@ -114,7 +117,7 @@ export default function Product() {
   const productColumn = [
     {
       field: "name",
-      headerName: "NAME",
+      headerName: translations?.productPage?.productTable?.c1,
       flex: 1,
       minWidth: 250,
       sortable: false,
@@ -125,7 +128,7 @@ export default function Product() {
     },
     {
       field: "category",
-      headerName: "Category",
+      headerName: translations?.productPage?.productTable?.c2,
       minWidth: 250,
       sortable: false,
       renderCell: (data: any) => {
@@ -135,7 +138,7 @@ export default function Product() {
     },
     {
       field: "price",
-      headerName: "Price",
+      headerName: translations?.productPage?.productTable?.c3,
       minWidth: 250,
       sortable: false,
       renderCell: (data: any) => {
@@ -145,7 +148,7 @@ export default function Product() {
     },
     {
       field: "qty",
-      headerName: "In Stock",
+      headerName: translations?.productPage?.productTable?.c4,
       minWidth: 150,
       sortable: false,
       renderCell: (data: any) => {
@@ -155,7 +158,7 @@ export default function Product() {
     },
     {
       field: "active",
-      headerName: "Status",
+      headerName: translations?.productPage?.productTable?.c5,
       minWidth: 150,
       sortable: false,
       renderCell: (data: any) => {
@@ -186,7 +189,6 @@ export default function Product() {
               sx={{ "&:hover": { color: "#CF1C0C" }, color: "#EB5757" }}
               onClick={() => {
                 onDeleteClick(data?.row?.name, data.row?.id);
-                console.log(data?.row?.name);
               }}
               id="deleteButton"
             >
@@ -202,15 +204,18 @@ export default function Product() {
   return (
     <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
       <div className="tw-flex">
-        <Typography variant="h2">Product</Typography>
+        <Typography variant="h2">
+          {translations?.productPage?.header}
+        </Typography>
 
         <CustomButton
-          className="tw-w-[165px] tw-ml-auto"
+          className="tw-w-[165px] tw-ml-auto tw-uppercase"
           onClick={() => {
             router.push("/product/add");
           }}
         >
-          Add Product
+          {`${translations?.button?.add} 
+          ${translations?.productPage?.item}`}
         </CustomButton>
       </div>
 
@@ -230,7 +235,7 @@ export default function Product() {
           <div className="tw-w-1/3">
             <CustomDropdown
               fullWidth
-              label="FILTER BY CATEGORY"
+              label={`${translations?.filter?.main} ${translations?.filter?.byCategory}`}
               name="categoryOptions"
               options={convertDataToDropdownOptions(
                 productCategoryQuery.data,
@@ -238,8 +243,8 @@ export default function Product() {
                 "id"
               )}
               value={additionalParams.categoryId || ""}
-              placeholder="Filter by Category"
-              allOption="All Category"
+              placeholder={`${translations?.filter?.main} ${translations?.filter?.byCategory}`}
+              allOption={translations?.dropdownOptions?.allCategory}
               disabled={productCategoryQuery.isLoading}
               onChange={(e) => {
                 setAdditionalParams((prevState) => ({
@@ -253,12 +258,12 @@ export default function Product() {
           <div className="tw-w-1/3">
             <CustomDropdown
               fullWidth
-              label="FILTER BY STATUS"
+              label={`${translations?.filter?.main} ${translations?.filter?.byStatus}`}
               name="PurchaseOptions"
-              options={STATUS_OPTIONS}
+              options={translations?.dropdownOptions?.statusOptions}
               value={additionalParams.status || ""}
-              placeholder="Filter by Status"
-              allOption="All Status"
+              placeholder={`${translations?.filter?.main} ${translations?.filter?.byStatus}`}
+              allOption={translations?.dropdownOptions?.allStatus}
               onChange={(e) => {
                 setAdditionalParams((prevState) => ({
                   ...prevState,
@@ -302,8 +307,8 @@ export default function Product() {
         <ConfirmationDialog
           title={dialogTitle}
           description={dialogMessage}
-          applyText={"YES"}
-          cancelText={"NO"}
+          applyText={translations?.button?.yes}
+          cancelText={translations?.button?.no}
           type={"confirmation"}
           onCancel={onPopUpCancel}
           onApply={onPopUpApply}
