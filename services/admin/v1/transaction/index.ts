@@ -25,3 +25,11 @@ export const updateTransaction = async (data: any) => {
   const fetcher = await api();
   return fetcher.patch("/order/" + data.id, data.data);
 };
+
+export const exportTransaction = async (params?: ParamInterface) => {
+  const fetcher = await api();
+
+  return fetcher.get("/order/export", {
+    params,
+  });
+};
