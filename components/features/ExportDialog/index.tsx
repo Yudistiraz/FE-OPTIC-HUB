@@ -90,6 +90,7 @@ export default function ExportDialog() {
             fullWidth
             orientation="landscape"
             popperHeight="300px"
+            disableFuture
           />
           <CustomDatePicker
             label={`${translations?.filter?.byEndDate}`}
@@ -115,6 +116,7 @@ export default function ExportDialog() {
         onClick={() => {
           exportTransactionQuery.refetch();
         }}
+        disabled={exportTransactionQuery.isLoading}
       >
         {`Export
           ${translations?.transactionPage?.item}`}

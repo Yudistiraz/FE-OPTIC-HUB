@@ -218,6 +218,7 @@ export default function Product() {
                 }));
               }}
               moreActions={["clear"]}
+              disableFuture
             />
           </div>
 
@@ -246,11 +247,8 @@ export default function Product() {
           limit={10}
           disableColumnResize={true}
           disableColumnMenu={true}
-          onRowClick={(item: any, data: any) => {
-            const cell = data.target.getAttribute("data-colindex");
-            if (cell < "5" && cell !== null) {
-              router.push(`/transaction/${item?.row?.id}`);
-            }
+          onRowClick={(item: any) => {
+            router.push(`/transaction/${item?.row?.id}`);
           }}
           onPageChange={(param: number) => {
             setPage(param);
