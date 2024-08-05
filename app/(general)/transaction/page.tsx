@@ -22,10 +22,14 @@ import CustomDatePicker from "@/components/ui/DatePicker";
 import ComponentCard from "@/components/layout/ComponentCard";
 import { useLanguage } from "@/context/Language";
 import { formatDateParameter, formateDate3 } from "@/utils/dateFormatter";
+import CustomDialog from "@/components/ui/Dialog";
+import { useUserState } from "@/context/User";
+import ExportDialog from "@/components/features/ExportDialog";
 
 export default function Product() {
   const { translations } = useLanguage();
   const router = useRouter();
+  const { openDialog, setOpenDialog } = useUserState();
   const {
     page,
     setPage,
@@ -53,10 +57,6 @@ export default function Product() {
     },
     refetchOnWindowFocus: true,
   });
-
-  useEffect(() => {
-    console.log(additionalParams);
-  }, [additionalParams]);
 
   const transactionColumn = [
     {
@@ -145,20 +145,32 @@ export default function Product() {
 
   return (
     <div className="tw-flex tw-flex-col tw-gap-6 tw-w-full">
-      <div className="tw-flex">
+      <div className="tw-flex tw-items-center">
         <Typography variant="h2">
           {translations?.transactionPage?.header}
         </Typography>
 
-        <CustomButton
-          className="tw-w-fit tw-ml-auto"
-          onClick={() => {
-            router.push("/transaction/add");
-          }}
-        >
-          {`${translations?.button?.add} 
+        <div className="tw-ml-auto tw-flex tw-gap-2">
+          <CustomButton
+            className="tw-w-fit"
+            onClick={() => {
+              router.push("/transaction/add");
+            }}
+          >
+            {`${translations?.button?.add} 
           ${translations?.transactionPage?.item}`}
-        </CustomButton>
+          </CustomButton>
+
+          <CustomButton
+            className="tw-w-fit"
+            onClick={() => {
+              setOpenDialog(true);
+            }}
+          >
+            {`Export
+          ${translations?.transactionPage?.item}`}
+          </CustomButton>
+        </div>
       </div>
 
       <ComponentCard>
@@ -222,6 +234,7 @@ export default function Product() {
                   endDate: formatDateParameter(value),
                 }));
               }}
+              disableFuture
               moreActions={["clear"]}
             />
           </div>
@@ -246,6 +259,17 @@ export default function Product() {
           totalPage={totalPages}
         />
       </ComponentCard>
+
+      <CustomDialog
+        open={openDialog}
+        maxWidth="sm"
+        independent
+        handleClose={() => {
+          setOpenDialog(false);
+        }}
+      >
+        <ExportDialog />
+      </CustomDialog>
     </div>
   );
 }
