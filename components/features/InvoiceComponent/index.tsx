@@ -11,10 +11,10 @@ const InvoiceComponent = forwardRef<HTMLDivElement, InvoiceComponentProps>(
   ({ data }, ref) => {
     return (
       <div
-        className="tw-w-2/3 tw-flex tw-gap-16 tw-flex-col tw-p-2 tw-relative"
+        className="tw-w-[208mm] tw-flex tw-gap-16 tw-flex-col tw-relative tw-outline tw-outline-4 tw-mb-4 tw-pb-4"
         ref={ref}
       >
-        <div className="tw-w-full tw-items-center tw-flex tw-flex-col tw-gap-2">
+        <div className="tw-w-full tw-items-center tw-flex tw-flex-col tw-gap-2 tw-outline tw-outline-4">
           <Typography variant="h4" className="tw-uppercase">
             Optic Name
           </Typography>
@@ -30,122 +30,124 @@ const InvoiceComponent = forwardRef<HTMLDivElement, InvoiceComponentProps>(
           </Typography>
         </div>
 
-        <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
-          <div className="tw-w-full tw-grid tw-grid-cols-2 tw-items-center">
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-1"
-            >
-              {data?.transactionDate || ""}
-            </Typography>
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-1 tw-ml-auto"
-            >
-              {data?.userName || ""}
-            </Typography>
-          </div>
-
-          <div className="tw-w-full tw-grid tw-grid-cols-2 tw-items-center">
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-1"
-            >
-              {data?.prescription?.customerName || ""}
-            </Typography>
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-1 tw-ml-auto"
-            >
-              {data?.paymentMethod || ""}
-            </Typography>
-          </div>
-
-          <div className="tw-w-full tw-grid tw-grid-cols-2 tw-items-center">
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-1"
-            >
-              Transaction ID
-            </Typography>
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-1 tw-ml-auto tw-text-end"
-            >
-              {data?.id || ""}
-            </Typography>
-          </div>
-          <div className="tw-w-full tw-flex tw-justify-end">
-            <Typography variant="subtitle2" className="tw-uppercase">
-              {data?.status}
-            </Typography>
-          </div>
-        </div>
-
-        <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
-          {data?.orderItem?.map((product: OrderItem) => (
-            <div
-              className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center"
-              key={product?.id}
-            >
+        <div className="tw-w-full tw-flex tw-gap-16 tw-px-4 tw-flex-col">
+          <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
+            <div className="tw-w-full tw-grid tw-grid-cols-2 tw-items-center">
               <Typography
                 variant="subtitle2Reg"
-                className="tw-uppercase tw-col-span-4"
+                className="tw-uppercase tw-col-span-1"
               >
-                {product?.qty} x {product?.name}
+                {data?.transactionDate || ""}
               </Typography>
               <Typography
                 variant="subtitle2Reg"
-                className="tw-uppercase tw-col-span-2 tw-ml-auto"
+                className="tw-uppercase tw-col-span-1 tw-ml-auto"
               >
-                Rp.{getThousandSeparator(product?.qty * product?.price)}
+                {data?.userName || ""}
               </Typography>
             </div>
-          ))}
-        </div>
 
-        <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
-          <div className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center">
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-2"
-            >
-              HARGA JUAL
-            </Typography>
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-4 tw-ml-auto"
-            >
-              Rp.{getThousandSeparator(data?.subTotal)}
-            </Typography>
+            <div className="tw-w-full tw-grid tw-grid-cols-2 tw-items-center">
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-1"
+              >
+                {data?.prescription?.customerName || ""}
+              </Typography>
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-1 tw-ml-auto"
+              >
+                {data?.paymentMethod || ""}
+              </Typography>
+            </div>
+
+            <div className="tw-w-full tw-grid tw-grid-cols-2 tw-items-center">
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-1"
+              >
+                Transaction ID
+              </Typography>
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-1 tw-ml-auto tw-text-end"
+              >
+                {data?.id || ""}
+              </Typography>
+            </div>
+            <div className="tw-w-full tw-flex tw-justify-end">
+              <Typography variant="subtitle2" className="tw-uppercase">
+                {data?.status}
+              </Typography>
+            </div>
           </div>
-          <div className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center">
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-2"
-            >
-              PPN 10%
-            </Typography>
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-4 tw-ml-auto"
-            >
-              Rp.{getThousandSeparator(data?.tax)}
-            </Typography>
+
+          <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
+            {data?.orderItem?.map((product: OrderItem) => (
+              <div
+                className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center"
+                key={product?.id}
+              >
+                <Typography
+                  variant="subtitle2Reg"
+                  className="tw-uppercase tw-col-span-4"
+                >
+                  {product?.qty} x {product?.name}
+                </Typography>
+                <Typography
+                  variant="subtitle2Reg"
+                  className="tw-uppercase tw-col-span-2 tw-ml-auto"
+                >
+                  Rp.{getThousandSeparator(product?.qty * product?.price)}
+                </Typography>
+              </div>
+            ))}
           </div>
-          <div className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center">
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-2"
-            >
-              TOTAL
-            </Typography>
-            <Typography
-              variant="subtitle2Reg"
-              className="tw-uppercase tw-col-span-4 tw-ml-auto"
-            >
-              Rp.{getThousandSeparator(data?.totalPrice)}
-            </Typography>
+
+          <div className="tw-w-full tw-flex tw-flex-col tw-gap-2">
+            <div className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center">
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-2"
+              >
+                HARGA JUAL
+              </Typography>
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-4 tw-ml-auto"
+              >
+                Rp.{getThousandSeparator(data?.subTotal)}
+              </Typography>
+            </div>
+            <div className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center">
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-2"
+              >
+                PPN 10%
+              </Typography>
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-4 tw-ml-auto"
+              >
+                Rp.{getThousandSeparator(data?.tax)}
+              </Typography>
+            </div>
+            <div className="tw-w-full tw-grid tw-grid-cols-6 tw-items-center">
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-2"
+              >
+                TOTAL
+              </Typography>
+              <Typography
+                variant="subtitle2Reg"
+                className="tw-uppercase tw-col-span-4 tw-ml-auto"
+              >
+                Rp.{getThousandSeparator(data?.totalPrice)}
+              </Typography>
+            </div>
           </div>
         </div>
 
