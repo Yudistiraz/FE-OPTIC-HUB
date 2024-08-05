@@ -75,6 +75,7 @@ export type TTransaction = {
   imageUrl: string;
   transactionDate: string;
   orderItem?: OrderItem[];
+  orderItems?: OrderItem[];
   prescription?: Prescription;
   withPrescription: boolean;
   userName: string;

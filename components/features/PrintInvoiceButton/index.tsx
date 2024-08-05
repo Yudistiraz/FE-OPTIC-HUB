@@ -21,6 +21,20 @@ export default function PrintInvoiceButton({ data }: PrintInvoiceButtonProps) {
           </CustomButton>
         )}
         content={() => componentRef.current}
+        pageStyle={`
+  @page { 
+    margin: 0; 
+    size: A4; 
+  }
+  @media print { 
+    body { 
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+`}
       />
       <div className="tw-hidden">
         <InvoiceComponent ref={componentRef} data={data} />

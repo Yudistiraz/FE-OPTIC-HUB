@@ -211,3 +211,13 @@ export function verifyNumber(
   }
   return true;
 }
+
+export function joinOrderItemToString(
+  orderItems: OrderItem[] | null | undefined
+): string {
+  if (orderItems) {
+    return orderItems.map((item) => item.name).join(", ");
+  } else {
+    return "";
+  }
+}
