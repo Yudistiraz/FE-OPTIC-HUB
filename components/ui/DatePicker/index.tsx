@@ -29,6 +29,7 @@ interface DatePickerProps {
   format?: string;
   positionTop?: boolean;
   error?: boolean;
+  popperHeight?: string;
 }
 
 export default function CustomDatePicker({
@@ -51,6 +52,7 @@ export default function CustomDatePicker({
   format = "MM/DD/YYYY",
   positionTop,
   error,
+  popperHeight = "350px",
 }: DatePickerProps) {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -104,7 +106,14 @@ export default function CustomDatePicker({
             toolbar: CustomToolbar,
           }}
           slotProps={{
-            popper: { placement: positionTop ? "top-start" : "bottom-start" },
+            popper: {
+              placement: positionTop ? "top-start" : "bottom-start",
+              sx: {
+                height: popperHeight,
+                overflowY: "auto",
+              },
+              className: "no-scrollbar",
+            },
             actionBar: {
               actions: [...moreActions, "cancel", "accept"],
             },
