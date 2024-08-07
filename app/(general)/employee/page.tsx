@@ -143,7 +143,7 @@ export default function Employee() {
       renderCell: (data: any) => {
         return (
           <div className="tw-flex tw-items-center tw-h-full tw-capitalize">
-            {data?.row?.role === "staff"
+            {data?.row?.role !== "staff"
               ? translations?.dropdownOptions.roleOptions[0].label
               : translations?.dropdownOptions.roleOptions[1].label}
           </div>
